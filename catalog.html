@@ -80,7 +80,8 @@ async function showCard(i){
     detailEl.innerHTML=`<img src="${esc(imageUrl(c.image))}" alt="${esc(c.name)}"><div><div class="detail-label">CARD</div><div class="detail-value"><strong>${esc(c.name)}</strong></div><div class="detail-label">SET</div><div class="detail-value">${esc(setText(c))} · ${esc(c.localId)}</div><div class="detail-label">RARITY</div><div class="detail-value">${esc(c.rarity||'—')}</div><div class="detail-label">CATEGORY</div><div class="detail-value">${esc(c.category||'—')}</div><div class="catalog-actions"><button class="small-btn primary" onclick="saveCard(${i},'collection')">ADD TO COLLECTION</button><button class="small-btn" onclick="saveCard(${i},'wishlist')">ADD TO WISHLIST</button></div></div>`;
     detailEl.classList.add('show');
     statusEl.textContent='Dettagli carta caricati.';
-  }catch(e){statusEl.textContent='Impossibile caricare i dettagli della carta.';}
+    }catch(e){statusEl.textContent='Impossibile caricare i dettagli della carta.';}
+}
 function saveCard(i,target){
   const c=lastResults[i];
 
