@@ -1,4 +1,460 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pokémon Collection Manager — COLLECTION</title><link rel="stylesheet" href="style.css">  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#0b1220">
-</head><body><div class="app"><aside class="side"><div class="logo">POKÉMON CM<small>COLLECTION MANAGER · V1.3</small></div><nav class="nav"><a href="index.html">▶ DASHBOARD</a><a href="collection.html">▣ COLLECTION</a><a href="catalog.html">▥ CATALOG</a><a href="masterset.html">▤ MASTERSET</a><a href="wishlist.html">♡ WISHLIST</a><a href="market.html">⌁ MARKET</a></nav></aside><main class="main"><div class="top"><div><div class="title">COLLECTION</div><div class="tag">YOUR CARDS // MANUAL ENTRY</div></div><a class="btn" href="collection.html#add">+ ADD CARD</a></div><div class="toolbar"><input class="input" placeholder="Search collection..."><a class="btn" href="#add">+ ADD CARD</a></div><div class="list"><div class="empty">NO CARDS IN COLLECTION YET.<br><br><a class="btn" href="#add">ADD YOUR FIRST CARD</a></div></div><div class="section" id="add"><h2>ADD CARD</h2><div class="panel"><div class="formgrid"><div><div class="label">Card</div><input class="input" placeholder="Charizard ex 199/165"></div><div><div class="label">Language</div><select class="select"><option>Italian</option><option>English</option><option>Japanese</option></select></div><div><div class="label">Condition</div><select class="select"><option>Near Mint</option><option>Excellent</option><option>Good</option><option>Light Played</option><option>Played</option></select></div><div><div class="label">Quantity</div><input class="input" type="number" value="1"></div></div><br><a class="btn" href="collection.html">SAVE CARD</a> <a class="btn secondary" href="collection.html">CANCEL</a></div></div></main></div><nav class="mobile"><a href="index.html">⌂<br>DASH</a><a href="collection.html">▣<br>COLL</a><a href="catalog.html">▥<br>CAT</a><a href="masterset.html">▤<br>SET</a><a href="wishlist.html">♡<br>WISH</a><a href="market.html">⌁<br>MARKET</a></nav><script>if("serviceWorker" in navigator && location.protocol !== "file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{});}</script>
-</body></html>
+```html
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pokémon Collection Manager — COLLECTION</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0b1220">
+<style>
+.collection-preview{
+  display:grid;
+  grid-template-columns:100px 1fr;
+  gap:14px;
+  align-items:start;
+  background:#111927;
+  border:1px solid #344154;
+  padding:12px;
+  margin-bottom:18px;
+}
+.collection-preview img{
+  width:100px;
+  display:block;
+}
+.preview-name{font-weight:700;font-size:16px;margin-bottom:5px}
+.preview-meta{font-size:12px;color:#9aa6b2;line-height:1.5}
+.formgrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.form-full{grid-column:1/-1}
+.saved-card{
+  display:grid;
+  grid-template-columns:80px 1fr auto;
+  gap:12px;
+  align-items:center;
+  background:#151d2b;
+  border:1px solid #344154;
+  padding:10px;
+  margin-bottom:10px;
+}
+.saved-card img{width:80px}
+.saved-name{font-weight:700}
+.saved-meta{font-size:12px;color:#9aa6b2;line-height:1.5;margin-top:4px}
+.saved-price{text-align:right;font-weight:700}
+.remove-btn{
+  background:#202b3b;
+  border:1px solid #415069;
+  color:#fff;
+  padding:7px 9px;
+  cursor:pointer;
+  margin-top:6px;
+}
+.collection-empty{
+  border:1px dashed #344154;
+  padding:30px;
+  text-align:center;
+  color:#9aa6b2;
+}
+@media(max-width:700px){
+  .formgrid{grid-template-columns:1fr}
+  .form-full{grid-column:auto}
+  .saved-card{grid-template-columns:60px 1fr}
+  .saved-card img{width:60px}
+  .saved-price{grid-column:2;text-align:left}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="side">
+  <div class="logo">
+    POKÉMON CM
+    <small>COLLECTION MANAGER · V1.4</small>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html">▶ DASHBOARD</a>
+    <a href="collection.html">▣ COLLECTION</a>
+    <a href="catalog.html">▥ CATALOG</a>
+    <a href="masterset.html">▤ MASTERSET</a>
+    <a href="wishlist.html">♡ WISHLIST</a>
+    <a href="market.html">⌁ MARKET</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<div class="top">
+  <div>
+    <div class="title">COLLECTION</div>
+    <div class="tag">YOUR CARDS // LOCAL DATA</div>
+  </div>
+  <a class="btn" href="#add">+ ADD CARD</a>
+</div>
+
+<div class="toolbar">
+  <input id="collectionSearch" class="input" placeholder="Search collection...">
+  <a class="btn" href="#add">+ ADD CARD</a>
+</div>
+
+<div id="collectionList" class="list"></div>
+
+<div class="section" id="add">
+
+<h2>ADD CARD</h2>
+
+<div class="panel">
+
+<div id="selectedCard"></div>
+
+<div class="formgrid">
+
+<div>
+  <div class="label">Language</div>
+  <select id="language" class="select">
+    <option value="it">🇮🇹 Italian</option>
+    <option value="en">🇬🇧 English</option>
+    <option value="ja">🇯🇵 Japanese</option>
+  </select>
+</div>
+
+<div>
+  <div class="label">Condition</div>
+  <select id="condition" class="select">
+    <option value="NM">Near Mint</option>
+    <option value="EX">Excellent</option>
+    <option value="GD">Good</option>
+    <option value="LP">Light Played</option>
+    <option value="PL">Played</option>
+    <option value="PO">Poor</option>
+  </select>
+</div>
+
+<div>
+  <div class="label">Quantity</div>
+  <input id="quantity" class="input" type="number" min="1" value="1">
+</div>
+
+<div>
+  <div class="label">Grading</div>
+  <select id="grading" class="select">
+    <option value="Raw">Raw</option>
+    <option value="PSA">PSA</option>
+    <option value="CGC">CGC</option>
+    <option value="BGS">BGS</option>
+    <option value="ACE">ACE</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
+<div>
+  <div class="label">Grade</div>
+  <input id="grade" class="input" type="number" min="0" max="10" step="0.5" placeholder="Es. 10">
+</div>
+
+<div>
+  <div class="label">Purchase price (€)</div>
+  <input id="purchasePrice" class="input" type="number" min="0" step="0.01" placeholder="0.00">
+</div>
+
+<div>
+  <div class="label">Purchase date</div>
+  <input id="purchaseDate" class="input" type="date">
+</div>
+
+<div>
+  <div class="label">Seller</div>
+  <input id="seller" class="input" placeholder="Optional">
+</div>
+
+<div class="form-full">
+  <div class="label">Notes</div>
+  <input id="notes" class="input" placeholder="Optional notes">
+</div>
+
+</div>
+
+<br>
+
+<button id="saveBtn" class="btn" type="button">SAVE CARD</button>
+<a class="btn secondary" href="collection.html">CANCEL</a>
+
+</div>
+</div>
+
+</main>
+</div>
+
+<nav class="mobile">
+  <a href="index.html">⌂<br>DASH</a>
+  <a href="collection.html">▣<br>COLL</a>
+  <a href="catalog.html">▥<br>CAT</a>
+  <a href="masterset.html">▤<br>SET</a>
+  <a href="wishlist.html">♡<br>WISH</a>
+  <a href="market.html">⌁<br>MARKET</a>
+</nav>
+
+<script>
+
+const COLLECTION_KEY='pcm_collection';
+
+let pendingCard=null;
+
+function esc(v){
+  return String(v??'').replace(/[&<>"']/g,m=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  }[m]));
+}
+
+function loadCollection(){
+  return JSON.parse(localStorage.getItem(COLLECTION_KEY)||'[]');
+}
+
+function saveCollection(arr){
+  localStorage.setItem(COLLECTION_KEY,JSON.stringify(arr));
+}
+
+function languageName(v){
+  return {
+    it:'Italian',
+    en:'English',
+    ja:'Japanese'
+  }[v]||v;
+}
+
+function showPendingCard(){
+
+  const box=document.getElementById('selectedCard');
+
+  const raw=localStorage.getItem('pcm_pending_card');
+
+  if(!raw){
+    pendingCard=null;
+
+    box.innerHTML=`
+      <div class="collection-preview">
+        <div style="font-size:32px">🃏</div>
+        <div>
+          <div class="preview-name">No card selected</div>
+          <div class="preview-meta">
+            Add a card from the Catalog using + COLL,
+            or use the fields below for a manual entry.
+          </div>
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  try{
+    pendingCard=JSON.parse(raw);
+
+    box.innerHTML=`
+      <div class="collection-preview">
+        <img src="${esc(pendingCard.image ? pendingCard.image+'.png' : '')}"
+             alt="${esc(pendingCard.name)}">
+        <div>
+          <div class="preview-name">${esc(pendingCard.name)}</div>
+          <div class="preview-meta">
+            ${esc(pendingCard.set?.name||'Set sconosciuto')}
+            · #${esc(pendingCard.localId)}
+            <br>
+            Lingua catalogo: ${esc(languageName(pendingCard.language))}
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('language').value=pendingCard.language||'it';
+
+  }catch(e){
+    localStorage.removeItem('pcm_pending_card');
+    pendingCard=null;
+  }
+}
+
+function renderCollection(filter=''){
+
+  const list=document.getElementById('collectionList');
+
+  let cards=loadCollection();
+
+  if(filter.trim()){
+    const q=filter.toLowerCase();
+
+    cards=cards.filter(x=>
+      String(x.name||'').toLowerCase().includes(q) ||
+      String(x.setName||'').toLowerCase().includes(q) ||
+      String(x.localId||'').toLowerCase().includes(q)
+    );
+  }
+
+  if(!cards.length){
+
+    list.innerHTML=`
+      <div class="collection-empty">
+        NO CARDS IN COLLECTION YET.
+        <br><br>
+        <a class="btn" href="#add">ADD YOUR FIRST CARD</a>
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML=cards.map((c,i)=>`
+
+    <div class="saved-card">
+
+      <img src="${esc(c.image ? c.image+'.png' : '')}"
+           alt="${esc(c.name)}">
+
+      <div>
+        <div class="saved-name">${esc(c.name)}</div>
+
+        <div class="saved-meta">
+          ${esc(c.setName||'Set sconosciuto')}
+          · #${esc(c.localId||'—')}
+          <br>
+          ${esc(languageName(c.language))}
+          · ${esc(c.condition||'NM')}
+          · Qty ${esc(c.quantity||1)}
+          <br>
+          ${esc(c.grading||'Raw')}
+          ${c.grade ? ' · Grade '+esc(c.grade) : ''}
+          ${c.purchaseDate ? ' · '+esc(c.purchaseDate) : ''}
+        </div>
+
+        ${c.seller ? `<div class="saved-meta">Seller: ${esc(c.seller)}</div>` : ''}
+        ${c.notes ? `<div class="saved-meta">${esc(c.notes)}</div>` : ''}
+
+      </div>
+
+      <div class="saved-price">
+
+        ${c.purchasePrice!=='' && c.purchasePrice!=null
+          ? '€ '+Number(c.purchasePrice).toFixed(2)
+          : '—'}
+
+        <br>
+
+        <button class="remove-btn" onclick="removeCard(${i})">
+          REMOVE
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join('');
+}
+
+function saveCard(){
+
+  if(!pendingCard){
+
+    alert('Seleziona prima una carta dal Catalogo con + COLL.');
+
+    return;
+  }
+
+  const quantity=Math.max(
+    1,
+    Number(document.getElementById('quantity').value||1)
+  );
+
+  const item={
+
+    id:pendingCard.id,
+
+    name:pendingCard.name,
+
+    localId:pendingCard.localId,
+
+    image:pendingCard.image,
+
+    set:pendingCard.set||null,
+
+    setName:pendingCard.set?.name||'Set sconosciuto',
+
+    language:document.getElementById('language').value,
+
+    condition:document.getElementById('condition').value,
+
+    quantity:quantity,
+
+    grading:document.getElementById('grading').value,
+
+    grade:document.getElementById('grade').value,
+
+    purchasePrice:document.getElementById('purchasePrice').value,
+
+    purchaseDate:document.getElementById('purchaseDate').value,
+
+    seller:document.getElementById('seller').value.trim(),
+
+    notes:document.getElementById('notes').value.trim(),
+
+    savedAt:new Date().toISOString()
+
+  };
+
+  const arr=loadCollection();
+
+  arr.push(item);
+
+  saveCollection(arr);
+
+  localStorage.removeItem('pcm_pending_card');
+
+  alert('Carta aggiunta alla Collection.');
+
+  window.location.href='collection.html';
+
+}
+
+function removeCard(index){
+
+  const arr=loadCollection();
+
+  arr.splice(index,1);
+
+  saveCollection(arr);
+
+  renderCollection(document.getElementById('collectionSearch').value);
+
+}
+
+document.getElementById('saveBtn').addEventListener('click',saveCard);
+
+document.getElementById('collectionSearch').addEventListener('input',e=>{
+  renderCollection(e.target.value);
+});
+
+showPendingCard();
+
+renderCollection();
+
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  navigator.serviceWorker.register('./sw.js?v=4',{
+    updateViaCache:'none'
+  }).catch(()=>{});
+}
+
+</script>
+
+</body>
+</html>
+```
