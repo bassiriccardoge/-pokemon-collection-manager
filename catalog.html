@@ -81,14 +81,34 @@ async function showCard(i){
     detailEl.classList.add('show');
     statusEl.textContent='Dettagli carta caricati.';
   }catch(e){statusEl.textContent='Impossibile caricare i dettagli della carta.';}
-}
-function saveCard(i,target){
+}function saveCard(i,target){
   const c=lastResults[i];
-  const item={id:c.id,name:c.name,localId:c.localId,image:c.image,set:c.set||null,language:langEl.value,savedAt:new Date().toISOString()};
-  const key=target==='wishlist'?'pcm_wishlist_catalog':'pcm_collection_catalog';
-  const arr=JSON.parse(localStorage.getItem(key)||'[]');
-  if(!arr.some(x=>x.id===item.id&&x.language===item.language)){arr.push(item);localStorage.setItem(key,JSON.stringify(arr));}
-  alert(target==='wishlist'?'Carta salvata nella Wishlist.':'Carta salvata come selezione Collection.');
+
+  const item={
+    id:c.id,
+    name:c.name,
+    localId:c.localId,
+    image:c.image,
+    set:c.set||null,
+    language:langEl.value,
+    savedAt:new Date().toISOString()
+  };
+
+  if(target==='collection'){
+    localStorage.setItem('pcm_pending_card',JSON.stringify(item));
+    window.location.href='collection.html#add';
+    return;
+  }
+
+  const arr=JSON.parse(localStorage.getItem('pcm_wishlist_catalog')||'[]');
+
+  if(!arr.some(x=>x.id===item.id&&x.language===item.language)){
+    arr.push(item);
+    localStorage.setItem('pcm_wishlist_catalog',JSON.stringify(arr));
+  }
+
+  alert('Carta salvata nella Wishlist.');
+}
 }
 searchEl.addEventListener('keydown',e=>{if(e.key==='Enter')searchCards();});
 document.getElementById('searchBtn').addEventListener('click',searchCards);
