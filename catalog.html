@@ -110,7 +110,6 @@ function saveCard(i,target){
 
   alert('Carta salvata nella Wishlist.');
 }
-}
 searchEl.addEventListener('keydown',e=>{if(e.key==='Enter')searchCards();});
 document.getElementById('searchBtn').addEventListener('click',searchCards);
 langEl.addEventListener('change',()=>{if(searchEl.value.trim().length>=2)searchCards();});
