@@ -81,7 +81,7 @@ async function showCard(i){
     detailEl.classList.add('show');
     statusEl.textContent='Dettagli carta caricati.';
   }catch(e){statusEl.textContent='Impossibile caricare i dettagli della carta.';}
-}function saveCard(i,target){
+function saveCard(i,target){
   const c=lastResults[i];
 
   const item={
