@@ -141,165 +141,162 @@
 
   <aside class="side">
 
-```
-<div class="logo">
-  POKÉMON CM
-  <small>COLLECTION MANAGER · V1.3</small>
-</div>
+    <div class="logo">
+      POKÉMON CM
+      <small>COLLECTION MANAGER · V1.3</small>
+    </div>
 
-<nav class="nav">
-  <a href="index.html">▶ DASHBOARD</a>
-  <a href="collection.html">▣ COLLECTION</a>
-  <a href="catalog.html">▥ CATALOG</a>
-  <a href="masterset.html">▤ MASTERSET</a>
-  <a href="wishlist.html">♡ WISHLIST</a>
-  <a href="market.html">⌁ MARKET</a>
-</nav>
-```
+    <nav class="nav">
+      <a href="index.html">▶ DASHBOARD</a>
+      <a href="collection.html">▣ COLLECTION</a>
+      <a href="catalog.html">▥ CATALOG</a>
+      <a href="masterset.html">▤ MASTERSET</a>
+      <a href="wishlist.html">♡ WISHLIST</a>
+      <a href="market.html">⌁ MARKET</a>
+    </nav>
 
   </aside>
 
   <main class="main">
 
-```
-<div class="top">
+    <div class="top">
 
-  <div>
-    <div class="title">CATALOG</div>
+      <div>
+        <div class="title">CATALOG</div>
 
-    <div class="tag">
-      TCGDEX // CARD DATABASE
+        <div class="tag">
+          TCGDEX // CARD DATABASE
+        </div>
+      </div>
+
+      <a class="btn" href="collection.html#add">
+        + ADD CARD
+      </a>
+
     </div>
-  </div>
-
-  <a class="btn" href="collection.html#add">
-    + ADD CARD
-  </a>
-
-</div>
 
 
-<div class="section">
+    <div class="section">
 
-  <h2>SEARCH</h2>
+      <h2>SEARCH</h2>
 
-  <div class="panel">
+      <div class="panel">
 
-    <div class="search-box">
+        <div class="search-box">
 
-      <div class="search-field">
+          <div class="search-field">
 
-        <label class="search-label" for="searchInput">
-          NUMERO / NOME CARTA
-        </label>
+            <label class="search-label" for="searchInput">
+              NUMERO / NOME CARTA
+            </label>
 
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Es. Gengar, Pikachu, 154..."
-          autocomplete="off"
-        >
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Es. Gengar, Pikachu, 154..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div class="search-field">
+
+            <label class="search-label" for="languageSelect">
+              LINGUA
+            </label>
+
+            <select id="languageSelect">
+
+              <option value="it">
+                🇮🇹 IT
+              </option>
+
+              <option value="en">
+                🇬🇧 EN
+              </option>
+
+              <option value="ja">
+                🇯🇵 JP
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="search-field">
+
+            <label class="search-label" for="setSelect">
+              SET
+            </label>
+
+            <select id="setSelect">
+
+              <option value="">
+                Tutti i set
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div
+            class="search-field"
+            style="align-self:end;"
+          >
+
+            <button
+              id="searchBtn"
+              class="btn"
+              type="button"
+            >
+              SEARCH
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div id="status" class="notice">
+          Inserisci il nome o il numero della carta.
+        </div>
 
       </div>
 
-
-      <div class="search-field">
-
-        <label class="search-label" for="languageSelect">
-          LINGUA
-        </label>
-
-        <select id="languageSelect">
-
-          <option value="it">
-            🇮🇹 IT
-          </option>
-
-          <option value="en">
-            🇬🇧 EN
-          </option>
-
-          <option value="ja">
-            🇯🇵 JP
-          </option>
-
-        </select>
-
-      </div>
+    </div>
 
 
-      <div class="search-field">
+    <div class="section">
 
-        <label class="search-label" for="setSelect">
-          SET
-        </label>
+      <h2>RESULTS</h2>
 
-        <select id="setSelect">
-
-          <option value="">
-            Tutti i set
-          </option>
-
-        </select>
-
-      </div>
-
+      <div id="results" class="results-grid"></div>
 
       <div
-        class="search-field"
-        style="align-self:end;"
+        id="loadMoreWrap"
+        class="load-more-wrap"
+        style="display:none;"
       >
 
         <button
-          id="searchBtn"
-          class="btn"
+          id="loadMoreBtn"
+          class="btn secondary"
           type="button"
         >
-          SEARCH
+          LOAD MORE
         </button>
 
       </div>
 
     </div>
 
-
-    <div id="status" class="notice">
-      Inserisci il nome o il numero della carta.
-    </div>
-
-  </div>
-
-</div>
-
-
-<div class="section">
-
-  <h2>RESULTS</h2>
-
-  <div id="results" class="results-grid"></div>
-
-  <div
-    id="loadMoreWrap"
-    class="load-more-wrap"
-    style="display:none;"
-  >
-
-    <button
-      id="loadMoreBtn"
-      class="btn secondary"
-      type="button"
-    >
-      LOAD MORE
-    </button>
-
-  </div>
-
-</div>
-```
-
   </main>
 
 </div>
+
 
 <nav class="mobile">
 
@@ -328,6 +325,7 @@
   </a>
 
 </nav>
+
 
 <script>
 
@@ -457,8 +455,8 @@ function cardImage(card) {
     return "";
   }
 
-  let image =
-    card.image;
+  const image =
+    String(card.image);
 
   if (
     image.endsWith(".png") ||
@@ -712,6 +710,16 @@ async function loadSets(
       await response.json();
 
 
+    if (
+      !Array.isArray(allSets)
+    ) {
+
+      allSets =
+        [];
+
+    }
+
+
     setsMap =
       {};
 
@@ -719,8 +727,15 @@ async function loadSets(
     allSets.forEach(
       set => {
 
-        setsMap[set.id] =
-          set;
+        if (
+          set &&
+          set.id
+        ) {
+
+          setsMap[set.id] =
+            set;
+
+        }
 
       }
     );
@@ -1165,18 +1180,14 @@ function renderResults(cards) {
 
 
 /* =========================================================
-   SEARCH BY NAME
+   SEARCH CARD LIST
 ========================================================= */
 
-async function searchByName(
+async function fetchCardList(
+  language,
   query,
-  page,
-  append = false
+  page
 ) {
-
-  status.textContent =
-    `Ricerca ${query}...`;
-
 
   const params =
     new URLSearchParams();
@@ -1202,14 +1213,14 @@ async function searchByName(
 
   const response =
     await fetch(
-      `${API}/it/cards?${params.toString()}`
+      `${API}/${language}/cards?${params.toString()}`
     );
 
 
   if (!response.ok) {
 
     throw new Error(
-      "Errore ricerca nome"
+      `Errore ricerca ${language}`
     );
 
   }
@@ -1219,95 +1230,220 @@ async function searchByName(
     await response.json();
 
 
-  const italianCards =
+  return (
     data.cards ||
     data ||
-    [];
+    []
+  );
+
+}
 
 
-  if (
-    currentLang === "it"
-  ) {
+/* =========================================================
+   MERGE UNIQUE CARDS
+========================================================= */
 
-    const finalCards =
-      italianCards.map(
-        card => ({
-          ...card,
-          displayLanguage: "it"
-        })
-      );
+function mergeUniqueCards(
+  first,
+  second
+) {
+
+  const map =
+    new Map();
 
 
-    if (append) {
+  [
+    ...(first || []),
+    ...(second || [])
+  ].forEach(
+    card => {
 
-      lastResults =
-        lastResults.concat(
-          finalCards
+      if (
+        card &&
+        card.id &&
+        !map.has(card.id)
+      ) {
+
+        map.set(
+          card.id,
+          card
         );
 
-    } else {
-
-      lastResults =
-        finalCards;
+      }
 
     }
+  );
 
 
-    renderResults(
-      lastResults
+  return [
+    ...map.values()
+  ];
+
+}
+
+
+/* =========================================================
+   SEARCH BY NAME
+========================================================= */
+
+async function searchByName(
+  query,
+  page,
+  append = false
+) {
+
+  status.textContent =
+    `Ricerca ${query}...`;
+
+
+  /*
+    Prima cerchiamo sempre in italiano.
+    Questo ci permette di mantenere il nome
+    italiano visualizzato nelle card.
+  */
+
+  const italianCards =
+    await fetchCardList(
+      "it",
+      query,
+      page
     );
 
 
-    hasMore =
-      italianCards.length ===
-      PAGE_SIZE;
+  let sourceCards =
+    italianCards;
 
 
-    loadMoreWrap.style.display =
-      hasMore
-        ? "block"
-        : "none";
+  /*
+    Se la lingua selezionata è EN o JP,
+    facciamo anche una ricerca nella lingua
+    selezionata.
+
+    Questo è importante soprattutto per il
+    giapponese: una ricerca con un nome scritto
+    in giapponese non necessariamente esiste
+    nella banca dati italiana.
+  */
+
+  if (
+    currentLang !== "it"
+  ) {
+
+    try {
+
+      const languageCards =
+        await fetchCardList(
+          currentLang,
+          query,
+          page
+        );
 
 
-    status.textContent =
-      `${lastResults.length} risultati`;
+      sourceCards =
+        mergeUniqueCards(
+          italianCards,
+          languageCards
+        );
 
-    return;
+    } catch (error) {
+
+      console.warn(
+        "Ricerca lingua selezionata non disponibile:",
+        error
+      );
+
+    }
 
   }
 
 
+  /*
+    Recuperiamo la versione nella lingua
+    selezionata per ogni risultato.
+  */
+
   const languageCards =
     await Promise.all(
 
-      italianCards.map(
-        async italianCard => {
-
-          const localizedCard =
-            await getLanguageCard(
-              italianCard.id,
-              currentLang
-            );
-
+      sourceCards.map(
+        async sourceCard => {
 
           if (
-            localizedCard
+            currentLang === "it"
           ) {
 
             return {
-              ...localizedCard,
-
-              name:
-                italianCard.name,
-
-              displayLanguage:
-                currentLang
+              ...sourceCard,
+              displayLanguage: "it"
             };
 
           }
 
 
-          return null;
+          const localizedCard =
+            await getLanguageCard(
+              sourceCard.id,
+              currentLang
+            );
+
+
+          if (
+            !localizedCard
+          ) {
+
+            return null;
+
+          }
+
+
+          /*
+            Cerchiamo il nome italiano.
+            Se esiste, sarà quello mostrato
+            nell'interfaccia.
+          */
+
+          let italianCard =
+            null;
+
+
+          if (
+            italianCards.some(
+              card =>
+                card.id ===
+                sourceCard.id
+            )
+          ) {
+
+            italianCard =
+              italianCards.find(
+                card =>
+                  card.id ===
+                  sourceCard.id
+              );
+
+          } else {
+
+            italianCard =
+              await getItalianCard(
+                sourceCard.id
+              );
+
+          }
+
+
+          return {
+
+            ...localizedCard,
+
+            name:
+              italianCard?.name ||
+              sourceCard.name ||
+              localizedCard.name,
+
+            displayLanguage:
+              currentLang
+
+          };
 
         }
       )
@@ -1321,17 +1457,29 @@ async function searchByName(
     );
 
 
+  /*
+    Evitiamo duplicati.
+  */
+
+  const uniqueCards =
+    mergeUniqueCards(
+      [],
+      validCards
+    );
+
+
   if (append) {
 
     lastResults =
-      lastResults.concat(
-        validCards
+      mergeUniqueCards(
+        lastResults,
+        uniqueCards
       );
 
   } else {
 
     lastResults =
-      validCards;
+      uniqueCards;
 
   }
 
@@ -1340,6 +1488,12 @@ async function searchByName(
     lastResults
   );
 
+
+  /*
+    LOAD MORE rimane attivo quando
+    la ricerca principale restituisce
+    una pagina completa.
+  */
 
   hasMore =
     italianCards.length ===
@@ -1406,9 +1560,23 @@ async function searchByNumber(
   );
 
 
+  /*
+    Per IT cerchiamo direttamente in IT.
+
+    Per EN/JP cerchiamo prima in IT per avere
+    un'identità comune e poi recuperiamo la
+    versione nella lingua selezionata.
+  */
+
+  const searchLanguage =
+    currentLang === "it"
+      ? "it"
+      : "it";
+
+
   const response =
     await fetch(
-      `${API}/${currentLang}/cards?${params.toString()}`
+      `${API}/${searchLanguage}/cards?${params.toString()}`
     );
 
 
@@ -1425,29 +1593,96 @@ async function searchByNumber(
     await response.json();
 
 
-  const cards =
+  const sourceCards =
     data.cards ||
     data ||
     [];
 
 
-  const finalCards =
-    await localizeResults(
-      cards
-    );
+  let cards =
+    sourceCards;
+
+
+  /*
+    Per JP/EN recuperiamo la versione
+    nella lingua scelta.
+  */
+
+  if (
+    currentLang !== "it"
+  ) {
+
+    const localized =
+      await Promise.all(
+
+        sourceCards.map(
+          async sourceCard => {
+
+            const languageCard =
+              await getLanguageCard(
+                sourceCard.id,
+                currentLang
+              );
+
+
+            if (
+              !languageCard
+            ) {
+
+              return null;
+
+            }
+
+
+            return {
+
+              ...languageCard,
+
+              name:
+                sourceCard.name ||
+                languageCard.name,
+
+              displayLanguage:
+                currentLang
+
+            };
+
+          }
+        )
+
+      );
+
+
+    cards =
+      localized.filter(
+        Boolean
+      );
+
+  } else {
+
+    cards =
+      sourceCards.map(
+        card => ({
+          ...card,
+          displayLanguage: "it"
+        })
+      );
+
+  }
 
 
   if (append) {
 
     lastResults =
-      lastResults.concat(
-        finalCards
+      mergeUniqueCards(
+        lastResults,
+        cards
       );
 
   } else {
 
     lastResults =
-      finalCards;
+      cards;
 
   }
 
@@ -1458,7 +1693,7 @@ async function searchByNumber(
 
 
   hasMore =
-    cards.length ===
+    sourceCards.length ===
     PAGE_SIZE;
 
 
@@ -1501,8 +1736,10 @@ async function searchInsideSet(
 
     renderResults([]);
 
+
     status.textContent =
       "Set non trovato.";
+
 
     return;
 
@@ -1541,6 +1778,11 @@ async function searchInsideSet(
       );
 
 
+    /*
+      Se non è stato inserito nessun testo,
+      mostriamo tutto il set.
+    */
+
     if (wanted) {
 
       if (
@@ -1561,6 +1803,14 @@ async function searchInsideSet(
           );
 
       } else {
+
+        /*
+          Prima cerchiamo il nome italiano.
+
+          Questo mantiene il comportamento
+          "Gengar" anche quando la lingua
+          selezionata è JP.
+        */
 
         const italianCards =
           await Promise.all(
@@ -1599,6 +1849,42 @@ async function searchInsideSet(
 
           }
         );
+
+
+        /*
+          Se non troviamo nulla in italiano,
+          cerchiamo il testo direttamente nella
+          lingua selezionata.
+
+          Questo risolve il caso di una ricerca
+          giapponese con nome giapponese.
+        */
+
+        if (
+          matchingIds.size === 0
+        ) {
+
+          cards.forEach(
+            card => {
+
+              if (
+                normalize(
+                  card.name
+                ).includes(
+                  wanted
+                )
+              ) {
+
+                matchingIds.add(
+                  card.id
+                );
+
+              }
+
+            }
+          );
+
+        }
 
 
         cards =
@@ -1777,6 +2063,10 @@ async function searchCards() {
     [];
 
 
+  hasMore =
+    false;
+
+
   loadMoreWrap.style.display =
     "none";
 
@@ -1795,6 +2085,10 @@ async function searchCards() {
 
   try {
 
+    /*
+      SET SENZA QUERY
+    */
+
     if (
       !query &&
       setId
@@ -1810,6 +2104,10 @@ async function searchCards() {
     }
 
 
+    /*
+      NESSUNA QUERY
+    */
+
     if (
       !query &&
       !setId
@@ -1824,6 +2122,11 @@ async function searchCards() {
 
     }
 
+
+    /*
+      ID ESATTO
+      Esempio: me55-154
+    */
 
     if (
       query.includes("-") &&
@@ -1843,6 +2146,10 @@ async function searchCards() {
     }
 
 
+    /*
+      RICERCA DENTRO UN SET
+    */
+
     if (setId) {
 
       await searchInsideSet(
@@ -1854,6 +2161,10 @@ async function searchCards() {
 
     }
 
+
+    /*
+      NUMERO
+    */
 
     if (
       /^\d+$/.test(
@@ -1871,6 +2182,10 @@ async function searchCards() {
 
     }
 
+
+    /*
+      NOME
+    */
 
     await searchByName(
       query,
@@ -1932,6 +2247,11 @@ async function loadMore() {
       currentSetId;
 
 
+    /*
+      Per una ricerca dentro un set
+      abbiamo già tutti i risultati.
+    */
+
     if (setId) {
 
       hasMore =
@@ -1944,6 +2264,10 @@ async function loadMore() {
 
     }
 
+
+    /*
+      NUMERO
+    */
 
     if (
       /^\d+$/.test(
@@ -1961,6 +2285,10 @@ async function loadMore() {
 
     }
 
+
+    /*
+      NOME
+    */
 
     await searchByName(
       query,
@@ -2025,6 +2353,11 @@ languageSelect.addEventListener(
       languageSelect.value;
 
 
+    /*
+      Il set precedente potrebbe non esistere
+      nella lingua nuova, quindi lo resettiamo.
+    */
+
     currentSetId =
       "";
 
@@ -2081,6 +2414,10 @@ results.addEventListener(
   "click",
   event => {
 
+    /*
+      VIEW
+    */
+
     const viewButton =
       event.target.closest(
         ".view-btn"
@@ -2101,6 +2438,10 @@ results.addEventListener(
 
     }
 
+
+    /*
+      WISHLIST
+    */
 
     const wishButton =
       event.target.closest(
@@ -2137,6 +2478,10 @@ results.addEventListener(
     }
 
 
+    /*
+      COLLECTION
+    */
+
     const addButton =
       event.target.closest(
         ".add-btn"
@@ -2157,6 +2502,10 @@ results.addEventListener(
 
     }
 
+
+    /*
+      CLICK SULLA CARD
+    */
 
     const card =
       event.target.closest(
@@ -2319,7 +2668,7 @@ if (
 
   navigator.serviceWorker
     .register(
-      "./sw.js?v=13"
+      "./sw.js?v=14"
     )
     .catch(
       () => {}
