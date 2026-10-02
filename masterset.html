@@ -16,72 +16,49 @@
   <style>
 
     /* =========================================
-       MASTERSET — POKÉ BALL DECORATIONS
+       MASTERSET
        ========================================= */
 
     .master-pokeball-box {
       position: relative;
+      overflow: visible;
     }
 
     .master-pokeball {
       position: absolute;
-
       width: 20px;
       height: 20px;
-
       border: 2px solid #080d14;
       border-radius: 50%;
-
       background: #f1f3f5;
-
       z-index: 5;
-
       overflow: hidden;
     }
 
-    /* PARTE ROSSA SUPERIORE */
-
     .master-pokeball::before {
       content: "";
-
       position: absolute;
-
       left: -2px;
       right: -2px;
       top: -2px;
-
       height: 10px;
-
       background: #d83b3b;
-
       border-bottom: 2px solid #080d14;
-
       border-radius: 50% 50% 0 0;
     }
 
-    /* PULSANTE CENTRALE */
-
     .master-pokeball::after {
       content: "";
-
       position: absolute;
-
       width: 6px;
       height: 6px;
-
       left: 5px;
       top: 5px;
-
       background: #f1f3f5;
-
       border: 2px solid #080d14;
-
       border-radius: 50%;
-
       z-index: 3;
     }
-
-    /* POSIZIONE DEI 4 ANGOLI */
 
     .master-pokeball.tl {
       top: -10px;
@@ -105,10 +82,104 @@
 
 
     /* =========================================
+       SET CARD
+       ========================================= */
+
+    .master-set-card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .master-set-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 55px;
+    }
+
+    .master-set-logo {
+      width: 54px;
+      height: 44px;
+      object-fit: contain;
+      image-rendering: auto;
+      flex-shrink: 0;
+    }
+
+    .master-set-title {
+      font: 700 13px monospace;
+      color: #e8edf5;
+      line-height: 1.3;
+    }
+
+    .master-set-series {
+      margin-top: 4px;
+      font: 10px monospace;
+      color: #7e91aa;
+      text-transform: uppercase;
+    }
+
+    .master-set-progress {
+      margin-top: 16px;
+    }
+
+    .master-set-numbers {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .master-set-owned {
+      font: 700 21px monospace;
+      color: #e8edf5;
+    }
+
+    .master-set-total {
+      font: 11px monospace;
+      color: #7e91aa;
+    }
+
+    .master-set-percent {
+      margin-top: 6px;
+      font: 10px monospace;
+      color: #7e91aa;
+    }
+
+    .master-set-actions {
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    .master-set-loading {
+      grid-column: 1 / -1;
+      padding: 30px;
+      text-align: center;
+      color: #7e91aa;
+      font: 12px monospace;
+      border: 2px solid #273448;
+      background: #151f2d;
+    }
+
+    .master-set-error {
+      grid-column: 1 / -1;
+      padding: 20px;
+      color: #e8edf5;
+      background: #182438;
+      border-left: 3px solid #d83b3b;
+      font: 12px monospace;
+    }
+
+
+    /* =========================================
        MOBILE
        ========================================= */
 
     @media(max-width:800px) {
+
+      .master-set-card {
+        min-height: 205px;
+      }
 
       .master-pokeball {
         width: 18px;
@@ -122,7 +193,6 @@
       .master-pokeball::after {
         width: 5px;
         height: 5px;
-
         left: 4px;
         top: 4px;
       }
@@ -165,15 +235,9 @@
   <aside class="side">
 
     <div class="logo">
-
       POKÉMON CM
-
-      <small>
-        COLLECTION MANAGER · V1.3
-      </small>
-
+      <small>COLLECTION MANAGER · V1.3</small>
     </div>
-
 
     <nav class="nav">
 
@@ -211,7 +275,6 @@
 
   <main class="main">
 
-
     <div class="top">
 
       <div>
@@ -221,11 +284,10 @@
         </div>
 
         <div class="tag">
-          SET PROGRESS // DEMO
+          SET PROGRESS // TCGDEX
         </div>
 
       </div>
-
 
       <a class="btn" href="collection.html#add">
         + ADD CARD
@@ -234,142 +296,13 @@
     </div>
 
 
+    <!-- DINAMIC SET LIST -->
 
-    <!-- MASTER SET GRID -->
+    <div class="master" id="masterSetList">
 
-    <div class="master">
-
-
-      <!-- =====================================
-           SCARLET & VIOLET 151
-           ===================================== -->
-
-      <div class="panel master-pokeball-box">
-
-
-        <!-- POKÉ BALLS -->
-
-        <span class="master-pokeball tl"></span>
-        <span class="master-pokeball tr"></span>
-        <span class="master-pokeball bl"></span>
-        <span class="master-pokeball br"></span>
-
-
-        <div class="label">
-          Scarlet & Violet 151
-        </div>
-
-
-        <div class="value">
-          0 / 207
-        </div>
-
-
-        <div class="progress">
-          <i style="width:0%"></i>
-        </div>
-
-
-        <p class="label">
-          0% complete
-        </p>
-
-
-        <a class="btn" href="catalog.html">
-          VIEW SET
-        </a>
-
-
+      <div class="master-set-loading">
+        LOADING SETS...
       </div>
-
-
-
-      <!-- =====================================
-           BASE SET
-           ===================================== -->
-
-      <div class="panel master-pokeball-box">
-
-
-        <!-- POKÉ BALLS -->
-
-        <span class="master-pokeball tl"></span>
-        <span class="master-pokeball tr"></span>
-        <span class="master-pokeball bl"></span>
-        <span class="master-pokeball br"></span>
-
-
-        <div class="label">
-          Base Set
-        </div>
-
-
-        <div class="value">
-          0 / 102
-        </div>
-
-
-        <div class="progress">
-          <i style="width:0%"></i>
-        </div>
-
-
-        <p class="label">
-          0% complete
-        </p>
-
-
-        <a class="btn" href="catalog.html">
-          VIEW SET
-        </a>
-
-
-      </div>
-
-
-
-      <!-- =====================================
-           DEMO SET
-           ===================================== -->
-
-      <div class="panel master-pokeball-box">
-
-
-        <!-- POKÉ BALLS -->
-
-        <span class="master-pokeball tl"></span>
-        <span class="master-pokeball tr"></span>
-        <span class="master-pokeball bl"></span>
-        <span class="master-pokeball br"></span>
-
-
-        <div class="label">
-          Demo Set
-        </div>
-
-
-        <div class="value">
-          0 / 50
-        </div>
-
-
-        <div class="progress">
-          <i style="width:0%"></i>
-        </div>
-
-
-        <p class="label">
-          0% complete
-        </p>
-
-
-        <a class="btn" href="catalog.html">
-          VIEW SET
-        </a>
-
-
-      </div>
-
 
     </div>
 
@@ -383,36 +316,29 @@
 
 <nav class="mobile">
 
-
   <a href="index.html">
     ⌂<br>DASH
   </a>
-
 
   <a href="collection.html">
     ▣<br>COLL
   </a>
 
-
   <a href="catalog.html">
     ▥<br>CAT
   </a>
-
 
   <a href="masterset.html">
     ▤<br>SET
   </a>
 
-
   <a href="wishlist.html">
     ♡<br>WISH
   </a>
 
-
   <a href="market.html">
     ⌁<br>MARKET
   </a>
-
 
 </nav>
 
@@ -420,7 +346,441 @@
 
 <script>
 
-  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  const API = "https://api.tcgdex.net/v2";
+
+  const masterSetList = document.getElementById("masterSetList");
+
+
+  /* =========================================
+     COLLECTION
+     ========================================= */
+
+  function getCollection() {
+
+    try {
+
+      return JSON.parse(
+        localStorage.getItem("pcm_collection") || "[]"
+      );
+
+    } catch (error) {
+
+      return [];
+
+    }
+
+  }
+
+
+  /* =========================================
+     ESCAPE HTML
+     ========================================= */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =========================================
+     NORMALIZE TEXT
+     ========================================= */
+
+  function normalizeText(value) {
+
+    return String(value || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+
+  }
+
+
+  /* =========================================
+     GET SETS
+     ========================================= */
+
+  async function loadMasterSets() {
+
+    try {
+
+      const response = await fetch(
+        `${API}/it/sets`
+      );
+
+      if (!response.ok) {
+        throw new Error("TCGdex error");
+      }
+
+      const sets = await response.json();
+
+      renderMasterSets(sets);
+
+    } catch (error) {
+
+      console.error(error);
+
+      masterSetList.innerHTML = `
+        <div class="master-set-error">
+          IMPOSSIBILE CARICARE I SET DA TCGDEX.
+          <br><br>
+          Controlla la connessione e ricarica la pagina.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* =========================================
+     COUNT OWNED CARDS
+     ========================================= */
+
+  async function countOwnedCards(set) {
+
+    const collection = getCollection();
+
+    if (!collection.length) {
+      return 0;
+    }
+
+    try {
+
+      const response = await fetch(
+        `${API}/it/sets/${encodeURIComponent(set.id)}`
+      );
+
+      if (!response.ok) {
+        return 0;
+      }
+
+      const setData = await response.json();
+
+      const setCards = setData.cards || [];
+
+      let ownedIds = new Set();
+
+
+      collection.forEach(item => {
+
+        /*
+         * CASO NUOVO:
+         * la collection contiene il cardId TCGdex
+         */
+
+        if (item.cardId) {
+
+          const cardId = String(item.cardId);
+
+          if (
+            cardId.startsWith(set.id + "-")
+          ) {
+
+            ownedIds.add(cardId);
+
+          }
+
+        }
+
+
+        /*
+         * CASO ALTERNATIVO:
+         * la collection contiene direttamente il set ID
+         */
+
+        if (
+          item.set &&
+          String(item.set) === String(set.id) &&
+          item.localId
+        ) {
+
+          ownedIds.add(
+            `${set.id}-${item.localId}`
+          );
+
+        }
+
+      });
+
+
+      /*
+       * COMPATIBILITÀ CON LE VECCHIE CARTE
+       *
+       * Se una carta non ha cardId/set salvato,
+       * proviamo a riconoscerla tramite:
+       *
+       * nome italiano + numero
+       */
+
+      for (const item of collection) {
+
+        if (!item.localId || !item.name) {
+          continue;
+        }
+
+        const localId = String(item.localId);
+
+        const itemName = normalizeText(item.name);
+
+        const possibleCards = setCards.filter(card => {
+
+          if (
+            String(card.localId) !== localId
+          ) {
+            return false;
+          }
+
+          return (
+            normalizeText(card.name) === itemName
+          );
+
+        });
+
+        possibleCards.forEach(card => {
+
+          ownedIds.add(card.id);
+
+        });
+
+      }
+
+
+      return ownedIds.size;
+
+    } catch (error) {
+
+      console.error(
+        "Errore conteggio set:",
+        set.id,
+        error
+      );
+
+      return 0;
+
+    }
+
+  }
+
+
+  /* =========================================
+     RENDER SET
+     ========================================= */
+
+  async function renderMasterSets(sets) {
+
+    masterSetList.innerHTML = "";
+
+    if (!Array.isArray(sets) || !sets.length) {
+
+      masterSetList.innerHTML = `
+        <div class="master-set-error">
+          NESSUN SET TROVATO.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * TCGdex restituisce i set già ordinati.
+     * Manteniamo l'ordine dell'API.
+     */
+
+    for (const set of sets) {
+
+      const officialTotal =
+        Number(
+          set.cardCount?.official ??
+          set.cardCount?.total ??
+          0
+        );
+
+
+      const card = document.createElement("div");
+
+      card.className =
+        "panel master-pokeball-box master-set-card";
+
+
+      card.innerHTML = `
+
+        <span class="master-pokeball tl"></span>
+        <span class="master-pokeball tr"></span>
+        <span class="master-pokeball bl"></span>
+        <span class="master-pokeball br"></span>
+
+
+        <div class="master-set-head">
+
+          ${
+            set.logo
+              ? `
+                <img
+                  class="master-set-logo"
+                  src="${escapeHtml(set.logo)}"
+                  alt=""
+                  loading="lazy"
+                >
+              `
+              : ""
+          }
+
+          <div>
+
+            <div class="master-set-title">
+              ${escapeHtml(set.name)}
+            </div>
+
+            <div class="master-set-series">
+              ${escapeHtml(set.id)}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="master-set-progress">
+
+          <div class="master-set-numbers">
+
+            <span
+              class="master-set-owned"
+              data-owned
+            >
+              ...
+            </span>
+
+            <span class="master-set-total">
+              / ${officialTotal}
+            </span>
+
+          </div>
+
+
+          <div class="progress">
+
+            <i
+              data-progress
+              style="width:0%"
+            ></i>
+
+          </div>
+
+
+          <div
+            class="master-set-percent"
+            data-percent
+          >
+            CALCOLO...
+          </div>
+
+        </div>
+
+
+        <div class="master-set-actions">
+
+          <a
+            class="btn"
+            href="catalog.html?set=${encodeURIComponent(set.id)}"
+          >
+            VIEW SET
+          </a>
+
+        </div>
+
+      `;
+
+
+      masterSetList.appendChild(card);
+
+
+      /*
+       * Calcolo progressivo del posseduto.
+       */
+
+      countOwnedCards(set)
+        .then(owned => {
+
+          const safeOwned =
+            Math.min(
+              owned,
+              officialTotal
+            );
+
+          const percentage =
+            officialTotal > 0
+              ? Math.round(
+                  (safeOwned / officialTotal) * 100
+                )
+              : 0;
+
+
+          const ownedElement =
+            card.querySelector("[data-owned]");
+
+          const progressElement =
+            card.querySelector("[data-progress]");
+
+          const percentElement =
+            card.querySelector("[data-percent]");
+
+
+          if (ownedElement) {
+
+            ownedElement.textContent =
+              safeOwned;
+
+          }
+
+
+          if (progressElement) {
+
+            progressElement.style.width =
+              `${percentage}%`;
+
+          }
+
+
+          if (percentElement) {
+
+            percentElement.textContent =
+              `${percentage}% COMPLETE`;
+
+          }
+
+        });
+
+    }
+
+  }
+
+
+  /* =========================================
+     START
+     ========================================= */
+
+  loadMasterSets();
+
+
+  /* =========================================
+     SERVICE WORKER
+     ========================================= */
+
+  if (
+    "serviceWorker" in navigator &&
+    location.protocol !== "file:"
+  ) {
 
     navigator.serviceWorker
       .register("./sw.js")
@@ -432,5 +792,4 @@
 
 
 </body>
-
 </html>
