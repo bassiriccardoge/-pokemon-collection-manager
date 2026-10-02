@@ -1,4 +1,4 @@
-```html id="v7catalog"
+```html
 <!doctype html>
 <html lang="it">
 <head>
@@ -62,11 +62,8 @@
 
       </div>
 
-      <div
-        id="searchHelp"
-        style="margin-top:10px;font-size:12px;opacity:.7"
-      >
-        Esempi: Pikachu · Gengar · 154/220 · 30th-018
+      <div style="margin-top:10px;font-size:12px;opacity:.7">
+        Esempi: Pikachu · Pikachu 30th · 30th-018 · 154/220 · nome set
       </div>
 
     </div>
@@ -77,13 +74,10 @@
         id="status"
         style="margin-bottom:12px;font-size:13px;opacity:.75"
       >
-        Loading catalog...
+        Caricamento catalogo...
       </div>
 
-      <div
-        id="results"
-        class="cards"
-      ></div>
+      <div id="results" class="cards"></div>
 
       <div
         id="loadMoreWrap"
@@ -110,7 +104,6 @@
 <script>
 
 const API = "https://api.tcgdex.net/v2";
-
 const PAGE_SIZE = 40;
 
 let currentPage = 1;
@@ -120,6 +113,9 @@ let hasMore = false;
 let loading = false;
 
 let setsMap = {};
+let allSets = [];
+let currentCards = [];
+
 
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -130,29 +126,45 @@ const loadMoreWrap = document.getElementById("loadMoreWrap");
 const loadMoreBtn = document.getElementById("loadMoreBtn");
 
 
+function normalize(value) {
+
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+}
+
+
 function escapeHtml(value) {
+
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+
 }
 
 
 function cardImage(card) {
 
-  if (!card.image) {
+  if (!card || !card.image) {
     return "";
   }
 
   let image = card.image;
 
-  if (!image.includes("/high.webp")) {
+  if (!image.endsWith("/high.webp")) {
     image = image.replace(/\/?$/, "/high.webp");
   }
 
   return image;
+
 }
 
 
@@ -163,18 +175,24 @@ function getSetId(card) {
   }
 
   return card.id.split("-")[0];
+
 }
 
 
 function getSetName(card) {
 
+  if (card && card.set && card.set.name) {
+    return card.set.name;
+  }
+
   const setId = getSetId(card);
 
   if (setsMap[setId]) {
-    return setsMap[setId].name || setId;
+    return setsMap[setId].name;
   }
 
   return "Set sconosciuto";
+
 }
 
 
@@ -187,28 +205,28 @@ async function loadSets() {
     );
 
     if (!response.ok) {
-      throw new Error("Unable to load sets");
+      throw new Error("Sets unavailable");
     }
 
     const data = await response.json();
 
+    allSets = Array.isArray(data) ? data : [];
+
     setsMap = {};
 
-    if (Array.isArray(data)) {
+    allSets.forEach(set => {
 
-      data.forEach(set => {
+      if (set && set.id) {
+        setsMap[set.id] = set;
+      }
 
-        if (set && set.id) {
-          setsMap[set.id] = set;
-        }
-
-      });
-
-    }
+    });
 
   } catch (error) {
 
     console.error(error);
+
+    allSets = [];
     setsMap = {};
 
   }
@@ -216,11 +234,196 @@ async function loadSets() {
 }
 
 
+function findSetById(value) {
+
+  const q = normalize(value);
+
+  return allSets.find(
+    set => normalize(set.id) === q
+  ) || null;
+
+}
+
+
+function findSetByExactName(value) {
+
+  const q = normalize(value);
+
+  return allSets.find(
+    set => normalize(set.name) === q
+  ) || null;
+
+}
+
+
+function findSetByText(value) {
+
+  const q = normalize(value);
+
+  if (!q) {
+    return null;
+  }
+
+  const exactId = findSetById(q);
+
+  if (exactId) {
+    return exactId;
+  }
+
+  const exactName = findSetByExactName(q);
+
+  if (exactName) {
+    return exactName;
+  }
+
+  return allSets.find(set => {
+
+    const name = normalize(set.name);
+
+    return (
+      name.includes(q) ||
+      q.includes(name)
+    );
+
+  }) || null;
+
+}
+
+
+function findSetMentionedInQuery(query) {
+
+  const normalizedQuery = normalize(query);
+
+  if (!normalizedQuery) {
+    return null;
+  }
+
+  /*
+    Prima controlliamo i nomi completi dei set.
+    È fondamentale per ricerche come:
+
+    "Pikachu Destino di Paldea"
+    "Pikachu Scarlet & Violet"
+    "151"
+  */
+
+  const sortedSets = [...allSets].sort(
+    (a, b) =>
+      normalize(b.name).length -
+      normalize(a.name).length
+  );
+
+  for (const set of sortedSets) {
+
+    const setName = normalize(set.name);
+
+    if (
+      setName &&
+      normalizedQuery.includes(setName)
+    ) {
+      return set;
+    }
+
+  }
+
+  /*
+    Poi controlliamo gli ID.
+  */
+
+  const sortedIds = [...allSets].sort(
+    (a, b) =>
+      String(b.id || "").length -
+      String(a.id || "").length
+  );
+
+  for (const set of sortedIds) {
+
+    const id = normalize(set.id);
+
+    if (
+      id &&
+      normalizedQuery.includes(id)
+    ) {
+      return set;
+    }
+
+  }
+
+  return null;
+
+}
+
+
+function renderCard(card) {
+
+  const image = cardImage(card);
+
+  const div = document.createElement("div");
+
+  div.className = "card";
+
+  div.innerHTML = `
+
+    ${
+      image
+        ? `
+          <img
+            src="${escapeHtml(image)}"
+            alt="${escapeHtml(card.name || "")}"
+            style="width:100%;display:block"
+          >
+        `
+        : `
+          <div class="fakecard">NO IMAGE</div>
+        `
+    }
+
+    <b>${escapeHtml(card.name || "Unknown")}</b>
+
+    <div class="price">
+      ${escapeHtml(getSetName(card))}
+    </div>
+
+    <div style="font-size:12px;opacity:.7;margin-top:4px">
+      ${escapeHtml(card.localId || "")}
+    </div>
+
+    <div style="font-size:11px;opacity:.55;margin-top:2px">
+      ${escapeHtml(card.id || "")}
+    </div>
+
+    <div style="margin-top:10px">
+
+      <button
+        class="btn secondary"
+        data-view="${escapeHtml(card.id || "")}"
+      >
+        VIEW
+      </button>
+
+      <button
+        class="btn"
+        data-add="${escapeHtml(card.id || "")}"
+      >
+        ADD
+      </button>
+
+    </div>
+
+  `;
+
+  return div;
+
+}
+
+
 function renderResults(cards) {
+
+  currentCards = cards || [];
 
   results.innerHTML = "";
 
-  if (!cards.length) {
+  if (!currentCards.length) {
 
     results.innerHTML = `
       <div class="panel">
@@ -229,58 +432,14 @@ function renderResults(cards) {
     `;
 
     return;
+
   }
 
+  currentCards.forEach(card => {
 
-  cards.forEach(card => {
-
-    const image = cardImage(card);
-
-    const div = document.createElement("div");
-
-    div.className = "card";
-
-    div.innerHTML = `
-
-      ${
-        image
-          ? `<img
-              src="${escapeHtml(image)}"
-              alt="${escapeHtml(card.name || "")}"
-              style="width:100%;display:block"
-            >`
-          : `<div class="fakecard">NO IMAGE</div>`
-      }
-
-      <b>${escapeHtml(card.name || "Unknown")}</b>
-
-      <div class="price">
-        ${escapeHtml(getSetName(card))}
-      </div>
-
-      <div style="font-size:12px;opacity:.7;margin-top:4px">
-        ${escapeHtml(card.localId || "")}
-      </div>
-
-      <div style="margin-top:10px">
-        <button
-          class="btn secondary"
-          onclick="viewCard('${escapeHtml(card.id)}')"
-        >
-          VIEW
-        </button>
-
-        <button
-          class="btn"
-          onclick="addToCollection('${escapeHtml(card.id)}')"
-        >
-          ADD
-        </button>
-      </div>
-
-    `;
-
-    results.appendChild(div);
+    results.appendChild(
+      renderCard(card)
+    );
 
   });
 
@@ -292,7 +451,7 @@ async function viewCard(id) {
   try {
 
     const response = await fetch(
-      `${API}/${currentLang}/cards/${id}`
+      `${API}/${currentLang}/cards/${encodeURIComponent(id)}`
     );
 
     if (!response.ok) {
@@ -303,8 +462,7 @@ async function viewCard(id) {
 
     const setName =
       card.set?.name ||
-      getSetName(card) ||
-      "Set sconosciuto";
+      getSetName(card);
 
     alert(
       `${card.name || "Card"}\n\n` +
@@ -315,7 +473,9 @@ async function viewCard(id) {
 
   } catch (error) {
 
-    alert("Unable to open card.");
+    console.error(error);
+
+    alert("Impossibile aprire la carta.");
 
   }
 
@@ -327,99 +487,53 @@ function addToCollection(id) {
   localStorage.setItem(
     "pcm_pending_card",
     JSON.stringify({
-      id: id,
+      id,
       language: currentLang
     })
   );
 
-  window.location.href = "collection.html#add";
+  window.location.href =
+    "collection.html#add";
 
 }
 
 
-async function searchGeneral(query, append = false) {
+results.addEventListener(
+  "click",
+  event => {
 
-  if (loading) {
-    return;
-  }
+    const viewButton =
+      event.target.closest("[data-view]");
 
-  loading = true;
+    if (viewButton) {
 
-  try {
+      viewCard(
+        viewButton.dataset.view
+      );
 
-    const page = append ? currentPage : 1;
-
-    const url =
-      `${API}/${currentLang}/cards` +
-      `?pagination:page=${page}` +
-      `&pagination:itemsPerPage=${PAGE_SIZE}` +
-      `&name=${encodeURIComponent(query)}`;
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Search failed");
-    }
-
-    const data = await response.json();
-
-    const cards =
-      Array.isArray(data)
-        ? data
-        : (data.data || data.cards || []);
-
-    if (!append) {
-      results.innerHTML = "";
-    }
-
-    renderResults(
-      append
-        ? [
-            ...Array.from(results.children).map(() => null)
-          ].filter(Boolean)
-        : cards
-    );
-
-    if (append) {
-
-      // Re-render using existing cards plus new page.
-      // The current page is handled by loadGeneralPage().
+      return;
 
     }
 
-    hasMore = cards.length === PAGE_SIZE;
+    const addButton =
+      event.target.closest("[data-add]");
 
-    loadMoreWrap.style.display =
-      hasMore ? "block" : "none";
+    if (addButton) {
 
-    status.textContent =
-      `${cards.length} risultati caricati`;
+      addToCollection(
+        addButton.dataset.add
+      );
 
-  } catch (error) {
-
-    console.error(error);
-
-    status.textContent =
-      "Errore durante la ricerca.";
-
-    results.innerHTML = `
-      <div class="panel">
-        Impossibile caricare i risultati.
-      </div>
-    `;
-
-    loadMoreWrap.style.display = "none";
-
-  } finally {
-
-    loading = false;
+    }
 
   }
+);
 
-}
 
-
-async function loadGeneralPage(page, append) {
+async function loadGeneralPage(
+  page,
+  append = false
+) {
 
   if (loading) {
     return;
@@ -442,7 +556,7 @@ async function loadGeneralPage(page, append) {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error("Search failed");
+      throw new Error("Cards unavailable");
     }
 
     const data = await response.json();
@@ -454,71 +568,29 @@ async function loadGeneralPage(page, append) {
 
     if (!append) {
       results.innerHTML = "";
+      currentCards = [];
     }
 
     cards.forEach(card => {
 
-      const image = cardImage(card);
+      currentCards.push(card);
 
-      const div = document.createElement("div");
-
-      div.className = "card";
-
-      div.innerHTML = `
-
-        ${
-          image
-            ? `<img
-                src="${escapeHtml(image)}"
-                alt="${escapeHtml(card.name || "")}"
-                style="width:100%;display:block"
-              >`
-            : `<div class="fakecard">NO IMAGE</div>`
-        }
-
-        <b>${escapeHtml(card.name || "Unknown")}</b>
-
-        <div class="price">
-          ${escapeHtml(getSetName(card))}
-        </div>
-
-        <div style="font-size:12px;opacity:.7;margin-top:4px">
-          ${escapeHtml(card.localId || "")}
-        </div>
-
-        <div style="margin-top:10px">
-
-          <button
-            class="btn secondary"
-            onclick="viewCard('${escapeHtml(card.id)}')"
-          >
-            VIEW
-          </button>
-
-          <button
-            class="btn"
-            onclick="addToCollection('${escapeHtml(card.id)}')"
-          >
-            ADD
-          </button>
-
-        </div>
-
-      `;
-
-      results.appendChild(div);
+      results.appendChild(
+        renderCard(card)
+      );
 
     });
 
     currentPage = page;
 
-    hasMore = cards.length === PAGE_SIZE;
+    hasMore =
+      cards.length === PAGE_SIZE;
 
     loadMoreWrap.style.display =
       hasMore ? "block" : "none";
 
     status.textContent =
-      `${results.children.length} risultati`;
+      `${currentCards.length} risultati`;
 
   } catch (error) {
 
@@ -548,68 +620,111 @@ async function loadGeneralPage(page, append) {
 }
 
 
-async function searchInsideSet(query, set) {
+async function loadFullSet(set) {
+
+  const response = await fetch(
+    `${API}/${currentLang}/sets/${encodeURIComponent(set.id)}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Set unavailable");
+  }
+
+  return await response.json();
+
+}
+
+
+async function searchInsideSet(
+  set,
+  cardName = "",
+  localId = ""
+) {
 
   status.textContent =
-    `Ricerca nel set ${set.name || set.id}...`;
+    `Ricerca nel set ${set.name}...`;
 
   loadMoreWrap.style.display = "none";
 
   try {
 
-    const response = await fetch(
-      `${API}/${currentLang}/sets/${set.id}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Set not found");
-    }
-
-    const fullSet = await response.json();
+    const fullSet =
+      await loadFullSet(set);
 
     let cards =
       Array.isArray(fullSet.cards)
         ? fullSet.cards
         : [];
 
-    const cleanQuery =
-      query
-        .toLowerCase()
-        .replace(set.id.toLowerCase(), "")
-        .replace((set.name || "").toLowerCase(), "")
-        .trim();
+    if (cardName) {
 
-    if (cleanQuery) {
+      const wanted =
+        normalize(cardName);
 
-      cards = cards.filter(card => {
-
-        const name =
-          String(card.name || "").toLowerCase();
-
-        const localId =
-          String(card.localId || "").toLowerCase();
-
-        return (
-          name.includes(cleanQuery) ||
-          localId === cleanQuery ||
-          localId.includes(cleanQuery)
+      cards =
+        cards.filter(card =>
+          normalize(card.name)
+            .includes(wanted)
         );
-
-      });
 
     }
 
-    renderResults(cards);
+    if (localId) {
+
+      const wantedId =
+        String(localId)
+          .toLowerCase();
+
+      cards =
+        cards.filter(card =>
+          String(card.localId || "")
+            .toLowerCase() === wantedId
+        );
+
+    }
+
+    /*
+      Le card presenti dentro un set sono CardBrief.
+      Per visualizzarle correttamente recuperiamo
+      i dati completi delle singole carte.
+    */
+
+    const fullCards = [];
+
+    for (const card of cards) {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/${currentLang}/sets/${encodeURIComponent(set.id)}/${encodeURIComponent(card.localId)}`
+          );
+
+        if (response.ok) {
+
+          const fullCard =
+            await response.json();
+
+          fullCards.push(fullCard);
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+    }
+
+    renderResults(fullCards);
 
     status.textContent =
-      `${cards.length} risultati nel set ${set.name || set.id}`;
+      `${fullCards.length} risultati nel set ${set.name}`;
 
   } catch (error) {
 
     console.error(error);
-
-    status.textContent =
-      "Errore durante la ricerca nel set.";
 
     results.innerHTML = `
       <div class="panel">
@@ -617,164 +732,10 @@ async function searchInsideSet(query, set) {
       </div>
     `;
 
-  }
-
-}
-
-
-function findSet(query) {
-
-  const q = query.toLowerCase().trim();
-
-  if (!q) {
-    return null;
-  }
-
-  if (setsMap[q]) {
-    return setsMap[q];
-  }
-
-  const exactId =
-    Object.values(setsMap).find(
-      set =>
-        String(set.id || "").toLowerCase() === q
-    );
-
-  if (exactId) {
-    return exactId;
-  }
-
-  const exactName =
-    Object.values(setsMap).find(
-      set =>
-        String(set.name || "").toLowerCase() === q
-    );
-
-  if (exactName) {
-    return exactName;
-  }
-
-  return null;
-
-}
-
-
-async function searchCards() {
-
-  const query =
-    searchInput.value.trim();
-
-  if (!query) {
-
-    currentQuery = "";
-
-    currentPage = 1;
-
-    await loadGeneralPage(1, false);
-
-    return;
-  }
-
-  currentQuery = query;
-
-  currentPage = 1;
-
-  loadMoreWrap.style.display = "none";
-
-  /*
-    1. Exact card ID:
-       30th-018
-  */
-
-  const fullIdMatch =
-    query.match(
-      /^([A-Za-z0-9]+)-([0-9]+[A-Za-z]?)$/i
-    );
-
-  if (fullIdMatch) {
-
-    const setId =
-      fullIdMatch[1];
-
-    const localId =
-      fullIdMatch[2];
-
-    const set =
-      findSet(setId);
-
-    if (set) {
-
-      await searchExactCard(
-        set,
-        localId
-      );
-
-      return;
-    }
+    status.textContent =
+      "Errore durante la ricerca nel set.";
 
   }
-
-
-  /*
-    2. Number:
-       154/220
-  */
-
-  const fractionMatch =
-    query.match(
-      /^([0-9]+[A-Za-z]?)\s*\/\s*([0-9]+)$/i
-    );
-
-  if (fractionMatch) {
-
-    const localId =
-      fractionMatch[1];
-
-    await searchByLocalId(
-      localId
-    );
-
-    return;
-  }
-
-
-  /*
-    3. "Pikachu 30th"
-       "Gengar sv3"
-       etc.
-  */
-
-  const tokens =
-    query
-      .split(/\s+/)
-      .filter(Boolean);
-
-  for (const token of tokens) {
-
-    const set =
-      findSet(token);
-
-    if (set) {
-
-      await searchInsideSet(
-        query,
-        set
-      );
-
-      return;
-    }
-
-  }
-
-
-  /*
-    4. Normal search
-  */
-
-  await loadGeneralPage(
-    1,
-    false
-  );
 
 }
 
@@ -787,181 +748,15 @@ async function searchExactCard(
   status.textContent =
     `Ricerca ${set.id}-${localId}...`;
 
-  try {
-
-    const response = await fetch(
-      `${API}/${currentLang}/sets/${set.id}/${localId}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Card not found");
-    }
-
-    const card =
-      await response.json();
-
-    renderResults([
-      card
-    ]);
-
-    status.textContent =
-      `1 risultato`;
-
-  } catch (error) {
-
-    console.error(error);
-
-    results.innerHTML = `
-      <div class="panel">
-        Carta non trovata.
-      </div>
-    `;
-
-    status.textContent =
-      "Nessun risultato.";
-
-  }
-
-}
-
-
-async function searchByLocalId(
-  localId
-) {
-
-  status.textContent =
-    `Ricerca carta ${localId}...`;
+  loadMoreWrap.style.display = "none";
 
   try {
 
-    /*
-      Prima proviamo a cercare tutte le carte
-      con quel numero usando la ricerca generale.
-    */
-
-    const response = await fetch(
-      `${API}/${currentLang}/cards` +
-      `?pagination:page=1` +
-      `&pagination:itemsPerPage=100` +
-      `&localId=${encodeURIComponent(localId)}`
-    );
+    const response =
+      await fetch(
+        `${API}/${currentLang}/sets/${encodeURIComponent(set.id)}/${encodeURIComponent(localId)}`
+      );
 
     if (!response.ok) {
-      throw new Error("Search failed");
-    }
-
-    const data =
-      await response.json();
-
-    const cards =
-      Array.isArray(data)
-        ? data
-        : (data.data || data.cards || []);
-
-    renderResults(cards);
-
-    status.textContent =
-      `${cards.length} risultati per ${localId}`;
-
-  } catch (error) {
-
-    console.error(error);
-
-    results.innerHTML = `
-      <div class="panel">
-        Nessun risultato.
-      </div>
-    `;
-
-    status.textContent =
-      "Nessun risultato.";
-
-  }
-
-}
-
-
-searchBtn.addEventListener(
-  "click",
-  searchCards
-);
-
-
-searchInput.addEventListener(
-  "keydown",
-  event => {
-
-    if (event.key === "Enter") {
-      searchCards();
-    }
-
-  }
-);
-
-
-langSelect.addEventListener(
-  "change",
-  async () => {
-
-    currentLang =
-      langSelect.value;
-
-    currentPage = 1;
-
-    await loadSets();
-
-    if (searchInput.value.trim()) {
-      await searchCards();
-    } else {
-      await loadGeneralPage(1, false);
-    }
-
-  }
-);
-
-
-loadMoreBtn.addEventListener(
-  "click",
-  async () => {
-
-    if (!hasMore || loading) {
-      return;
-    }
-
-    await loadGeneralPage(
-      currentPage + 1,
-      true
-    );
-
-  }
-);
-
-
-(async function init() {
-
-  await loadSets();
-
-  await loadGeneralPage(
-    1,
-    false
-  );
-
-})();
-
-
-if (
-  "serviceWorker" in navigator &&
-  location.protocol !== "file:"
-) {
-
-  navigator.serviceWorker.register(
-    "./sw.js?v=7"
-  ).catch(() => {});
-
-}
-
-</script>
-
-</body>
-</html>
+      throw new Er
 ```
