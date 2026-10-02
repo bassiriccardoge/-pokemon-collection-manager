@@ -5,30 +5,16 @@
 
 <meta charset="utf-8">
 
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Pokémon Collection Manager — CATALOG V6</title>
+<title>Pokémon Collection Manager — CATALOG V7</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="./manifest.webmanifest">
 
-<link
-  rel="manifest"
-  href="./manifest.webmanifest"
->
-
-<meta
-  name="theme-color"
-  content="#0b1220"
->
+<meta name="theme-color" content="#0b1220">
 
 <style>
-
-/* =========================
-   CATALOG
-========================= */
 
 .catalog-toolbar{
   display:grid;
@@ -168,11 +154,6 @@
   filter:brightness(1.12);
 }
 
-
-/* =========================
-   MOBILE
-========================= */
-
 @media(max-width:700px){
 
   .catalog-toolbar{
@@ -209,194 +190,166 @@
 <div class="app">
 
 
-<!-- =========================
-     SIDEBAR
-========================= -->
-
 <aside class="side">
 
-  <div class="logo">
+<div class="logo">
 
-    POKÉMON CM
+POKÉMON CM
 
-    <small>
-      COLLECTION MANAGER · CATALOG V6
-    </small>
+<small>
+COLLECTION MANAGER · CATALOG V7
+</small>
 
-  </div>
+</div>
 
 
-  <nav class="nav">
+<nav class="nav">
 
-    <a href="index.html">
-      ▶ DASHBOARD
-    </a>
+<a href="index.html">
+▶ DASHBOARD
+</a>
 
-    <a href="collection.html">
-      ▣ COLLECTION
-    </a>
+<a href="collection.html">
+▣ COLLECTION
+</a>
 
-    <a href="catalog.html">
-      ▥ CATALOG
-    </a>
+<a href="catalog.html">
+▥ CATALOG
+</a>
 
-    <a href="masterset.html">
-      ▤ MASTERSET
-    </a>
+<a href="masterset.html">
+▤ MASTERSET
+</a>
 
-    <a href="wishlist.html">
-      ♡ WISHLIST
-    </a>
+<a href="wishlist.html">
+♡ WISHLIST
+</a>
 
-    <a href="market.html">
-      ⌁ MARKET
-    </a>
+<a href="market.html">
+⌁ MARKET
+</a>
 
-  </nav>
+</nav>
 
 </aside>
 
-
-<!-- =========================
-     MAIN
-========================= -->
 
 <main class="main">
 
 
 <div class="top">
 
-  <div>
+<div>
 
-    <div class="title">
-      CATALOG
-    </div>
+<div class="title">
+CATALOG
+</div>
 
-    <div class="tag">
-      TCGDEX // LIVE CARD DATABASE · V6
-    </div>
+<div class="tag">
+TCGDEX // LIVE CARD DATABASE · V7
+</div>
 
-  </div>
+</div>
 
 
-  <a
-    class="btn"
-    href="collection.html#add"
-  >
-    + ADD CARD
-  </a>
+<a
+class="btn"
+href="collection.html#add"
+>
++ ADD CARD
+</a>
 
 </div>
 
 
 <div class="notice">
 
-  Catalogo collegato al database TCGdex.
-  Cerca per nome oppure per numero carta.
+Catalogo collegato al database TCGdex.
+Cerca per nome, set oppure numero carta.
 
 </div>
 
-
-<!-- =========================
-     SEARCH
-========================= -->
 
 <div class="catalog-toolbar">
 
 
-  <div class="search-wrap">
+<div class="search-wrap">
 
-    <input
-      id="search"
-      class="input"
-      autocomplete="off"
-      placeholder="Es. Charizard, Pikachu, 199/165..."
-    >
+<input
+id="search"
+class="input"
+autocomplete="off"
+placeholder="Es. Pikachu, 30th, Pikachu 30th, 199/165..."
+>
 
-  </div>
-
-
-  <select
-    id="lang"
-    class="input"
-  >
-
-    <option value="it">
-      🇮🇹 ITALIANO
-    </option>
-
-    <option value="en">
-      🇬🇧 ENGLISH
-    </option>
-
-    <option value="ja">
-      🇯🇵 JAPANESE
-    </option>
-
-  </select>
+</div>
 
 
-  <button
-    id="searchBtn"
-    class="btn"
-    type="button"
-  >
-    SEARCH
-  </button>
+<select
+id="lang"
+class="input"
+>
+
+<option value="it">
+🇮🇹 ITALIANO
+</option>
+
+<option value="en">
+🇬🇧 ENGLISH
+</option>
+
+<option value="ja">
+🇯🇵 JAPANESE
+</option>
+
+</select>
+
+
+<button
+id="searchBtn"
+class="btn"
+type="button"
+>
+SEARCH
+</button>
 
 
 </div>
 
 
-<!-- =========================
-     STATUS
-========================= -->
-
 <div
-  id="status"
-  class="catalog-status"
+id="status"
+class="catalog-status"
 >
-  Inserisci almeno 2 caratteri e premi SEARCH.
+Inserisci almeno 2 caratteri e premi SEARCH.
 </div>
 
 
-<!-- =========================
-     DETAIL
-========================= -->
-
 <div
-  id="detail"
-  class="catalog-detail"
+id="detail"
+class="catalog-detail"
 ></div>
 
 
-<!-- =========================
-     RESULTS
-========================= -->
-
 <div
-  id="results"
-  class="catalog-grid"
+id="results"
+class="catalog-grid"
 ></div>
 
 
-<!-- =========================
-     LOAD MORE
-========================= -->
-
 <div
-  id="loadMoreWrap"
-  class="load-more-wrap"
-  style="display:none"
+id="loadMoreWrap"
+class="load-more-wrap"
+style="display:none"
 >
 
-  <button
-    id="loadMoreBtn"
-    class="load-more-btn"
-    type="button"
-  >
-    LOAD MORE
-  </button>
+<button
+id="loadMoreBtn"
+class="load-more-btn"
+type="button"
+>
+LOAD MORE
+</button>
 
 </div>
 
@@ -406,48 +359,44 @@
 </div>
 
 
-<!-- =========================
-     MOBILE NAV
-========================= -->
-
 <nav class="mobile">
 
-  <a href="index.html">
-    ⌂<br>DASH
-  </a>
+<a href="index.html">
+⌂<br>DASH
+</a>
 
-  <a href="collection.html">
-    ▣<br>COLL
-  </a>
+<a href="collection.html">
+▣<br>COLL
+</a>
 
-  <a href="catalog.html">
-    ▥<br>CAT
-  </a>
+<a href="catalog.html">
+▥<br>CAT
+</a>
 
-  <a href="masterset.html">
-    ▤<br>SET
-  </a>
+<a href="masterset.html">
+▤<br>SET
+</a>
 
-  <a href="wishlist.html">
-    ♡<br>WISH
-  </a>
+<a href="wishlist.html">
+♡<br>WISH
+</a>
 
-  <a href="market.html">
-    ⌁<br>MARKET
-  </a>
+<a href="market.html">
+⌁<br>MARKET
+</a>
 
 </nav>
 
 
 <script>
 
+
 /* =========================
    API
 ========================= */
 
 const API =
-  'https://api.tcgdex.net/v2/';
-
+'https://api.tcgdex.net/v2/';
 
 const PAGE_SIZE = 40;
 
@@ -457,25 +406,25 @@ const PAGE_SIZE = 40;
 ========================= */
 
 const searchEl =
-  document.getElementById('search');
+document.getElementById('search');
 
 const langEl =
-  document.getElementById('lang');
+document.getElementById('lang');
 
 const resultsEl =
-  document.getElementById('results');
+document.getElementById('results');
 
 const statusEl =
-  document.getElementById('status');
+document.getElementById('status');
 
 const detailEl =
-  document.getElementById('detail');
+document.getElementById('detail');
 
 const loadMoreWrap =
-  document.getElementById('loadMoreWrap');
+document.getElementById('loadMoreWrap');
 
 const loadMoreBtn =
-  document.getElementById('loadMoreBtn');
+document.getElementById('loadMoreBtn');
 
 
 /* =========================
@@ -492,35 +441,30 @@ let currentLang = 'it';
 
 let loading = false;
 
-
-/*
-  Mappa:
-  ID SET → NOME SET
-
-  Esempio:
-  sv3pt5 → Pokémon 151
-*/
-
 let setsMap = {};
+
+let activeSet = null;
+
+let activeCardQuery = '';
 
 
 /* =========================
-   ESCAPE HTML
+   ESCAPE
 ========================= */
 
 function esc(v){
 
-  return String(v ?? '')
-    .replace(
-      /[&<>"']/g,
-      m => ({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#039;'
-      }[m])
-    );
+return String(v ?? '')
+.replace(
+/[&<>"']/g,
+m => ({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
+}[m])
+);
 
 }
 
@@ -531,9 +475,9 @@ function esc(v){
 
 function imageUrl(url){
 
-  return url
-    ? url + '.png'
-    : '';
+return url
+? url + '.png'
+: '';
 
 }
 
@@ -544,185 +488,336 @@ function imageUrl(url){
 
 async function loadSets(){
 
-  try{
+try{
 
-    const r =
-      await fetch(
-        API +
-        currentLang +
-        '/sets'
-      );
+const r =
+await fetch(
+API +
+currentLang +
+'/sets'
+);
 
+if(!r.ok){
 
-    if(!r.ok){
+throw new Error();
 
-      throw new Error(
-        'HTTP ' + r.status
-      );
+}
 
-    }
+const data =
+await r.json();
 
+setsMap = {};
 
-    const data =
-      await r.json();
+if(Array.isArray(data)){
 
+data.forEach(set => {
 
-    setsMap = {};
+if(set && set.id){
 
+setsMap[
+set.id.toLowerCase()
+] = set;
 
-    if(Array.isArray(data)){
+}
 
-      data.forEach(set => {
+});
 
-        if(set && set.id){
+}
 
-          setsMap[set.id] =
-            set.name || set.id;
+}catch(e){
 
-        }
+setsMap = {};
 
-      });
-
-    }
-
-
-  }catch(e){
-
-    /*
-      Se il caricamento dei set
-      fallisce, il catalogo continua
-      comunque a funzionare.
-    */
-
-    setsMap = {};
-
-  }
+}
 
 }
 
 
 /* =========================
-   GET SET NAME
+   FIND SET
+========================= */
+
+function findSet(query){
+
+const q =
+query
+.trim()
+.toLowerCase();
+
+if(!q){
+
+return null;
+
+}
+
+
+/*
+  1. ID esatto
+*/
+
+if(setsMap[q]){
+
+return setsMap[q];
+
+}
+
+
+/*
+  2. ID contenuto
+*/
+
+const byId =
+Object.values(setsMap)
+.find(
+set =>
+set.id &&
+set.id.toLowerCase() === q
+);
+
+if(byId){
+
+return byId;
+
+}
+
+
+/*
+  3. Nome esatto
+*/
+
+const byName =
+Object.values(setsMap)
+.find(
+set =>
+set.name &&
+set.name.toLowerCase() === q
+);
+
+if(byName){
+
+return byName;
+
+}
+
+
+/*
+  4. Nome contiene la ricerca
+*/
+
+const partialName =
+Object.values(setsMap)
+.find(
+set =>
+set.name &&
+set.name.toLowerCase().includes(q)
+);
+
+if(partialName){
+
+return partialName;
+
+}
+
+
+return null;
+
+}
+
+
+/* =========================
+   SET NAME
 ========================= */
 
 function setText(card){
 
-  /*
-    Caso 1:
-    il set è già presente
-    nella risposta.
-  */
+if(
+card.set &&
+card.set.name
+){
 
-  if(
-    card.set &&
-    card.set.name
-  ){
+return card.set.name;
 
-    return card.set.name;
-
-  }
+}
 
 
-  /*
-    Caso 2:
-    ricaviamo l'ID del set
-    dall'ID della carta.
+if(card.id){
 
-    Esempio:
-    sv3pt5-151
-    ↓
-    sv3pt5
-  */
+const setId =
+card.id
+.split('-')[0]
+.toLowerCase();
 
-  if(card.id){
+if(
+setsMap[setId]
+){
 
-    const parts =
-      card.id.split('-');
+return setsMap[setId].name
+|| setsMap[setId].id;
 
-    const setId =
-      parts[0];
+}
 
+}
 
-    if(
-      setsMap[setId]
-    ){
-
-      return setsMap[setId];
-
-    }
-
-  }
-
-
-  return 'Set sconosciuto';
+return 'Set sconosciuto';
 
 }
 
 
 /* =========================
-   BUILD URL
+   BUILD CARD URL
 ========================= */
 
-function buildUrl(page){
+function buildCardUrl(page){
 
-  let url =
-    API +
-    currentLang +
-    '/cards?';
-
-
-  /*
-    Ricerca per numero carta
-  */
-
-  if(
-    /^\d+[A-Za-z]?\s*\/\s*\d+/
-      .test(currentQuery)
-  ){
-
-    const local =
-      currentQuery
-        .split('/')[0]
-        .trim();
+let url =
+API +
+currentLang +
+'/cards?';
 
 
-    url +=
-      'localId=' +
-      encodeURIComponent(local);
+/*
+  Ricerca per numero
+*/
 
-  }
+if(
+/^\d+[A-Za-z]?\s*\/\s*\d+/
+.test(currentQuery)
+){
 
+const local =
+currentQuery
+.split('/')[0]
+.trim();
 
-  /*
-    Ricerca per nome
-  */
+url +=
+'localId=' +
+encodeURIComponent(local);
 
-  else{
-
-    url +=
-      'name=' +
-      encodeURIComponent(
-        currentQuery
-      );
-
-  }
-
-
-  /*
-    PAGINAZIONE
-  */
-
-  url +=
-    '&pagination:page=' +
-    page;
+}
 
 
-  url +=
-    '&pagination:itemsPerPage=' +
-    PAGE_SIZE;
+/*
+  Ricerca normale
+*/
+
+else{
+
+url +=
+'name=' +
+encodeURIComponent(
+activeCardQuery || currentQuery
+);
+
+}
 
 
-  return url;
+url +=
+'&pagination:page=' +
+page;
+
+url +=
+'&pagination:itemsPerPage=' +
+PAGE_SIZE;
+
+
+return url;
+
+}
+
+
+/* =========================
+   LOAD SET CARDS
+========================= */
+
+async function loadSetCards(
+set,
+cardQuery
+){
+
+try{
+
+const r =
+await fetch(
+API +
+currentLang +
+'/sets/' +
+encodeURIComponent(
+set.id
+)
+);
+
+if(!r.ok){
+
+throw new Error();
+
+}
+
+const data =
+await r.json();
+
+let cards =
+Array.isArray(data.cards)
+? data.cards
+: [];
+
+
+/*
+  Se abbiamo anche un nome
+  da cercare, filtriamo
+  localmente.
+*/
+
+if(cardQuery){
+
+const q =
+cardQuery
+.toLowerCase()
+.trim();
+
+
+cards =
+cards.filter(
+card =>
+card.name &&
+card.name
+.toLowerCase()
+.includes(q)
+);
+
+}
+
+
+/*
+  Reset risultati
+*/
+
+lastResults =
+cards;
+
+currentPage = 1;
+
+
+/*
+  Un set viene caricato
+  tutto insieme.
+
+  Quindi LOAD MORE non
+  serve per questo caso.
+*/
+
+loadMoreWrap.style.display =
+'none';
+
+
+renderResults();
+
+
+}catch(e){
+
+statusEl.textContent =
+'Impossibile caricare il set.';
+
+}
 
 }
 
@@ -733,189 +828,337 @@ function buildUrl(page){
 
 async function searchCards(){
 
-  const q =
-    searchEl.value.trim();
+const q =
+searchEl.value.trim();
 
 
-  if(q.length < 2){
+if(q.length < 2){
 
-    statusEl.textContent =
-      'Inserisci almeno 2 caratteri e premi SEARCH.';
+statusEl.textContent =
+'Inserisci almeno 2 caratteri e premi SEARCH.';
 
-    return;
+return;
 
-  }
-
-
-  currentQuery = q;
-
-  currentLang =
-    langEl.value;
-
-  currentPage = 1;
-
-  lastResults = [];
+}
 
 
-  resultsEl.innerHTML =
-    '';
+currentQuery = q;
 
-  detailEl.classList.remove(
-    'show'
-  );
+currentLang =
+langEl.value;
+
+currentPage = 1;
+
+lastResults = [];
+
+activeSet = null;
+
+activeCardQuery = '';
+
+resultsEl.innerHTML = '';
+
+detailEl.classList.remove(
+'show'
+);
+
+loadMoreWrap.style.display =
+'none';
 
 
-  loadMoreWrap.style.display =
-    'none';
+statusEl.textContent =
+'Analisi della ricerca...';
 
 
-  /*
-    Prima carichiamo i set.
-  */
+/*
+  Carichiamo i set.
+*/
 
-  statusEl.textContent =
-    'Caricamento database set...';
-
-
-  await loadSets();
+await loadSets();
 
 
-  /*
-    Poi carichiamo le carte.
-  */
+/*
+  Caso 1:
+  ID carta completo
 
-  await loadPage(false);
+  esempio:
+  30th-018
+*/
+
+if(
+/^[A-Za-z0-9]+-\w+$/
+.test(q)
+){
+
+const parts =
+q.split('-');
+
+const possibleSet =
+findSet(parts[0]);
+
+
+if(possibleSet){
+
+activeSet =
+possibleSet;
+
+activeCardQuery =
+parts
+.slice(1)
+.join('-');
+
+await loadSetCards(
+possibleSet,
+''
+);
+
+return;
+
+}
+
+}
+
+
+/*
+  Caso 2:
+  numero carta
+
+  esempio:
+  199/165
+*/
+
+if(
+/^\d+[A-Za-z]?\s*\/\s*\d+/
+.test(q)
+){
+
+await loadPage(false);
+
+return;
+
+}
+
+
+/*
+  Caso 3:
+  ricerca composta
+
+  esempio:
+  Pikachu 30th
+
+  Proviamo a capire se
+  una delle parole è un set.
+*/
+
+const words =
+q.split(/\s+/)
+.filter(Boolean);
+
+
+let detectedSet = null;
+
+let detectedSetWord = null;
+
+
+/*
+  Proviamo dalla parola
+  più lunga alla più corta.
+*/
+
+const sortedWords =
+[...words]
+.sort(
+(a,b) =>
+b.length - a.length
+);
+
+
+for(
+const word of sortedWords
+){
+
+const candidate =
+findSet(word);
+
+if(candidate){
+
+detectedSet =
+candidate;
+
+detectedSetWord =
+word;
+
+break;
+
+}
+
+}
+
+
+/*
+  Se abbiamo trovato
+  un set, carichiamo
+  direttamente le sue carte.
+*/
+
+if(detectedSet){
+
+activeSet =
+detectedSet;
+
+
+/*
+  Tutto il testo meno
+  il nome/ID del set
+  diventa ricerca carta.
+*/
+
+const remainingWords =
+words.filter(
+word =>
+word.toLowerCase() !==
+detectedSetWord.toLowerCase()
+);
+
+
+activeCardQuery =
+remainingWords.join(' ').trim();
+
+
+statusEl.textContent =
+'Caricamento set ' +
+detectedSet.name +
+'...';
+
+
+await loadSetCards(
+detectedSet,
+activeCardQuery
+);
+
+return;
+
+}
+
+
+/*
+  Caso 4:
+  normale ricerca per nome
+*/
+
+activeCardQuery =
+q;
+
+await loadPage(false);
 
 }
 
 
 /* =========================
-   LOAD PAGE
+   LOAD CARD PAGE
 ========================= */
 
-async function loadPage(append){
+async function loadPage(
+append
+){
 
-  if(loading){
+if(loading){
 
-    return;
+return;
 
-  }
+}
 
-
-  loading = true;
-
-
-  if(append){
-
-    statusEl.textContent =
-      'Caricamento altre carte...';
-
-  }
-
-  else{
-
-    statusEl.textContent =
-      'Ricerca in corso...';
-
-  }
+loading = true;
 
 
-  try{
+if(append){
 
-    const r =
-      await fetch(
-        buildUrl(currentPage),
-        {
-          headers:{
-            Accept:
-              'application/json'
-          }
-        }
-      );
+statusEl.textContent =
+'Caricamento altre carte...';
 
+}else{
 
-    if(!r.ok){
+statusEl.textContent =
+'Ricerca in corso...';
 
-      throw new Error(
-        'HTTP ' + r.status
-      );
-
-    }
+}
 
 
-    const data =
-      await r.json();
+try{
+
+const r =
+await fetch(
+buildCardUrl(
+currentPage
+)
+);
 
 
-    const pageResults =
-      Array.isArray(data)
-        ? data
-        : [];
+if(!r.ok){
+
+throw new Error();
+
+}
 
 
-    /*
-      Prima pagina
-    */
-
-    if(!append){
-
-      lastResults =
-        pageResults;
-
-    }
+const data =
+await r.json();
 
 
-    /*
-      LOAD MORE
-    */
-
-    else{
-
-      lastResults =
-        lastResults.concat(
-          pageResults
-        );
-
-    }
+const pageResults =
+Array.isArray(data)
+? data
+: [];
 
 
-    renderResults();
+if(append){
+
+lastResults =
+lastResults.concat(
+pageResults
+);
+
+}else{
+
+lastResults =
+pageResults;
+
+}
 
 
-    /*
-      Se arrivano esattamente
-      40 carte, esiste la
-      possibilità che ci sia
-      un'altra pagina.
-    */
-
-    if(
-      pageResults.length ===
-      PAGE_SIZE
-    ){
-
-      loadMoreWrap.style.display =
-        'block';
-
-    }
-
-    else{
-
-      loadMoreWrap.style.display =
-        'none';
-
-    }
+renderResults();
 
 
-  }catch(e){
+/*
+  Se abbiamo esattamente
+  40 risultati, mostriamo
+  LOAD MORE.
+*/
 
-    statusEl.textContent =
-      'Errore nel caricamento. Controlla la connessione e riprova.';
+if(
+pageResults.length ===
+PAGE_SIZE
+){
 
-  }
+loadMoreWrap.style.display =
+'block';
+
+}else{
+
+loadMoreWrap.style.display =
+'none';
+
+}
 
 
-  loading = false;
+}catch(e){
+
+statusEl.textContent =
+'Errore nel caricamento. Controlla la connessione e riprova.';
+
+}
+
+
+loading = false;
 
 }
 
@@ -926,302 +1169,298 @@ async function loadPage(append){
 
 async function loadMore(){
 
-  if(loading){
+if(loading){
 
-    return;
+return;
 
-  }
+}
 
+currentPage++;
 
-  currentPage++;
-
-
-  await loadPage(true);
+await loadPage(true);
 
 }
 
 
 /* =========================
-   RENDER RESULTS
+   RENDER
 ========================= */
 
 function renderResults(){
 
-  if(!lastResults.length){
+if(!lastResults.length){
 
-    statusEl.textContent =
-      'Nessuna carta trovata.';
+statusEl.textContent =
+'Nessuna carta trovata.';
 
+resultsEl.innerHTML =
+'<div class="catalog-empty">' +
+'Nessun risultato. Prova un altro nome, set o numero.' +
+'</div>';
 
-    resultsEl.innerHTML =
-      '<div class="catalog-empty">' +
-      'Nessun risultato. Prova un altro nome o numero.' +
-      '</div>';
+return;
 
-
-    return;
-
-  }
+}
 
 
-  statusEl.textContent =
-    lastResults.length +
-    ' risultati caricati.';
+statusEl.textContent =
+lastResults.length +
+' risultati caricati.';
 
 
-  resultsEl.innerHTML =
+resultsEl.innerHTML =
 
-    lastResults.map(
-      (c,i) => `
+lastResults.map(
+(c,i) => `
 
-        <article
-          class="catalog-card"
-        >
+<article
+class="catalog-card"
+>
 
-          <img
-            loading="lazy"
-            src="${esc(
-              imageUrl(c.image)
-            )}"
-            alt="${esc(
-              c.name
-            )}"
-            onerror="
-              this.style.opacity='.25'
-            "
-          >
-
-
-          <div class="name">
-
-            ${esc(c.name)}
-
-          </div>
+<img
+loading="lazy"
+src="${esc(
+imageUrl(c.image)
+)}"
+alt="${esc(
+c.name
+)}"
+onerror="
+this.style.opacity='.25'
+"
+>
 
 
-          <div class="meta">
+<div class="name">
 
-            ${esc(
-              setText(c)
-            )}
+${esc(c.name)}
 
-            <br>
-
-            # ${esc(
-              c.localId
-            )}
-
-            · ID ${esc(
-              c.id
-            )}
-
-          </div>
+</div>
 
 
-          <div
-            class="catalog-actions"
-          >
+<div class="meta">
 
-            <button
-              class="small-btn primary"
-              onclick="
-                showCard(${i})
-              "
-            >
-              VIEW
-            </button>
+${esc(
+setText(c)
+)}
 
+<br>
 
-            <button
-              class="small-btn"
-              onclick="
-                saveCard(
-                  ${i},
-                  'collection'
-                )
-              "
-            >
-              + COLL
-            </button>
+# ${esc(
+c.localId
+)}
 
-          </div>
+· ID ${esc(
+c.id
+)}
+
+</div>
 
 
-        </article>
+<div class="catalog-actions">
 
-      `
-    ).join('');
+
+<button
+class="small-btn primary"
+onclick="
+showCard(${i})
+"
+>
+VIEW
+</button>
+
+
+<button
+class="small-btn"
+onclick="
+saveCard(
+${i},
+'collection'
+)
+"
+>
++ COLL
+</button>
+
+
+</div>
+
+
+</article>
+
+`
+).join('');
 
 }
 
 
 /* =========================
-   CARD DETAILS
+   VIEW CARD
 ========================= */
 
 async function showCard(i){
 
-  const brief =
-    lastResults[i];
+const brief =
+lastResults[i];
 
 
-  statusEl.textContent =
-    'Caricamento dettagli...';
+statusEl.textContent =
+'Caricamento dettagli...';
 
 
-  try{
+try{
 
-    const r =
-      await fetch(
-        API +
-        langEl.value +
-        '/cards/' +
-        encodeURIComponent(
-          brief.id
-        )
-      );
-
-
-    if(!r.ok){
-
-      throw new Error();
-
-    }
+const r =
+await fetch(
+API +
+langEl.value +
+'/cards/' +
+encodeURIComponent(
+brief.id
+)
+);
 
 
-    const c =
-      await r.json();
+if(!r.ok){
+
+throw new Error();
+
+}
 
 
-    detailEl.innerHTML = `
-
-      <img
-        src="${esc(
-          imageUrl(c.image)
-        )}"
-        alt="${esc(
-          c.name
-        )}"
-      >
+const c =
+await r.json();
 
 
-      <div>
+detailEl.innerHTML = `
+
+<img
+src="${esc(
+imageUrl(c.image)
+)}"
+alt="${esc(
+c.name
+)}"
+>
 
 
-        <div class="detail-label">
-          CARD
-        </div>
+<div>
 
 
-        <div class="detail-value">
-
-          <strong>
-            ${esc(c.name)}
-          </strong>
-
-        </div>
+<div class="detail-label">
+CARD
+</div>
 
 
-        <div class="detail-label">
-          SET
-        </div>
+<div class="detail-value">
+
+<strong>
+${esc(c.name)}
+</strong>
+
+</div>
 
 
-        <div class="detail-value">
-
-          ${esc(
-            setText(c)
-          )}
-
-          ·
-
-          ${esc(
-            c.localId
-          )}
-
-        </div>
+<div class="detail-label">
+SET
+</div>
 
 
-        <div class="detail-label">
-          RARITY
-        </div>
+<div class="detail-value">
+
+${esc(
+setText(c)
+)}
+
+·
+
+${esc(
+c.localId
+)}
+
+</div>
 
 
-        <div class="detail-value">
-
-          ${esc(
-            c.rarity || '—'
-          )}
-
-        </div>
+<div class="detail-label">
+RARITY
+</div>
 
 
-        <div class="detail-label">
-          CATEGORY
-        </div>
+<div class="detail-value">
+
+${esc(
+c.rarity || '—'
+)}
+
+</div>
 
 
-        <div class="detail-value">
-
-          ${esc(
-            c.category || '—'
-          )}
-
-        </div>
+<div class="detail-label">
+CATEGORY
+</div>
 
 
-        <div class="catalog-actions">
+<div class="detail-value">
+
+${esc(
+c.category || '—'
+)}
+
+</div>
 
 
-          <button
-            class="small-btn primary"
-            onclick="
-              saveCard(
-                ${i},
-                'collection'
-              )
-            "
-          >
-            ADD TO COLLECTION
-          </button>
+<div class="catalog-actions">
 
 
-          <button
-            class="small-btn"
-            onclick="
-              saveCard(
-                ${i},
-                'wishlist'
-              )
-            "
-          >
-            ADD TO WISHLIST
-          </button>
+<button
+class="small-btn primary"
+onclick="
+saveCard(
+${i},
+'collection'
+)
+"
+>
+ADD TO COLLECTION
+</button>
 
 
-        </div>
+<button
+class="small-btn"
+onclick="
+saveCard(
+${i},
+'wishlist'
+)
+"
+>
+ADD TO WISHLIST
+</button>
 
 
-      </div>
-
-    `;
+</div>
 
 
-    detailEl.classList.add(
-      'show'
-    );
+</div>
+
+`;
 
 
-    statusEl.textContent =
-      'Dettagli carta caricati.';
+detailEl.classList.add(
+'show'
+);
 
 
-  }catch(e){
+statusEl.textContent =
+'Dettagli carta caricati.';
 
-    statusEl.textContent =
-      'Impossibile caricare i dettagli della carta.';
 
-  }
+}catch(e){
+
+statusEl.textContent =
+'Impossibile caricare i dettagli della carta.';
+
+}
 
 }
 
@@ -1230,95 +1469,90 @@ async function showCard(i){
    SAVE CARD
 ========================= */
 
-function saveCard(i,target){
+function saveCard(
+i,
+target
+){
 
-  const c =
-    lastResults[i];
-
-
-  const item = {
-
-    id:
-      c.id,
-
-    name:
-      c.name,
-
-    localId:
-      c.localId,
-
-    image:
-      c.image,
-
-    set:
-      c.set || null,
-
-    language:
-      langEl.value,
-
-    savedAt:
-      new Date().toISOString()
-
-  };
+const c =
+lastResults[i];
 
 
-  /*
-    COLLECTION
-  */
+const item = {
 
-  if(
-    target === 'collection'
-  ){
+id:
+c.id,
 
-    localStorage.setItem(
-      'pcm_pending_card',
-      JSON.stringify(item)
-    );
+name:
+c.name,
 
+localId:
+c.localId,
 
-    window.location.href =
-      'collection.html#add';
+image:
+c.image,
 
+set:
+c.set || null,
 
-    return;
+language:
+langEl.value,
 
-  }
+savedAt:
+new Date().toISOString()
 
-
-  /*
-    WISHLIST
-  */
-
-  const arr =
-    JSON.parse(
-      localStorage.getItem(
-        'pcm_wishlist_catalog'
-      ) || '[]'
-    );
+};
 
 
-  if(
-    !arr.some(
-      x =>
-        x.id === item.id &&
-        x.language === item.language
-    )
-  ){
+if(
+target === 'collection'
+){
 
-    arr.push(item);
-
-
-    localStorage.setItem(
-      'pcm_wishlist_catalog',
-      JSON.stringify(arr)
-    );
-
-  }
+localStorage.setItem(
+'pcm_pending_card',
+JSON.stringify(item)
+);
 
 
-  alert(
-    'Carta salvata nella Wishlist.'
-  );
+window.location.href =
+'collection.html#add';
+
+
+return;
+
+}
+
+
+const arr =
+JSON.parse(
+localStorage.getItem(
+'pcm_wishlist_catalog'
+) || '[]'
+);
+
+
+if(
+!arr.some(
+x =>
+x.id === item.id &&
+x.language === item.language
+)
+){
+
+arr.push(item);
+
+
+localStorage.setItem(
+'pcm_wishlist_catalog',
+JSON.stringify(arr)
+);
+
+}
+
+
+alert(
+'Carta salvata nella Wishlist.'
+);
 
 }
 
@@ -1327,68 +1561,51 @@ function saveCard(i,target){
    EVENTS
 ========================= */
 
-
-/*
-  ENTER
-*/
-
 searchEl.addEventListener(
-  'keydown',
-  e => {
+'keydown',
+e => {
 
-    if(e.key === 'Enter'){
+if(e.key === 'Enter'){
 
-      searchCards();
+searchCards();
 
-    }
+}
 
-  }
+}
 );
 
-
-/*
-  SEARCH BUTTON
-*/
 
 document
-  .getElementById(
-    'searchBtn'
-  )
-  .addEventListener(
-    'click',
-    searchCards
-  );
-
-
-/*
-  LOAD MORE
-*/
-
-loadMoreBtn.addEventListener(
-  'click',
-  loadMore
+.getElementById(
+'searchBtn'
+)
+.addEventListener(
+'click',
+searchCards
 );
 
 
-/*
-  LANGUAGE
-*/
+loadMoreBtn.addEventListener(
+'click',
+loadMore
+);
+
 
 langEl.addEventListener(
-  'change',
-  () => {
+'change',
+() => {
 
-    if(
-      searchEl.value
-        .trim()
-        .length >= 2
-    ){
+if(
+searchEl.value
+.trim()
+.length >= 2
+){
 
-      searchCards();
+searchCards();
 
-    }
+}
 
-  }
+}
 );
 
 
@@ -1397,21 +1614,20 @@ langEl.addEventListener(
 ========================= */
 
 if(
-  'serviceWorker' in navigator &&
-  location.protocol !== 'file:'
+'serviceWorker' in navigator &&
+location.protocol !== 'file:'
 ){
 
-  navigator.serviceWorker
-    .register(
-      './sw.js?v=6',
-      {
-        updateViaCache:
-          'none'
-      }
-    )
-    .catch(
-      () => {}
-    );
+navigator.serviceWorker
+.register(
+'./sw.js?v=7',
+{
+updateViaCache:'none'
+}
+)
+.catch(
+() => {}
+);
 
 }
 
@@ -1421,29 +1637,29 @@ if(
 ========================= */
 
 window.addEventListener(
-  'pageshow',
-  () => {
+'pageshow',
+() => {
 
-    if(
-      !searchEl.value.trim()
-    ){
+if(
+!searchEl.value.trim()
+){
 
-      resultsEl.innerHTML =
-        '';
+resultsEl.innerHTML =
+'';
 
-      detailEl.classList.remove(
-        'show'
-      );
+detailEl.classList.remove(
+'show'
+);
 
-      loadMoreWrap.style.display =
-        'none';
+loadMoreWrap.style.display =
+'none';
 
-      statusEl.textContent =
-        'Inserisci almeno 2 caratteri e premi SEARCH.';
+statusEl.textContent =
+'Inserisci almeno 2 caratteri e premi SEARCH.';
 
-    }
+}
 
-  }
+}
 );
 
 </script>
