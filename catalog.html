@@ -1,1161 +1,758 @@
-<!DOCTYPE html>
+```html id="v7catalog"
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Pokémon Collection Manager – Catalogo V7</title>
-
-  <link rel="stylesheet" href="./style.css">
-
-  <style>
-    .catalog-page {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .catalog-toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .catalog-toolbar input,
-    .catalog-toolbar select,
-    .catalog-toolbar button {
-      min-height: 42px;
-      border: 1px solid #334155;
-      background: #111827;
-      color: #fff;
-      padding: 0 14px;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
-
-    .catalog-toolbar input {
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .catalog-toolbar button {
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .catalog-toolbar button:hover {
-      border-color: #60a5fa;
-    }
-
-    #status {
-      margin: 10px 0 18px;
-      color: #94a3b8;
-      min-height: 20px;
-    }
-
-    #results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 14px;
-    }
-
-    .catalog-card {
-      background: #111827;
-      border: 1px solid #263449;
-      border-radius: 8px;
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .catalog-card:hover {
-      border-color: #60a5fa;
-    }
-
-    .catalog-card img {
-      width: 100%;
-      display: block;
-      border-radius: 5px;
-      background: #0b1220;
-    }
-
-    .catalog-card-name {
-      margin-top: 9px;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-
-    .catalog-card-meta {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #94a3b8;
-      line-height: 1.4;
-    }
-
-    .catalog-card-id {
-      margin-top: 3px;
-      font-size: 11px;
-      color: #64748b;
-    }
-
-    #loadMoreWrap {
-      display: none;
-      justify-content: center;
-      margin: 25px 0;
-    }
-
-    #loadMoreBtn {
-      min-height: 42px;
-      padding: 0 20px;
-      border: 1px solid #334155;
-      border-radius: 6px;
-      background: #111827;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    #loadMoreBtn:hover {
-      border-color: #60a5fa;
-    }
-
-    #loadMoreBtn:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
-
-    #detail {
-      display: none;
-      margin-top: 25px;
-      padding: 20px;
-      border: 1px solid #263449;
-      border-radius: 8px;
-      background: #0f172a;
-    }
-
-    #detailContent {
-      display: grid;
-      grid-template-columns: minmax(220px, 360px) 1fr;
-      gap: 25px;
-    }
-
-    #detailContent img {
-      width: 100%;
-      max-width: 360px;
-      border-radius: 8px;
-    }
-
-    .detail-info h2 {
-      margin-top: 0;
-    }
-
-    .detail-row {
-      margin: 8px 0;
-      color: #cbd5e1;
-    }
-
-    .detail-row strong {
-      color: #fff;
-    }
-
-    .detail-actions {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .detail-actions button {
-      min-height: 42px;
-      padding: 0 16px;
-      border-radius: 6px;
-      border: 1px solid #334155;
-      background: #111827;
-      color: white;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .detail-actions button:hover {
-      border-color: #60a5fa;
-    }
-
-    .notice {
-      grid-column: 1 / -1;
-      padding: 15px;
-      border: 1px solid #334155;
-      border-radius: 7px;
-      background: #111827;
-      color: #cbd5e1;
-    }
-
-    .candidate {
-      padding: 12px;
-      margin-top: 10px;
-      border: 1px solid #263449;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #0b1220;
-    }
-
-    .candidate:hover {
-      border-color: #60a5fa;
-    }
-
-    @media (max-width: 700px) {
-      #detailContent {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pokémon Collection Manager — CATALOG V7</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0b1220">
 </head>
 
 <body>
 
-<main class="catalog-page">
+<div class="app">
 
-  <h1>Catalogo Pokémon</h1>
+  <aside class="side">
+    <div class="logo">
+      POKÉMON CM
+      <small>COLLECTION MANAGER · CATALOG V7</small>
+    </div>
 
-  <div class="catalog-toolbar">
+    <nav class="nav">
+      <a href="index.html">▶ DASHBOARD</a>
+      <a href="collection.html">▣ COLLECTION</a>
+      <a href="catalog.html">▥ CATALOG</a>
+      <a href="masterset.html">▤ MASTERSET</a>
+      <a href="wishlist.html">♡ WISHLIST</a>
+      <a href="market.html">⌁ MARKET</a>
+    </nav>
+  </aside>
 
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="Cerca Pokémon, set o codice..."
-      autocomplete="off"
-    >
+  <main class="main">
 
-    <select id="langSelect">
-      <option value="it">Italiano</option>
-      <option value="en">English</option>
-      <option value="ja">日本語</option>
-    </select>
+    <div class="top">
+      <div>
+        <div class="title">CATALOG</div>
+        <div class="tag">TCGDEX // CARD DATABASE</div>
+      </div>
 
-    <button id="searchBtn">
-      CERCA
-    </button>
+      <a class="btn" href="collection.html#add">+ ADD CARD</a>
+    </div>
 
-  </div>
+    <div class="panel">
 
-  <div id="status"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
 
-  <div id="results"></div>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search Pokémon, set, number..."
+          style="flex:1;min-width:220px"
+        >
 
-  <div id="loadMoreWrap">
-    <button id="loadMoreBtn">
-      LOAD MORE
-    </button>
-  </div>
+        <select id="langSelect">
+          <option value="it">ITALIANO</option>
+          <option value="en">ENGLISH</option>
+          <option value="ja">日本語</option>
+        </select>
 
-  <section id="detail">
+        <button class="btn" id="searchBtn">SEARCH</button>
 
-    <div id="detailContent"></div>
+      </div>
 
-  </section>
+      <div
+        id="searchHelp"
+        style="margin-top:10px;font-size:12px;opacity:.7"
+      >
+        Esempi: Pikachu · Gengar · 154/220 · 30th-018
+      </div>
 
-</main>
+    </div>
+
+    <div class="section">
+
+      <div
+        id="status"
+        style="margin-bottom:12px;font-size:13px;opacity:.75"
+      >
+        Loading catalog...
+      </div>
+
+      <div
+        id="results"
+        class="cards"
+      ></div>
+
+      <div
+        id="loadMoreWrap"
+        style="display:none;text-align:center;margin-top:20px"
+      >
+        <button class="btn" id="loadMoreBtn">LOAD MORE</button>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<nav class="mobile">
+  <a href="index.html">⌂<br>DASH</a>
+  <a href="collection.html">▣<br>COLL</a>
+  <a href="catalog.html">▥<br>CAT</a>
+  <a href="masterset.html">▤<br>SET</a>
+  <a href="wishlist.html">♡<br>WISH</a>
+  <a href="market.html">⌁<br>MARKET</a>
+</nav>
 
 <script>
 
-const API = 'https://api.tcgdex.net/v2/';
+const API = "https://api.tcgdex.net/v2";
+
 const PAGE_SIZE = 40;
 
-const searchInput = document.getElementById('searchInput');
-const langSelect = document.getElementById('langSelect');
-const searchBtn = document.getElementById('searchBtn');
-
-const resultsEl = document.getElementById('results');
-const statusEl = document.getElementById('status');
-
-const detailEl = document.getElementById('detail');
-const detailContent = document.getElementById('detailContent');
-
-const loadMoreWrap = document.getElementById('loadMoreWrap');
-const loadMoreBtn = document.getElementById('loadMoreBtn');
-
-let currentLang = 'it';
-let currentQuery = '';
-
 let currentPage = 1;
-
+let currentQuery = "";
+let currentLang = "it";
+let hasMore = false;
 let loading = false;
 
-let lastResults = [];
-
-let hasMore = false;
-
 let setsMap = {};
-let setsLoaded = false;
 
-
-/* =========================================================
-   UTILITY
-========================================================= */
-
-function normalizeText(value) {
-
-  return String(value || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
-
-}
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
+const langSelect = document.getElementById("langSelect");
+const results = document.getElementById("results");
+const status = document.getElementById("status");
+const loadMoreWrap = document.getElementById("loadMoreWrap");
+const loadMoreBtn = document.getElementById("loadMoreBtn");
 
 
 function escapeHtml(value) {
-
-  return String(value || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 
-function getSetIdFromCard(card) {
+function cardImage(card) {
 
-  if (!card || !card.id) {
-    return '';
+  if (!card.image) {
+    return "";
   }
 
-  return String(card.id).split('-')[0];
+  let image = card.image;
 
+  if (!image.includes("/high.webp")) {
+    image = image.replace(/\/?$/, "/high.webp");
+  }
+
+  return image;
+}
+
+
+function getSetId(card) {
+
+  if (!card || !card.id) {
+    return "";
+  }
+
+  return card.id.split("-")[0];
 }
 
 
 function getSetName(card) {
 
-  if (card?.set?.name) {
-    return card.set.name;
-  }
+  const setId = getSetId(card);
 
-  const setId = getSetIdFromCard(card);
-
-  if (setId && setsMap[setId]) {
+  if (setsMap[setId]) {
     return setsMap[setId].name || setId;
   }
 
-  return setId || 'Set sconosciuto';
-
+  return "Set sconosciuto";
 }
 
-
-async function fetchJson(url) {
-
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-
-  return await response.json();
-
-}
-
-
-/* =========================================================
-   SET
-========================================================= */
 
 async function loadSets() {
 
-  if (setsLoaded) {
-    return;
-  }
+  try {
 
-  const data =
-    await fetchJson(
-      `${API}${currentLang}/sets`
+    const response = await fetch(
+      `${API}/${currentLang}/sets`
     );
 
-  setsMap = {};
+    if (!response.ok) {
+      throw new Error("Unable to load sets");
+    }
 
-  if (Array.isArray(data)) {
+    const data = await response.json();
 
-    data.forEach(set => {
+    setsMap = {};
 
-      if (set && set.id) {
+    if (Array.isArray(data)) {
 
-        setsMap[set.id] = set;
+      data.forEach(set => {
 
-      }
+        if (set && set.id) {
+          setsMap[set.id] = set;
+        }
 
-    });
+      });
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+    setsMap = {};
 
   }
-
-  setsLoaded = true;
 
 }
 
-
-function findSet(query) {
-
-  const q = normalizeText(query);
-
-  if (!q) {
-    return null;
-  }
-
-  const entries =
-    Object.values(setsMap);
-
-
-  /*
-    ID esatto
-  */
-
-  let found =
-    entries.find(set =>
-      normalizeText(set.id) === q
-    );
-
-  if (found) {
-    return found;
-  }
-
-
-  /*
-    Nome esatto
-  */
-
-  found =
-    entries.find(set =>
-      normalizeText(set.name) === q
-    );
-
-  if (found) {
-    return found;
-  }
-
-
-  /*
-    ID parziale
-  */
-
-  found =
-    entries.find(set =>
-      normalizeText(set.id).includes(q)
-    );
-
-  if (found) {
-    return found;
-  }
-
-
-  /*
-    Nome parziale
-  */
-
-  found =
-    entries.find(set =>
-      normalizeText(set.name).includes(q)
-    );
-
-  if (found) {
-    return found;
-  }
-
-
-  return null;
-
-}
-
-
-/* =========================================================
-   SET COMPLETO
-========================================================= */
-
-async function loadFullSet(setId) {
-
-  return await fetchJson(
-    `${API}${currentLang}/sets/${encodeURIComponent(setId)}`
-  );
-
-}
-
-
-function getSetCards(setData) {
-
-  if (!setData) {
-    return [];
-  }
-
-  if (Array.isArray(setData.cards)) {
-    return setData.cards;
-  }
-
-  return [];
-
-}
-
-
-/* =========================================================
-   CARD ESATTA
-========================================================= */
-
-async function loadExactCard(setId, localId) {
-
-  return await fetchJson(
-    `${API}${currentLang}/sets/${encodeURIComponent(setId)}/${encodeURIComponent(localId)}`
-  );
-
-}
-
-
-/* =========================================================
-   RICERCA SET + NOME
-========================================================= */
-
-async function searchInsideSet(query, set) {
-
-  const setData =
-    await loadFullSet(set.id);
-
-  const cards =
-    getSetCards(setData);
-
-
-  const normalizedQuery =
-    normalizeText(query);
-
-
-  const setId =
-    normalizeText(set.id);
-
-  const setName =
-    normalizeText(set.name);
-
-
-  /*
-    Rimuoviamo dall'input il nome/id del set.
-  */
-
-  let cardQuery =
-    normalizedQuery
-      .replace(setId, '')
-      .replace(setName, '')
-      .trim();
-
-
-  /*
-    Se non rimane nulla,
-    mostriamo tutto il set.
-  */
-
-  if (!cardQuery) {
-
-    lastResults = cards;
-
-    renderResults(cards);
-
-    setStatus(
-      `${cards.length} carte · ${set.name || set.id}`
-    );
-
-    loadMoreWrap.style.display = 'none';
-
-    return true;
-
-  }
-
-
-  /*
-    Cerca il nome dentro il set.
-  */
-
-  const filtered =
-    cards.filter(card => {
-
-      const name =
-        normalizeText(card.name);
-
-      return name.includes(cardQuery);
-
-    });
-
-
-  lastResults = filtered;
-
-  renderResults(filtered);
-
-  setStatus(
-    `${filtered.length} risultati · ${set.name || set.id}`
-  );
-
-  loadMoreWrap.style.display = 'none';
-
-  return true;
-
-}
-
-
-/* =========================================================
-   URL RICERCA GENERALE
-========================================================= */
-
-function buildGeneralSearchUrl(page) {
-
-  const params =
-    new URLSearchParams();
-
-  params.set(
-    'name',
-    currentQuery
-  );
-
-  params.set(
-    'pagination:page',
-    page
-  );
-
-  params.set(
-    'pagination:itemsPerPage',
-    PAGE_SIZE
-  );
-
-  return `${API}${currentLang}/cards?${params.toString()}`;
-
-}
-
-
-/* =========================================================
-   RICERCA GENERALE
-========================================================= */
-
-async function loadGeneralPage(
-  page,
-  append
-) {
-
-  const url =
-    buildGeneralSearchUrl(page);
-
-  const data =
-    await fetchJson(url);
-
-  const pageResults =
-    Array.isArray(data)
-      ? data
-      : [];
-
-
-  if (append) {
-
-    lastResults = [
-      ...lastResults,
-      ...pageResults
-    ];
-
-  } else {
-
-    lastResults = pageResults;
-
-  }
-
-
-  currentPage = page;
-
-  hasMore =
-    pageResults.length === PAGE_SIZE;
-
-
-  renderResults(lastResults);
-
-  setStatus(
-    `${lastResults.length} risultati`
-  );
-
-
-  loadMoreWrap.style.display =
-    hasMore
-      ? 'flex'
-      : 'none';
-
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
 
 function renderResults(cards) {
 
-  resultsEl.innerHTML = '';
+  results.innerHTML = "";
 
+  if (!cards.length) {
 
-  if (!cards || cards.length === 0) {
-
-    resultsEl.innerHTML = `
-      <div class="notice">
-        Nessun risultato.
+    results.innerHTML = `
+      <div class="panel">
+        <b>Nessun risultato</b>
       </div>
     `;
 
     return;
-
   }
 
 
   cards.forEach(card => {
 
-    const div =
-      document.createElement('div');
+    const image = cardImage(card);
 
-    div.className =
-      'catalog-card';
+    const div = document.createElement("div");
 
-
-    const image =
-      card.image
-        ? `${card.image}/high.webp`
-        : '';
-
+    div.className = "card";
 
     div.innerHTML = `
 
       ${
         image
-          ? `
-            <img
+          ? `<img
               src="${escapeHtml(image)}"
-              alt="${escapeHtml(card.name || '')}"
-              loading="lazy"
-            >
-          `
-          : ''
+              alt="${escapeHtml(card.name || "")}"
+              style="width:100%;display:block"
+            >`
+          : `<div class="fakecard">NO IMAGE</div>`
       }
 
-      <div class="catalog-card-name">
-        ${escapeHtml(card.name || 'Carta')}
-      </div>
+      <b>${escapeHtml(card.name || "Unknown")}</b>
 
-      <div class="catalog-card-meta">
+      <div class="price">
         ${escapeHtml(getSetName(card))}
       </div>
 
-      <div class="catalog-card-id">
-        ${escapeHtml(card.localId || '')}
+      <div style="font-size:12px;opacity:.7;margin-top:4px">
+        ${escapeHtml(card.localId || "")}
+      </div>
+
+      <div style="margin-top:10px">
+        <button
+          class="btn secondary"
+          onclick="viewCard('${escapeHtml(card.id)}')"
+        >
+          VIEW
+        </button>
+
+        <button
+          class="btn"
+          onclick="addToCollection('${escapeHtml(card.id)}')"
+        >
+          ADD
+        </button>
       </div>
 
     `;
 
-
-    div.addEventListener(
-      'click',
-      () => showCard(card)
-    );
-
-
-    resultsEl.appendChild(div);
+    results.appendChild(div);
 
   });
 
 }
 
 
-/* =========================================================
-   DETTAGLIO
-========================================================= */
-
-async function showCard(card) {
-
-  detailEl.style.display =
-    'block';
-
-
-  detailContent.innerHTML = `
-    <div class="notice">
-      Caricamento carta...
-    </div>
-  `;
-
+async function viewCard(id) {
 
   try {
 
-    let fullCard = card;
+    const response = await fetch(
+      `${API}/${currentLang}/cards/${id}`
+    );
 
-
-    const setId =
-      getSetIdFromCard(card);
-
-    const localId =
-      card.localId;
-
-
-    if (setId && localId) {
-
-      try {
-
-        fullCard =
-          await loadExactCard(
-            setId,
-            localId
-          );
-
-      } catch (error) {
-
-        console.warn(
-          'Dettaglio completo non disponibile',
-          error
-        );
-
-      }
-
+    if (!response.ok) {
+      throw new Error("Card not found");
     }
 
-
-    const image =
-      fullCard.image
-        ? `${fullCard.image}/high.webp`
-        : '';
-
+    const card = await response.json();
 
     const setName =
-      fullCard?.set?.name ||
-      getSetName(fullCard);
+      card.set?.name ||
+      getSetName(card) ||
+      "Set sconosciuto";
 
-
-    detailContent.innerHTML = `
-
-      <div>
-
-        ${
-          image
-            ? `
-              <img
-                src="${escapeHtml(image)}"
-                alt="${escapeHtml(fullCard.name || '')}"
-              >
-            `
-            : ''
-        }
-
-      </div>
-
-
-      <div class="detail-info">
-
-        <h2>
-          ${escapeHtml(fullCard.name || 'Carta')}
-        </h2>
-
-
-        <div class="detail-row">
-          <strong>Set:</strong>
-          ${escapeHtml(setName)}
-        </div>
-
-
-        <div class="detail-row">
-          <strong>Numero:</strong>
-          ${escapeHtml(fullCard.localId || '')}
-        </div>
-
-
-        <div class="detail-row">
-          <strong>ID:</strong>
-          ${escapeHtml(fullCard.id || '')}
-        </div>
-
-
-        ${
-          fullCard.rarity
-            ? `
-              <div class="detail-row">
-                <strong>Rarità:</strong>
-                ${escapeHtml(fullCard.rarity)}
-              </div>
-            `
-            : ''
-        }
-
-
-        <div class="detail-actions">
-
-          <button id="saveCollectionBtn">
-            AGGIUNGI ALLA COLLEZIONE
-          </button>
-
-          <button id="closeDetailBtn">
-            CHIUDI
-          </button>
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    document
-      .getElementById('closeDetailBtn')
-      .addEventListener(
-        'click',
-        () => {
-          detailEl.style.display = 'none';
-        }
-      );
-
-
-    document
-      .getElementById('saveCollectionBtn')
-      .addEventListener(
-        'click',
-        () => {
-          saveCard(fullCard);
-        }
-      );
-
-
-    detailEl.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-
+    alert(
+      `${card.name || "Card"}\n\n` +
+      `Set: ${setName}\n` +
+      `Numero: ${card.localId || ""}\n` +
+      `ID: ${card.id || ""}`
+    );
 
   } catch (error) {
 
-    detailContent.innerHTML = `
-      <div class="notice">
-        Errore nel caricamento della carta.
-      </div>
-    `;
+    alert("Unable to open card.");
 
   }
 
 }
 
 
-/* =========================================================
-   SALVATAGGIO
-========================================================= */
-
-function saveCard(card) {
-
-  const collection =
-    JSON.parse(
-      localStorage.getItem(
-        'pcm_collection'
-      ) || '[]'
-    );
-
-
-  const existing =
-    collection.find(item =>
-      item.catalogId === card.id
-    );
-
-
-  if (existing) {
-
-    existing.quantity =
-      Number(existing.quantity || 1) + 1;
-
-  } else {
-
-    collection.push({
-
-      id:
-        'card-' +
-        Date.now().toString(36) +
-        Math.random()
-          .toString(36)
-          .slice(2, 7),
-
-      catalogId:
-        card.id || '',
-
-      name:
-        card.name || '',
-
-      localId:
-        card.localId || '',
-
-      set:
-        getSetIdFromCard(card),
-
-      setName:
-        getSetName(card),
-
-      language:
-        currentLang,
-
-      condition:
-        'NM',
-
-      quantity:
-        1,
-
-      grading:
-        'Raw',
-
-      grade:
-        '',
-
-      purchasePrice:
-        '0',
-
-      purchaseDate:
-        new Date()
-          .toISOString()
-          .slice(0, 10),
-
-      seller:
-        '',
-
-      notes:
-        '',
-
-      savedAt:
-        new Date().toISOString()
-
-    });
-
-  }
-
+function addToCollection(id) {
 
   localStorage.setItem(
-    'pcm_collection',
-    JSON.stringify(collection)
+    "pcm_pending_card",
+    JSON.stringify({
+      id: id,
+      language: currentLang
+    })
   );
 
-
-  alert(
-    `${card.name || 'Carta'} aggiunta alla collezione.`
-  );
+  window.location.href = "collection.html#add";
 
 }
 
 
-/* =========================================================
-   RICERCA PRINCIPALE
-========================================================= */
-
-async function searchCards() {
+async function searchGeneral(query, append = false) {
 
   if (loading) {
     return;
   }
 
+  loading = true;
+
+  try {
+
+    const page = append ? currentPage : 1;
+
+    const url =
+      `${API}/${currentLang}/cards` +
+      `?pagination:page=${page}` +
+      `&pagination:itemsPerPage=${PAGE_SIZE}` +
+      `&name=${encodeURIComponent(query)}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Search failed");
+    }
+
+    const data = await response.json();
+
+    const cards =
+      Array.isArray(data)
+        ? data
+        : (data.data || data.cards || []);
+
+    if (!append) {
+      results.innerHTML = "";
+    }
+
+    renderResults(
+      append
+        ? [
+            ...Array.from(results.children).map(() => null)
+          ].filter(Boolean)
+        : cards
+    );
+
+    if (append) {
+
+      // Re-render using existing cards plus new page.
+      // The current page is handled by loadGeneralPage().
+
+    }
+
+    hasMore = cards.length === PAGE_SIZE;
+
+    loadMoreWrap.style.display =
+      hasMore ? "block" : "none";
+
+    status.textContent =
+      `${cards.length} risultati caricati`;
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Errore durante la ricerca.";
+
+    results.innerHTML = `
+      <div class="panel">
+        Impossibile caricare i risultati.
+      </div>
+    `;
+
+    loadMoreWrap.style.display = "none";
+
+  } finally {
+
+    loading = false;
+
+  }
+
+}
+
+
+async function loadGeneralPage(page, append) {
+
+  if (loading) {
+    return;
+  }
+
+  loading = true;
+
+  try {
+
+    const url =
+      `${API}/${currentLang}/cards` +
+      `?pagination:page=${page}` +
+      `&pagination:itemsPerPage=${PAGE_SIZE}` +
+      (
+        currentQuery
+          ? `&name=${encodeURIComponent(currentQuery)}`
+          : ""
+      );
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Search failed");
+    }
+
+    const data = await response.json();
+
+    const cards =
+      Array.isArray(data)
+        ? data
+        : (data.data || data.cards || []);
+
+    if (!append) {
+      results.innerHTML = "";
+    }
+
+    cards.forEach(card => {
+
+      const image = cardImage(card);
+
+      const div = document.createElement("div");
+
+      div.className = "card";
+
+      div.innerHTML = `
+
+        ${
+          image
+            ? `<img
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(card.name || "")}"
+                style="width:100%;display:block"
+              >`
+            : `<div class="fakecard">NO IMAGE</div>`
+        }
+
+        <b>${escapeHtml(card.name || "Unknown")}</b>
+
+        <div class="price">
+          ${escapeHtml(getSetName(card))}
+        </div>
+
+        <div style="font-size:12px;opacity:.7;margin-top:4px">
+          ${escapeHtml(card.localId || "")}
+        </div>
+
+        <div style="margin-top:10px">
+
+          <button
+            class="btn secondary"
+            onclick="viewCard('${escapeHtml(card.id)}')"
+          >
+            VIEW
+          </button>
+
+          <button
+            class="btn"
+            onclick="addToCollection('${escapeHtml(card.id)}')"
+          >
+            ADD
+          </button>
+
+        </div>
+
+      `;
+
+      results.appendChild(div);
+
+    });
+
+    currentPage = page;
+
+    hasMore = cards.length === PAGE_SIZE;
+
+    loadMoreWrap.style.display =
+      hasMore ? "block" : "none";
+
+    status.textContent =
+      `${results.children.length} risultati`;
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Errore durante la ricerca.";
+
+    if (!append) {
+
+      results.innerHTML = `
+        <div class="panel">
+          Impossibile caricare i risultati.
+        </div>
+      `;
+
+    }
+
+    loadMoreWrap.style.display = "none";
+
+  } finally {
+
+    loading = false;
+
+  }
+
+}
+
+
+async function searchInsideSet(query, set) {
+
+  status.textContent =
+    `Ricerca nel set ${set.name || set.id}...`;
+
+  loadMoreWrap.style.display = "none";
+
+  try {
+
+    const response = await fetch(
+      `${API}/${currentLang}/sets/${set.id}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Set not found");
+    }
+
+    const fullSet = await response.json();
+
+    let cards =
+      Array.isArray(fullSet.cards)
+        ? fullSet.cards
+        : [];
+
+    const cleanQuery =
+      query
+        .toLowerCase()
+        .replace(set.id.toLowerCase(), "")
+        .replace((set.name || "").toLowerCase(), "")
+        .trim();
+
+    if (cleanQuery) {
+
+      cards = cards.filter(card => {
+
+        const name =
+          String(card.name || "").toLowerCase();
+
+        const localId =
+          String(card.localId || "").toLowerCase();
+
+        return (
+          name.includes(cleanQuery) ||
+          localId === cleanQuery ||
+          localId.includes(cleanQuery)
+        );
+
+      });
+
+    }
+
+    renderResults(cards);
+
+    status.textContent =
+      `${cards.length} risultati nel set ${set.name || set.id}`;
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "Errore durante la ricerca nel set.";
+
+    results.innerHTML = `
+      <div class="panel">
+        Impossibile caricare il set.
+      </div>
+    `;
+
+  }
+
+}
+
+
+function findSet(query) {
+
+  const q = query.toLowerCase().trim();
+
+  if (!q) {
+    return null;
+  }
+
+  if (setsMap[q]) {
+    return setsMap[q];
+  }
+
+  const exactId =
+    Object.values(setsMap).find(
+      set =>
+        String(set.id || "").toLowerCase() === q
+    );
+
+  if (exactId) {
+    return exactId;
+  }
+
+  const exactName =
+    Object.values(setsMap).find(
+      set =>
+        String(set.name || "").toLowerCase() === q
+    );
+
+  if (exactName) {
+    return exactName;
+  }
+
+  return null;
+
+}
+
+
+async function searchCards() {
 
   const query =
     searchInput.value.trim();
 
-
   if (!query) {
 
-    setStatus(
-      'Inserisci una ricerca.'
-    );
+    currentQuery = "";
+
+    currentPage = 1;
+
+    await loadGeneralPage(1, false);
 
     return;
+  }
+
+  currentQuery = query;
+
+  currentPage = 1;
+
+  loadMoreWrap.style.display = "none";
+
+  /*
+    1. Exact card ID:
+       30th-018
+  */
+
+  const fullIdMatch =
+    query.match(
+      /^([A-Za-z0-9]+)-([0-9]+[A-Za-z]?)$/i
+    );
+
+  if (fullIdMatch) {
+
+    const setId =
+      fullIdMatch[1];
+
+    const localId =
+      fullIdMatch[2];
+
+    const set =
+      findSet(setId);
+
+    if (set) {
+
+      await searchExactCard(
+        set,
+        localId
+      );
+
+      return;
+    }
 
   }
 
 
-  loading = true;
+  /*
+    2. Number:
+       154/220
+  */
 
-  searchBtn.disabled = true;
+  const fractionMatch =
+    query.match(
+      /^([0-9]+[A-Za-z]?)\s*\/\s*([0-9]+)$/i
+    );
 
+  if (fractionMatch) {
 
-  currentLang =
-    langSelect.value;
+    const localId =
+      fractionMatch[1];
 
-  currentQuery =
-    query;
+    await searchByLocalId(
+      localId
+    );
 
-  currentPage =
-    1;
-
-  lastResults = [];
-
-  hasMore =
-    false;
-
-
-  resultsEl.innerHTML =
-    '';
-
-  detailEl.style.display =
-    'none';
-
-  loadMoreWrap.style.display =
-    'none';
+    return;
+  }
 
 
-  setsLoaded =
-    false;
+  /*
+    3. "Pikachu 30th"
+       "Gengar sv3"
+       etc.
+  */
 
-  setsMap =
-    {};
+  const tokens =
+    query
+      .split(/\s+/)
+      .filter(Boolean);
 
-
-  try {
-
-    /*
-      Carica tutti i set.
-    */
-
-    await loadSets();
-
-
-    /*
-      ======================================================
-      CODICE TIPO 30th-018
-      ======================================================
-    */
-
-    const fullIdMatch =
-      query.match(
-        /^([A-Za-z0-9]+)-([0-9]+[A-Za-z]?)$/
-      );
-
-
-    if (fullIdMatch) {
-
-      const setId =
-        fullIdMatch[1];
-
-      const localId =
-        fullIdMatch[2];
-
-
-      /*
-        Nel V7, se viene riconosciuto un set,
-        carichiamo il set completo.
-      */
-
-      const set =
-        findSet(setId);
-
-
-      if (set) {
-
-        await searchInsideSet(
-          query,
-          set
-        );
-
-        return;
-
-      }
-
-    }
-
-
-    /*
-      ======================================================
-      SET
-      ======================================================
-    */
+  for (const token of tokens) {
 
     const set =
-      findSet(query);
-
+      findSet(token);
 
     if (set) {
 
@@ -1165,188 +762,136 @@ async function searchCards() {
       );
 
       return;
-
     }
-
-
-    /*
-      ======================================================
-      NUMERO TIPO 154/220
-      ======================================================
-    */
-
-    const fractionMatch =
-      query.match(
-        /^([0-9]+[A-Za-z]?)\s*\/\s*([0-9]+)$/
-      );
-
-
-    if (fractionMatch) {
-
-      /*
-        Il V7 cerca il localId.
-      */
-
-      currentQuery =
-        fractionMatch[1];
-
-      await loadGeneralPage(
-        1,
-        false
-      );
-
-      return;
-
-    }
-
-
-    /*
-      ======================================================
-      RICERCA COMBINATA
-      ESEMPIO:
-      Pikachu 30th
-      ======================================================
-    */
-
-    const tokens =
-      query
-        .split(/\s+/)
-        .filter(Boolean);
-
-
-    for (const token of tokens) {
-
-      const tokenSet =
-        findSet(token);
-
-
-      if (tokenSet) {
-
-        await searchInsideSet(
-          query,
-          tokenSet
-        );
-
-        return;
-
-      }
-
-    }
-
-
-    /*
-      ======================================================
-      RICERCA NORMALE
-      ======================================================
-    */
-
-    await loadGeneralPage(
-      1,
-      false
-    );
-
-
-  } catch (error) {
-
-    console.error(error);
-
-
-    resultsEl.innerHTML = `
-      <div class="notice">
-        Errore durante la ricerca.
-        Controlla la connessione e riprova.
-      </div>
-    `;
-
-
-    setStatus(
-      'Errore'
-    );
-
-
-  } finally {
-
-    loading = false;
-
-    searchBtn.disabled =
-      false;
 
   }
+
+
+  /*
+    4. Normal search
+  */
+
+  await loadGeneralPage(
+    1,
+    false
+  );
 
 }
 
 
-/* =========================================================
-   LOAD MORE
-========================================================= */
+async function searchExactCard(
+  set,
+  localId
+) {
 
-async function loadMore() {
-
-  if (
-    loading ||
-    !hasMore
-  ) {
-    return;
-  }
-
-
-  loading = true;
-
-  loadMoreBtn.disabled =
-    true;
-
-  loadMoreBtn.textContent =
-    'CARICAMENTO...';
-
+  status.textContent =
+    `Ricerca ${set.id}-${localId}...`;
 
   try {
 
-    await loadGeneralPage(
-      currentPage + 1,
-      true
+    const response = await fetch(
+      `${API}/${currentLang}/sets/${set.id}/${localId}`
     );
 
+    if (!response.ok) {
+      throw new Error("Card not found");
+    }
+
+    const card =
+      await response.json();
+
+    renderResults([
+      card
+    ]);
+
+    status.textContent =
+      `1 risultato`;
 
   } catch (error) {
 
     console.error(error);
 
+    results.innerHTML = `
+      <div class="panel">
+        Carta non trovata.
+      </div>
+    `;
 
-    setStatus(
-      'Errore nel caricamento.'
-    );
-
-
-  } finally {
-
-    loading = false;
-
-    loadMoreBtn.disabled =
-      false;
-
-    loadMoreBtn.textContent =
-      'LOAD MORE';
+    status.textContent =
+      "Nessun risultato.";
 
   }
 
 }
 
 
-/* =========================================================
-   EVENTI
-========================================================= */
+async function searchByLocalId(
+  localId
+) {
+
+  status.textContent =
+    `Ricerca carta ${localId}...`;
+
+  try {
+
+    /*
+      Prima proviamo a cercare tutte le carte
+      con quel numero usando la ricerca generale.
+    */
+
+    const response = await fetch(
+      `${API}/${currentLang}/cards` +
+      `?pagination:page=1` +
+      `&pagination:itemsPerPage=100` +
+      `&localId=${encodeURIComponent(localId)}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Search failed");
+    }
+
+    const data =
+      await response.json();
+
+    const cards =
+      Array.isArray(data)
+        ? data
+        : (data.data || data.cards || []);
+
+    renderResults(cards);
+
+    status.textContent =
+      `${cards.length} risultati per ${localId}`;
+
+  } catch (error) {
+
+    console.error(error);
+
+    results.innerHTML = `
+      <div class="panel">
+        Nessun risultato.
+      </div>
+    `;
+
+    status.textContent =
+      "Nessun risultato.";
+
+  }
+
+}
+
 
 searchBtn.addEventListener(
-  'click',
+  "click",
   searchCards
 );
 
 
 searchInput.addEventListener(
-  'keydown',
+  "keydown",
   event => {
 
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       searchCards();
     }
 
@@ -1354,51 +899,64 @@ searchInput.addEventListener(
 );
 
 
-loadMoreBtn.addEventListener(
-  'click',
-  loadMore
-);
-
-
 langSelect.addEventListener(
-  'change',
-  () => {
+  "change",
+  async () => {
 
-    setsLoaded =
-      false;
+    currentLang =
+      langSelect.value;
 
-    setsMap =
-      {};
+    currentPage = 1;
+
+    await loadSets();
+
+    if (searchInput.value.trim()) {
+      await searchCards();
+    } else {
+      await loadGeneralPage(1, false);
+    }
 
   }
 );
 
 
-/* =========================================================
-   SERVICE WORKER
-========================================================= */
+loadMoreBtn.addEventListener(
+  "click",
+  async () => {
 
-if ('serviceWorker' in navigator) {
-
-  window.addEventListener(
-    'load',
-    () => {
-
-      navigator.serviceWorker
-        .register(
-          './sw.js?v=7'
-        )
-        .catch(error => {
-
-          console.warn(
-            'Service worker error:',
-            error
-          );
-
-        });
-
+    if (!hasMore || loading) {
+      return;
     }
+
+    await loadGeneralPage(
+      currentPage + 1,
+      true
+    );
+
+  }
+);
+
+
+(async function init() {
+
+  await loadSets();
+
+  await loadGeneralPage(
+    1,
+    false
   );
+
+})();
+
+
+if (
+  "serviceWorker" in navigator &&
+  location.protocol !== "file:"
+) {
+
+  navigator.serviceWorker.register(
+    "./sw.js?v=7"
+  ).catch(() => {});
 
 }
 
@@ -1406,3 +964,4 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+```
