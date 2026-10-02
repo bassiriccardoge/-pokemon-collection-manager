@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon Collection Manager – Catalogo V8</title>
+
+  <title>Pokémon Collection Manager – Catalogo V7</title>
 
   <link rel="stylesheet" href="./style.css">
 
@@ -65,7 +66,6 @@
       border-radius: 8px;
       padding: 10px;
       cursor: pointer;
-      transition: border-color 0.15s;
     }
 
     .catalog-card:hover {
@@ -212,60 +212,76 @@
 
 <body>
 
-  <main class="catalog-page">
+<main class="catalog-page">
 
-    <h1>Catalogo Pokémon</h1>
+  <h1>Catalogo Pokémon</h1>
 
-    <div class="catalog-toolbar">
-      <input
-        id="searchInput"
-        type="text"
-        placeholder="Es. Pikachu, 30th, Pikachu 30th, 154/220..."
-        autocomplete="off"
-      >
+  <div class="catalog-toolbar">
 
-      <select id="langSelect">
-        <option value="it">Italiano</option>
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
-      </select>
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Cerca Pokémon, set o codice..."
+      autocomplete="off"
+    >
 
-      <button id="searchBtn">CERCA</button>
-    </div>
+    <select id="langSelect">
+      <option value="it">Italiano</option>
+      <option value="en">English</option>
+      <option value="ja">日本語</option>
+    </select>
 
-    <div id="status"></div>
+    <button id="searchBtn">
+      CERCA
+    </button>
 
-    <div id="results"></div>
+  </div>
 
-    <div id="loadMoreWrap">
-      <button id="loadMoreBtn">LOAD MORE</button>
-    </div>
+  <div id="status"></div>
 
-    <section id="detail">
-      <div id="detailContent"></div>
-    </section>
+  <div id="results"></div>
 
-  </main>
+  <div id="loadMoreWrap">
+    <button id="loadMoreBtn">
+      LOAD MORE
+    </button>
+  </div>
+
+  <section id="detail">
+
+    <div id="detailContent"></div>
+
+  </section>
+
+</main>
 
 <script>
+
 const API = 'https://api.tcgdex.net/v2/';
 const PAGE_SIZE = 40;
 
 const searchInput = document.getElementById('searchInput');
 const langSelect = document.getElementById('langSelect');
 const searchBtn = document.getElementById('searchBtn');
+
 const resultsEl = document.getElementById('results');
 const statusEl = document.getElementById('status');
+
 const detailEl = document.getElementById('detail');
 const detailContent = document.getElementById('detailContent');
+
 const loadMoreWrap = document.getElementById('loadMoreWrap');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 
 let currentLang = 'it';
 let currentQuery = '';
+
 let currentPage = 1;
+
 let loading = false;
+
 let lastResults = [];
+
 let hasMore = false;
 
 let setsMap = {};
@@ -273,35 +289,45 @@ let setsLoaded = false;
 
 
 /* =========================================================
-   GENERALI
+   UTILITY
 ========================================================= */
 
 function normalizeText(value) {
+
   return String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim();
+
 }
 
 
 function escapeHtml(value) {
+
   return String(value || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+
 }
 
 
 function getSetIdFromCard(card) {
-  if (!card || !card.id) return '';
+
+  if (!card || !card.id) {
+    return '';
+  }
+
   return String(card.id).split('-')[0];
+
 }
 
 
 function getSetName(card) {
+
   if (card?.set?.name) {
     return card.set.name;
   }
@@ -313,15 +339,12 @@ function getSetName(card) {
   }
 
   return setId || 'Set sconosciuto';
-}
 
-
-function setStatus(text) {
-  statusEl.textContent = text || '';
 }
 
 
 async function fetchJson(url) {
+
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -329,6 +352,7 @@ async function fetchJson(url) {
   }
 
   return await response.json();
+
 }
 
 
@@ -337,107 +361,107 @@ async function fetchJson(url) {
 ========================================================= */
 
 async function loadSets() {
-  if (setsLoaded) return;
 
-  setStatus('Caricamento catalogo set...');
+  if (setsLoaded) {
+    return;
+  }
 
-  const data = await fetchJson(`${API}${currentLang}/sets`);
+  const data =
+    await fetchJson(
+      `${API}${currentLang}/sets`
+    );
 
   setsMap = {};
 
   if (Array.isArray(data)) {
+
     data.forEach(set => {
+
       if (set && set.id) {
+
         setsMap[set.id] = set;
+
       }
+
     });
+
   }
 
   setsLoaded = true;
+
 }
 
 
 function findSet(query) {
+
   const q = normalizeText(query);
 
-  if (!q) return null;
-
-  const entries = Object.values(setsMap);
-
-  /* 1. ID esatto */
-  let found = entries.find(set =>
-    normalizeText(set.id) === q
-  );
-
-  if (found) return found;
-
-  /* 2. Nome esatto */
-  found = entries.find(set =>
-    normalizeText(set.name) === q
-  );
-
-  if (found) return found;
-
-  /* 3. ID contenuto */
-  found = entries.find(set =>
-    normalizeText(set.id).includes(q)
-  );
-
-  if (found) return found;
-
-  /* 4. Nome contenuto */
-  found = entries.find(set =>
-    normalizeText(set.name).includes(q)
-  );
-
-  if (found) return found;
-
-  return null;
-}
-
-
-/*
-  Cerca un set usando una parola.
-  Serve soprattutto per query tipo:
-
-  Pikachu 30th
-  Charizard Base
-  Mew 151
-*/
-function findSetFromTokens(tokens) {
-
-  for (const token of tokens) {
-    const found = findSet(token);
-
-    if (found) {
-      return {
-        set: found,
-        token
-      };
-    }
+  if (!q) {
+    return null;
   }
+
+  const entries =
+    Object.values(setsMap);
+
 
   /*
-    Prova anche combinazioni di due parole.
-    Utile per nomi di set composti.
+    ID esatto
   */
-  for (let i = 0; i < tokens.length; i++) {
-    for (let j = i + 1; j < tokens.length; j++) {
 
-      const combined = `${tokens[i]} ${tokens[j]}`;
+  let found =
+    entries.find(set =>
+      normalizeText(set.id) === q
+    );
 
-      const found = findSet(combined);
-
-      if (found) {
-        return {
-          set: found,
-          token: combined
-        };
-      }
-    }
+  if (found) {
+    return found;
   }
 
+
+  /*
+    Nome esatto
+  */
+
+  found =
+    entries.find(set =>
+      normalizeText(set.name) === q
+    );
+
+  if (found) {
+    return found;
+  }
+
+
+  /*
+    ID parziale
+  */
+
+  found =
+    entries.find(set =>
+      normalizeText(set.id).includes(q)
+    );
+
+  if (found) {
+    return found;
+  }
+
+
+  /*
+    Nome parziale
+  */
+
+  found =
+    entries.find(set =>
+      normalizeText(set.name).includes(q)
+    );
+
+  if (found) {
+    return found;
+  }
+
+
   return null;
+
 }
 
 
@@ -446,20 +470,26 @@ function findSetFromTokens(tokens) {
 ========================================================= */
 
 async function loadFullSet(setId) {
+
   return await fetchJson(
     `${API}${currentLang}/sets/${encodeURIComponent(setId)}`
   );
+
 }
 
 
 function getSetCards(setData) {
-  if (!setData) return [];
+
+  if (!setData) {
+    return [];
+  }
 
   if (Array.isArray(setData.cards)) {
     return setData.cards;
   }
 
   return [];
+
 }
 
 
@@ -468,286 +498,59 @@ function getSetCards(setData) {
 ========================================================= */
 
 async function loadExactCard(setId, localId) {
+
   return await fetchJson(
     `${API}${currentLang}/sets/${encodeURIComponent(setId)}/${encodeURIComponent(localId)}`
   );
+
 }
 
 
 /* =========================================================
-   FRAZIONE 154/220
+   RICERCA SET + NOME
 ========================================================= */
 
-function parseFractionQuery(query) {
+async function searchInsideSet(query, set) {
 
-  const match = query.match(
-    /^([0-9]+[A-Za-z]?)\s*\/\s*([0-9]+)$/
-  );
+  const setData =
+    await loadFullSet(set.id);
 
-  if (!match) return null;
-
-  return {
-    localId: match[1],
-    denominator: Number(match[2])
-  };
-}
+  const cards =
+    getSetCards(setData);
 
 
-async function searchByFraction(query) {
+  const normalizedQuery =
+    normalizeText(query);
 
-  const parsed = parseFractionQuery(query);
 
-  if (!parsed) return false;
+  const setId =
+    normalizeText(set.id);
 
-  const candidates = [];
-
-  const sets = Object.values(setsMap);
-
-  /*
-    Il denominatore può corrispondere al cardCount.official
-    oppure al cardCount.total.
-
-    Non assumiamo che il denominatore identifichi
-    automaticamente un unico set.
-  */
-  for (const set of sets) {
-
-    const official = Number(set?.cardCount?.official || 0);
-    const total = Number(set?.cardCount?.total || 0);
-
-    if (
-      official !== parsed.denominator &&
-      total !== parsed.denominator
-    ) {
-      continue;
-    }
-
-    try {
-
-      const fullSet = await loadFullSet(set.id);
-      const cards = getSetCards(fullSet);
-
-      const matchingCard = cards.find(card =>
-        String(card.localId) === String(parsed.localId)
-      );
-
-      if (matchingCard) {
-        candidates.push({
-          set,
-          card: matchingCard
-        });
-      }
-
-    } catch (error) {
-      console.warn(
-        'Errore caricando set',
-        set.id,
-        error
-      );
-    }
-  }
-
-  /*
-    Nessuna corrispondenza.
-  */
-  if (candidates.length === 0) {
-
-    resultsEl.innerHTML = `
-      <div class="notice">
-        Nessuna carta trovata per
-        <strong>${escapeHtml(query)}</strong>.
-      </div>
-    `;
-
-    setStatus('0 risultati');
-    loadMoreWrap.style.display = 'none';
-
-    return true;
-  }
+  const setName =
+    normalizeText(set.name);
 
 
   /*
-    Una sola corrispondenza:
-    mostriamo direttamente la carta.
+    Rimuoviamo dall'input il nome/id del set.
   */
-  if (candidates.length === 1) {
 
-    const item = candidates[0];
-
-    lastResults = [item.card];
-
-    renderResults(lastResults);
-
-    setStatus(
-      `1 risultato · ${item.set.name || item.set.id}`
-    );
-
-    loadMoreWrap.style.display = 'none';
-
-    return true;
-  }
+  let cardQuery =
+    normalizedQuery
+      .replace(setId, '')
+      .replace(setName, '')
+      .trim();
 
 
   /*
-    Più set compatibili:
-    NON scegliamo arbitrariamente.
+    Se non rimane nulla,
+    mostriamo tutto il set.
   */
-  resultsEl.innerHTML = `
-    <div class="notice">
-      <strong>${escapeHtml(query)}</strong>
-      corrisponde a più set possibili.
-      Seleziona quello corretto:
-    </div>
-  `;
 
-  candidates.forEach(item => {
-
-    const card = item.card;
-    const set = item.set;
-
-    const div = document.createElement('div');
-
-    div.className = 'candidate';
-
-    div.innerHTML = `
-      <strong>${escapeHtml(card.name || 'Carta')}</strong>
-      <br>
-      <span>
-        ${escapeHtml(set.name || set.id)}
-      </span>
-      <br>
-      <small>
-        ${escapeHtml(card.localId || '')}
-        /
-        ${escapeHtml(
-          set?.cardCount?.official ||
-          set?.cardCount?.total ||
-          parsed.denominator
-        )}
-      </small>
-    `;
-
-    div.addEventListener('click', () => {
-      showCard(card);
-    });
-
-    resultsEl.appendChild(div);
-  });
-
-  setStatus(
-    `${candidates.length} possibili corrispondenze`
-  );
-
-  loadMoreWrap.style.display = 'none';
-
-  return true;
-}
-
-
-/* =========================================================
-   ID COMPLETO 30th-018
-========================================================= */
-
-function parseFullCardId(query) {
-
-  const match = query.match(
-    /^([A-Za-z0-9]+)-([0-9]+[A-Za-z]?)$/
-  );
-
-  if (!match) return null;
-
-  return {
-    setId: match[1],
-    localId: match[2]
-  };
-}
-
-
-async function searchByFullCardId(query) {
-
-  const parsed = parseFullCardId(query);
-
-  if (!parsed) return false;
-
-  try {
-
-    const card = await loadExactCard(
-      parsed.setId,
-      parsed.localId
-    );
-
-    lastResults = [card];
-
-    renderResults(lastResults);
-
-    setStatus('1 risultato');
-
-    loadMoreWrap.style.display = 'none';
-
-  } catch (error) {
-
-    resultsEl.innerHTML = `
-      <div class="notice">
-        Carta non trovata:
-        <strong>${escapeHtml(query)}</strong>
-      </div>
-    `;
-
-    setStatus('0 risultati');
-    loadMoreWrap.style.display = 'none';
-  }
-
-  return true;
-}
-
-
-/* =========================================================
-   SET + NOME
-========================================================= */
-
-async function searchInsideSet(query, setInfo) {
-
-  const set = setInfo.set;
-  const setData = await loadFullSet(set.id);
-  const cards = getSetCards(setData);
-
-  const tokens = query
-    .split(/\s+/)
-    .map(token => normalizeText(token))
-    .filter(Boolean);
-
-  /*
-    Togliamo dal testo il token che ha identificato il set.
-  */
-  const setToken = normalizeText(setInfo.token);
-
-  let remainingTokens = tokens.filter(token => {
-    return !setToken.split(/\s+/).includes(token);
-  });
-
-  /*
-    Se il nome del set è composto, facciamo anche una seconda
-    verifica eliminando tutte le parole che compaiono nel set.
-  */
-  const setWords = normalizeText(
-    `${set.id} ${set.name || ''}`
-  )
-    .split(/\s+/)
-    .filter(Boolean);
-
-  remainingTokens = remainingTokens.filter(token =>
-    !setWords.includes(token)
-  );
-
-  /*
-    Se non resta alcun testo:
-    richiesta = solo set.
-  */
-  if (remainingTokens.length === 0) {
+  if (!cardQuery) {
 
     lastResults = cards;
 
-    renderResults(lastResults);
+    renderResults(cards);
 
     setStatus(
       `${cards.length} carte · ${set.name || set.id}`
@@ -756,20 +559,23 @@ async function searchInsideSet(query, setInfo) {
     loadMoreWrap.style.display = 'none';
 
     return true;
+
   }
 
 
   /*
-    Ricerca nome carta dentro il set.
+    Cerca il nome dentro il set.
   */
-  const filtered = cards.filter(card => {
 
-    const cardName = normalizeText(card.name);
+  const filtered =
+    cards.filter(card => {
 
-    return remainingTokens.every(token =>
-      cardName.includes(token)
-    );
-  });
+      const name =
+        normalizeText(card.name);
+
+      return name.includes(cardQuery);
+
+    });
 
 
   lastResults = filtered;
@@ -783,16 +589,18 @@ async function searchInsideSet(query, setInfo) {
   loadMoreWrap.style.display = 'none';
 
   return true;
+
 }
 
 
 /* =========================================================
-   RICERCA GENERALE
+   URL RICERCA GENERALE
 ========================================================= */
 
 function buildGeneralSearchUrl(page) {
 
-  const params = new URLSearchParams();
+  const params =
+    new URLSearchParams();
 
   params.set(
     'name',
@@ -810,29 +618,50 @@ function buildGeneralSearchUrl(page) {
   );
 
   return `${API}${currentLang}/cards?${params.toString()}`;
+
 }
 
 
-async function loadGeneralPage(page, append) {
+/* =========================================================
+   RICERCA GENERALE
+========================================================= */
 
-  const url = buildGeneralSearchUrl(page);
+async function loadGeneralPage(
+  page,
+  append
+) {
 
-  const data = await fetchJson(url);
+  const url =
+    buildGeneralSearchUrl(page);
 
-  const pageResults = Array.isArray(data) ? data : [];
+  const data =
+    await fetchJson(url);
+
+  const pageResults =
+    Array.isArray(data)
+      ? data
+      : [];
+
 
   if (append) {
+
     lastResults = [
       ...lastResults,
       ...pageResults
     ];
+
   } else {
+
     lastResults = pageResults;
+
   }
+
 
   currentPage = page;
 
-  hasMore = pageResults.length === PAGE_SIZE;
+  hasMore =
+    pageResults.length === PAGE_SIZE;
+
 
   renderResults(lastResults);
 
@@ -840,8 +669,12 @@ async function loadGeneralPage(page, append) {
     `${lastResults.length} risultati`
   );
 
+
   loadMoreWrap.style.display =
-    hasMore ? 'flex' : 'none';
+    hasMore
+      ? 'flex'
+      : 'none';
+
 }
 
 
@@ -853,6 +686,7 @@ function renderResults(cards) {
 
   resultsEl.innerHTML = '';
 
+
   if (!cards || cards.length === 0) {
 
     resultsEl.innerHTML = `
@@ -862,24 +696,36 @@ function renderResults(cards) {
     `;
 
     return;
+
   }
 
 
   cards.forEach(card => {
 
-    const div = document.createElement('div');
+    const div =
+      document.createElement('div');
 
-    div.className = 'catalog-card';
+    div.className =
+      'catalog-card';
+
 
     const image =
       card.image
         ? `${card.image}/high.webp`
         : '';
 
+
     div.innerHTML = `
+
       ${
         image
-          ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(card.name || '')}" loading="lazy">`
+          ? `
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(card.name || '')}"
+              loading="lazy"
+            >
+          `
           : ''
       }
 
@@ -894,14 +740,20 @@ function renderResults(cards) {
       <div class="catalog-card-id">
         ${escapeHtml(card.localId || '')}
       </div>
+
     `;
 
-    div.addEventListener('click', () => {
-      showCard(card);
-    });
+
+    div.addEventListener(
+      'click',
+      () => showCard(card)
+    );
+
 
     resultsEl.appendChild(div);
+
   });
+
 }
 
 
@@ -911,7 +763,9 @@ function renderResults(cards) {
 
 async function showCard(card) {
 
-  detailEl.style.display = 'block';
+  detailEl.style.display =
+    'block';
+
 
   detailContent.innerHTML = `
     <div class="notice">
@@ -919,29 +773,38 @@ async function showCard(card) {
     </div>
   `;
 
+
   try {
 
     let fullCard = card;
 
-    /*
-      Se abbiamo ID completo, recuperiamo il dettaglio.
-    */
-    const setId = getSetIdFromCard(card);
-    const localId = card.localId;
+
+    const setId =
+      getSetIdFromCard(card);
+
+    const localId =
+      card.localId;
+
 
     if (setId && localId) {
 
       try {
-        fullCard = await loadExactCard(
-          setId,
-          localId
-        );
+
+        fullCard =
+          await loadExactCard(
+            setId,
+            localId
+          );
+
       } catch (error) {
+
         console.warn(
-          'Impossibile caricare dettaglio completo',
+          'Dettaglio completo non disponibile',
           error
         );
+
       }
+
     }
 
 
@@ -957,13 +820,22 @@ async function showCard(card) {
 
 
     detailContent.innerHTML = `
+
       <div>
+
         ${
           image
-            ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(fullCard.name || '')}">`
+            ? `
+              <img
+                src="${escapeHtml(image)}"
+                alt="${escapeHtml(fullCard.name || '')}"
+              >
+            `
             : ''
         }
+
       </div>
+
 
       <div class="detail-info">
 
@@ -971,20 +843,24 @@ async function showCard(card) {
           ${escapeHtml(fullCard.name || 'Carta')}
         </h2>
 
+
         <div class="detail-row">
           <strong>Set:</strong>
           ${escapeHtml(setName)}
         </div>
+
 
         <div class="detail-row">
           <strong>Numero:</strong>
           ${escapeHtml(fullCard.localId || '')}
         </div>
 
+
         <div class="detail-row">
           <strong>ID:</strong>
           ${escapeHtml(fullCard.id || '')}
         </div>
+
 
         ${
           fullCard.rarity
@@ -997,16 +873,6 @@ async function showCard(card) {
             : ''
         }
 
-        ${
-          fullCard.category
-            ? `
-              <div class="detail-row">
-                <strong>Categoria:</strong>
-                ${escapeHtml(fullCard.category)}
-              </div>
-            `
-            : ''
-        }
 
         <div class="detail-actions">
 
@@ -1021,27 +887,35 @@ async function showCard(card) {
         </div>
 
       </div>
+
     `;
 
 
     document
       .getElementById('closeDetailBtn')
-      .addEventListener('click', () => {
-        detailEl.style.display = 'none';
-      });
+      .addEventListener(
+        'click',
+        () => {
+          detailEl.style.display = 'none';
+        }
+      );
 
 
     document
       .getElementById('saveCollectionBtn')
-      .addEventListener('click', () => {
-        saveCard(fullCard);
-      });
+      .addEventListener(
+        'click',
+        () => {
+          saveCard(fullCard);
+        }
+      );
 
 
     detailEl.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
+
 
   } catch (error) {
 
@@ -1050,20 +924,25 @@ async function showCard(card) {
         Errore nel caricamento della carta.
       </div>
     `;
+
   }
+
 }
 
 
 /* =========================================================
-   SALVATAGGIO COLLEZIONE
+   SALVATAGGIO
 ========================================================= */
 
 function saveCard(card) {
 
   const collection =
     JSON.parse(
-      localStorage.getItem('pcm_collection') || '[]'
+      localStorage.getItem(
+        'pcm_collection'
+      ) || '[]'
     );
+
 
   const existing =
     collection.find(item =>
@@ -1083,7 +962,9 @@ function saveCard(card) {
       id:
         'card-' +
         Date.now().toString(36) +
-        Math.random().toString(36).slice(2, 7),
+        Math.random()
+          .toString(36)
+          .slice(2, 7),
 
       catalogId:
         card.id || '',
@@ -1119,7 +1000,9 @@ function saveCard(card) {
         '0',
 
       purchaseDate:
-        new Date().toISOString().slice(0, 10),
+        new Date()
+          .toISOString()
+          .slice(0, 10),
 
       seller:
         '',
@@ -1129,7 +1012,9 @@ function saveCard(card) {
 
       savedAt:
         new Date().toISOString()
+
     });
+
   }
 
 
@@ -1142,6 +1027,7 @@ function saveCard(card) {
   alert(
     `${card.name || 'Carta'} aggiunta alla collezione.`
   );
+
 }
 
 
@@ -1151,112 +1037,219 @@ function saveCard(card) {
 
 async function searchCards() {
 
-  if (loading) return;
+  if (loading) {
+    return;
+  }
+
 
   const query =
     searchInput.value.trim();
 
+
   if (!query) {
-    setStatus('Inserisci una ricerca.');
+
+    setStatus(
+      'Inserisci una ricerca.'
+    );
+
     return;
+
   }
 
 
   loading = true;
 
-  currentLang = langSelect.value;
-  currentQuery = query;
-  currentPage = 1;
-
-  lastResults = [];
-  hasMore = false;
-
-  resultsEl.innerHTML = '';
-
-  detailEl.style.display = 'none';
-
-  loadMoreWrap.style.display = 'none';
-
   searchBtn.disabled = true;
 
 
-  /*
-    Quando cambia lingua, ricarichiamo i set.
-  */
-  setsLoaded = false;
-  setsMap = {};
+  currentLang =
+    langSelect.value;
+
+  currentQuery =
+    query;
+
+  currentPage =
+    1;
+
+  lastResults = [];
+
+  hasMore =
+    false;
+
+
+  resultsEl.innerHTML =
+    '';
+
+  detailEl.style.display =
+    'none';
+
+  loadMoreWrap.style.display =
+    'none';
+
+
+  setsLoaded =
+    false;
+
+  setsMap =
+    {};
 
 
   try {
+
+    /*
+      Carica tutti i set.
+    */
 
     await loadSets();
 
 
     /*
-      1. 154/220
+      ======================================================
+      CODICE TIPO 30th-018
+      ======================================================
     */
-    if (parseFractionQuery(query)) {
 
-      await searchByFraction(query);
+    const fullIdMatch =
+      query.match(
+        /^([A-Za-z0-9]+)-([0-9]+[A-Za-z]?)$/
+      );
 
-      return;
+
+    if (fullIdMatch) {
+
+      const setId =
+        fullIdMatch[1];
+
+      const localId =
+        fullIdMatch[2];
+
+
+      /*
+        Nel V7, se viene riconosciuto un set,
+        carichiamo il set completo.
+      */
+
+      const set =
+        findSet(setId);
+
+
+      if (set) {
+
+        await searchInsideSet(
+          query,
+          set
+        );
+
+        return;
+
+      }
+
     }
 
 
     /*
-      2. 30th-018
+      ======================================================
+      SET
+      ======================================================
     */
-    if (parseFullCardId(query)) {
 
-      await searchByFullCardId(query);
-
-      return;
-    }
+    const set =
+      findSet(query);
 
 
-    /*
-      Tokenizzazione.
-    */
-    const tokens =
-      query
-        .split(/\s+/)
-        .map(token => token.trim())
-        .filter(Boolean);
-
-
-    /*
-      3. Cerca un set nella query.
-      Esempio:
-      Pikachu 30th
-    */
-    const setInfo =
-      findSetFromTokens(tokens);
-
-
-    if (setInfo) {
+    if (set) {
 
       await searchInsideSet(
         query,
-        setInfo
+        set
       );
 
       return;
+
     }
 
 
     /*
-      4. Ricerca generale.
-      Esempio:
-      Pikachu
+      ======================================================
+      NUMERO TIPO 154/220
+      ======================================================
     */
+
+    const fractionMatch =
+      query.match(
+        /^([0-9]+[A-Za-z]?)\s*\/\s*([0-9]+)$/
+      );
+
+
+    if (fractionMatch) {
+
+      /*
+        Il V7 cerca il localId.
+      */
+
+      currentQuery =
+        fractionMatch[1];
+
+      await loadGeneralPage(
+        1,
+        false
+      );
+
+      return;
+
+    }
+
+
+    /*
+      ======================================================
+      RICERCA COMBINATA
+      ESEMPIO:
+      Pikachu 30th
+      ======================================================
+    */
+
+    const tokens =
+      query
+        .split(/\s+/)
+        .filter(Boolean);
+
+
+    for (const token of tokens) {
+
+      const tokenSet =
+        findSet(token);
+
+
+      if (tokenSet) {
+
+        await searchInsideSet(
+          query,
+          tokenSet
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    /*
+      ======================================================
+      RICERCA NORMALE
+      ======================================================
+    */
+
     await loadGeneralPage(
       1,
       false
     );
 
+
   } catch (error) {
 
     console.error(error);
+
 
     resultsEl.innerHTML = `
       <div class="notice">
@@ -1265,13 +1258,21 @@ async function searchCards() {
       </div>
     `;
 
-    setStatus('Errore');
+
+    setStatus(
+      'Errore'
+    );
+
 
   } finally {
 
     loading = false;
-    searchBtn.disabled = false;
+
+    searchBtn.disabled =
+      false;
+
   }
+
 }
 
 
@@ -1281,13 +1282,21 @@ async function searchCards() {
 
 async function loadMore() {
 
-  if (loading || !hasMore) return;
+  if (
+    loading ||
+    !hasMore
+  ) {
+    return;
+  }
+
 
   loading = true;
 
-  loadMoreBtn.disabled = true;
+  loadMoreBtn.disabled =
+    true;
 
-  loadMoreBtn.textContent = 'CARICAMENTO...';
+  loadMoreBtn.textContent =
+    'CARICAMENTO...';
 
 
   try {
@@ -1297,22 +1306,29 @@ async function loadMore() {
       true
     );
 
+
   } catch (error) {
 
     console.error(error);
 
+
     setStatus(
-      'Errore nel caricamento di altre carte.'
+      'Errore nel caricamento.'
     );
+
 
   } finally {
 
     loading = false;
 
-    loadMoreBtn.disabled = false;
+    loadMoreBtn.disabled =
+      false;
 
-    loadMoreBtn.textContent = 'LOAD MORE';
+    loadMoreBtn.textContent =
+      'LOAD MORE';
+
   }
+
 }
 
 
@@ -1348,8 +1364,11 @@ langSelect.addEventListener(
   'change',
   () => {
 
-    setsLoaded = false;
-    setsMap = {};
+    setsLoaded =
+      false;
+
+    setsMap =
+      {};
 
   }
 );
@@ -1366,18 +1385,23 @@ if ('serviceWorker' in navigator) {
     () => {
 
       navigator.serviceWorker
-        .register('./sw.js?v=8')
+        .register(
+          './sw.js?v=7'
+        )
         .catch(error => {
+
           console.warn(
             'Service worker error:',
             error
           );
+
         });
 
     }
   );
 
 }
+
 </script>
 
 </body>
