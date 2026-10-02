@@ -1,4 +1,161 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pokémon Collection Manager — WISHLIST</title><link rel="stylesheet" href="style.css">  <link rel="manifest" href="./manifest.webmanifest">
+```html
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pokémon Collection Manager — WISHLIST</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#0b1220">
-</head><body><div class="app"><aside class="side"><div class="logo">POKÉMON CM<small>COLLECTION MANAGER · V1.3</small></div><nav class="nav"><a href="index.html">▶ DASHBOARD</a><a href="collection.html">▣ COLLECTION</a><a href="catalog.html">▥ CATALOG</a><a href="masterset.html">▤ MASTERSET</a><a href="wishlist.html">♡ WISHLIST</a><a href="market.html">⌁ MARKET</a></nav></aside><main class="main"><div class="top"><div><div class="title">WISHLIST</div><div class="tag">WANTED CARDS // PRICE TARGETS</div></div><a class="btn" href="collection.html#add">+ ADD CARD</a></div><div class="toolbar"><a class="btn" href="catalog.html">+ ADD FROM CATALOG</a></div><div class="list"><div class="empty">WISHLIST IS EMPTY.<br><br>Open the catalog and add cards you want to monitor.</div></div></main></div><nav class="mobile"><a href="index.html">⌂<br>DASH</a><a href="collection.html">▣<br>COLL</a><a href="catalog.html">▥<br>CAT</a><a href="masterset.html">▤<br>SET</a><a href="wishlist.html">♡<br>WISH</a><a href="market.html">⌁<br>MARKET</a></nav><script>if("serviceWorker" in navigator && location.protocol !== "file:"){navigator.serviceWorker.register("./sw.js").catch(()=>{});}</script>
-</body></html>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="side">
+    <div class="logo">
+      POKÉMON CM
+      <small>COLLECTION MANAGER · V1.4</small>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">▶ DASHBOARD</a>
+      <a href="collection.html">▣ COLLECTION</a>
+      <a href="catalog.html">▥ CATALOG</a>
+      <a href="masterset.html">▤ MASTERSET</a>
+      <a href="wishlist.html">♡ WISHLIST</a>
+      <a href="market.html">⌁ MARKET</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <div class="top">
+      <div>
+        <div class="title">WISHLIST</div>
+        <div class="tag">WANTED CARDS // PRICE TARGETS</div>
+      </div>
+
+      <a class="btn" href="catalog.html">+ ADD CARD</a>
+    </div>
+
+    <div class="toolbar">
+      <a class="btn" href="catalog.html">+ ADD FROM CATALOG</a>
+    </div>
+
+    <div id="wishlistList" class="list"></div>
+
+  </main>
+
+</div>
+
+<nav class="mobile">
+  <a href="index.html">⌂<br>DASH</a>
+  <a href="collection.html">▣<br>COLL</a>
+  <a href="catalog.html">▥<br>CAT</a>
+  <a href="masterset.html">▤<br>SET</a>
+  <a href="wishlist.html">♡<br>WISH</a>
+  <a href="market.html">⌁<br>MARKET</a>
+</nav>
+
+<script>
+
+const WISHLIST_KEY = "pcm_wishlist";
+const COLLECTION_KEY = "pcm_collection";
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getWishlist() {
+  try {
+    return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveWishlist(items) {
+  localStorage.setItem(WISHLIST_KEY, JSON.stringify(items));
+}
+
+function getCollection() {
+  try {
+    return JSON.parse(localStorage.getItem(COLLECTION_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveCollection(items) {
+  localStorage.setItem(COLLECTION_KEY, JSON.stringify(items));
+}
+
+function cardImage(card) {
+  if (card.image) return card.image;
+
+  if (card.cardId) {
+    return `https://assets.tcgdex.net/en/${card.cardId.replace(/-/g, "/")}/high.webp`;
+  }
+
+  return "";
+}
+
+function removeFromWishlist(index) {
+  const wishlist = getWishlist();
+
+  if (!wishlist[index]) return;
+
+  wishlist.splice(index, 1);
+  saveWishlist(wishlist);
+  renderWishlist();
+}
+
+function moveToCollection(index) {
+  const wishlist = getWishlist();
+  const card = wishlist[index];
+
+  if (!card) return;
+
+  const collection = getCollection();
+
+  const collectionCard = {
+    id: `${card.cardId || card.id}-${Date.now()}`,
+    cardId: card.cardId || card.id || "",
+    name: card.name || "",
+    localId: card.localId || "",
+    set: card.set || null,
+    setName: card.setName || "Set sconosciuto",
+    language: card.language || "it",
+    condition: card.condition || "NM",
+    quantity: 1,
+    grading: "Raw",
+    grade: "",
+    purchasePrice: "",
+    purchaseDate: "",
+    seller: "",
+    notes: "",
+    savedAt: new Date().toISOString()
+  };
+
+  collection.push(collectionCard);
+  saveCollection(collection);
+
+  wishlist.splice(index, 1);
+  saveWishlist(wishlist);
+
+  renderWishlist();
+}
+
+function renderWishlist() {
+
+  const container = document.getElementById("wishlistList")
+```
