@@ -3,17 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Pokémon Collection Manager — CATALOG</title>
+
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="./manifest.webmanifest">
+
   <meta name="theme-color" content="#0b1220">
 
   <style>
+
     .search-box {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(220px, 320px) auto;
+      grid-template-columns: minmax(0, 1fr) 150px minmax(220px, 320px) auto;
       gap: 10px;
       margin-bottom: 20px;
+    }
+
+    .search-field {
+      min-width: 0;
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #94a3b8;
     }
 
     .search-box input,
@@ -32,18 +48,6 @@
     .search-box select:focus {
       outline: none;
       border-color: #60a5fa;
-    }
-
-    .search-label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: #94a3b8;
-    }
-
-    .search-field {
-      min-width: 0;
     }
 
     .results-grid {
@@ -104,6 +108,7 @@
       padding: 30px;
       color: #94a3b8;
       text-align: center;
+      grid-column: 1 / -1;
     }
 
     .load-more-wrap {
@@ -115,11 +120,22 @@
       cursor: pointer;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 900px) {
+
+      .search-box {
+        grid-template-columns: 1fr 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
       .search-box {
         grid-template-columns: 1fr;
       }
+
     }
+
   </style>
 </head>
 
@@ -128,31 +144,56 @@
 <div class="app">
 
   <aside class="side">
+
     <div class="logo">
       POKÉMON CM
       <small>COLLECTION MANAGER · V1.3</small>
     </div>
 
     <nav class="nav">
+
       <a href="index.html">▶ DASHBOARD</a>
+
       <a href="collection.html">▣ COLLECTION</a>
+
       <a href="catalog.html">▥ CATALOG</a>
+
       <a href="masterset.html">▤ MASTERSET</a>
+
       <a href="wishlist.html">♡ WISHLIST</a>
+
       <a href="market.html">⌁ MARKET</a>
+
     </nav>
+
   </aside>
+
 
   <main class="main">
 
     <div class="top">
+
       <div>
-        <div class="title">CATALOG</div>
-        <div class="tag">TCGDEX // CARD DATABASE</div>
+
+        <div class="title">
+          CATALOG
+        </div>
+
+        <div class="tag">
+          TCGDEX // CARD DATABASE
+        </div>
+
       </div>
 
-      <a class="btn" href="collection.html#add">+ ADD CARD</a>
+      <a
+        class="btn"
+        href="collection.html#add"
+      >
+        + ADD CARD
+      </a>
+
     </div>
+
 
     <div class="section">
 
@@ -162,9 +203,16 @@
 
         <div class="search-box">
 
+
+          <!-- SEARCH -->
+
           <div class="search-field">
-            <label class="search-label" for="searchInput">
-              CARD / NUMBER
+
+            <label
+              class="search-label"
+              for="searchInput"
+            >
+              NUMERO / NOME CARTA
             </label>
 
             <input
@@ -173,19 +221,69 @@
               placeholder="Es. Gengar, Pikachu, 154..."
               autocomplete="off"
             >
+
           </div>
 
+
+          <!-- LANGUAGE -->
+
           <div class="search-field">
-            <label class="search-label" for="setSelect">
+
+            <label
+              class="search-label"
+              for="languageSelect"
+            >
+              LINGUA
+            </label>
+
+            <select id="languageSelect">
+
+              <option value="it">
+                🇮🇹 IT
+              </option>
+
+              <option value="en">
+                🇬🇧 EN
+              </option>
+
+              <option value="ja">
+                🇯🇵 JP
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- SET -->
+
+          <div class="search-field">
+
+            <label
+              class="search-label"
+              for="setSelect"
+            >
               SET
             </label>
 
             <select id="setSelect">
-              <option value="">Tutti i set</option>
+
+              <option value="">
+                Tutti i set
+              </option>
+
             </select>
+
           </div>
 
-          <div class="search-field" style="align-self:end;">
+
+          <!-- SEARCH BUTTON -->
+
+          <div
+            class="search-field"
+            style="align-self:end;"
+          >
+
             <button
               id="searchBtn"
               class="btn"
@@ -193,9 +291,11 @@
             >
               SEARCH
             </button>
+
           </div>
 
         </div>
+
 
         <div
           id="status"
@@ -208,17 +308,23 @@
 
     </div>
 
+
     <div class="section">
 
       <h2>RESULTS</h2>
 
-      <div id="results" class="results-grid"></div>
+      <div
+        id="results"
+        class="results-grid"
+      ></div>
+
 
       <div
         id="loadMoreWrap"
         class="load-more-wrap"
         style="display:none;"
       >
+
         <button
           id="loadMoreBtn"
           class="btn secondary"
@@ -226,72 +332,149 @@
         >
           LOAD MORE
         </button>
+
       </div>
 
     </div>
 
   </main>
+
 </div>
 
+
 <nav class="mobile">
-  <a href="index.html">⌂<br>DASH</a>
-  <a href="collection.html">▣<br>COLL</a>
-  <a href="catalog.html">▥<br>CAT</a>
-  <a href="masterset.html">▤<br>SET</a>
-  <a href="wishlist.html">♡<br>WISH</a>
-  <a href="market.html">⌁<br>MARKET</a>
+
+  <a href="index.html">
+    ⌂<br>DASH
+  </a>
+
+  <a href="collection.html">
+    ▣<br>COLL
+  </a>
+
+  <a href="catalog.html">
+    ▥<br>CAT
+  </a>
+
+  <a href="masterset.html">
+    ▤<br>SET
+  </a>
+
+  <a href="wishlist.html">
+    ♡<br>WISH
+  </a>
+
+  <a href="market.html">
+    ⌁<br>MARKET
+  </a>
+
 </nav>
 
 
 <script>
 
-const API = "https://api.tcgdex.net/v2";
 
-const PAGE_SIZE = 40;
+/* =========================================================
+   CONFIG
+========================================================= */
 
-let currentLang = "it";
+const API =
+  "https://api.tcgdex.net/v2";
 
-let allSets = [];
-let setsMap = {};
+const PAGE_SIZE =
+  40;
 
-let currentPage = 1;
-let currentQuery = "";
-let currentSetId = "";
 
-let loading = false;
-let hasMore = false;
+/* =========================================================
+   STATE
+========================================================= */
 
-let lastResults = [];
+let currentLang =
+  "it";
 
+let allSets =
+  [];
+
+let setsMap =
+  {};
+
+let currentPage =
+  1;
+
+let currentQuery =
+  "";
+
+let currentSetId =
+  "";
+
+let loading =
+  false;
+
+let hasMore =
+  false;
+
+let lastResults =
+  [];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
 const searchInput =
-  document.getElementById("searchInput");
+  document.getElementById(
+    "searchInput"
+  );
+
+const languageSelect =
+  document.getElementById(
+    "languageSelect"
+  );
 
 const setSelect =
-  document.getElementById("setSelect");
+  document.getElementById(
+    "setSelect"
+  );
 
 const searchBtn =
-  document.getElementById("searchBtn");
+  document.getElementById(
+    "searchBtn"
+  );
 
 const results =
-  document.getElementById("results");
+  document.getElementById(
+    "results"
+  );
 
 const status =
-  document.getElementById("status");
+  document.getElementById(
+    "status"
+  );
 
 const loadMoreWrap =
-  document.getElementById("loadMoreWrap");
+  document.getElementById(
+    "loadMoreWrap"
+  );
 
 const loadMoreBtn =
-  document.getElementById("loadMoreBtn");
+  document.getElementById(
+    "loadMoreBtn"
+  );
 
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function normalize(value) {
 
   return String(value || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
     .trim();
 
 }
@@ -300,48 +483,84 @@ function normalize(value) {
 function escapeHtml(value) {
 
   return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
 
 function cardImage(card) {
 
-  if (!card || !card.image) {
+  if (
+    !card ||
+    !card.image
+  ) {
+
     return "";
+
   }
 
-  let image = card.image;
-
-  if (!image) {
-    return "";
-  }
+  let image =
+    card.image;
 
   if (
     image.endsWith(".png") ||
     image.endsWith(".jpg") ||
-    image.endsWith(".jpeg")
+    image.endsWith(".jpeg") ||
+    image.endsWith(".webp")
   ) {
+
     return image;
+
   }
 
-  return image + "/high.webp";
+  return (
+    image +
+    "/high.webp"
+  );
 
 }
 
 
 function getSetId(card) {
 
-  if (card?.set?.id) {
+  if (
+    card &&
+    card.set &&
+    card.set.id
+  ) {
+
     return card.set.id;
+
   }
 
-  if (card?.id) {
-    return String(card.id).split("-")[0];
+  if (
+    card &&
+    card.id
+  ) {
+
+    return String(
+      card.id
+    ).split("-")[0];
+
   }
 
   return "";
@@ -351,14 +570,26 @@ function getSetId(card) {
 
 function getSetName(card) {
 
-  if (card?.set?.name) {
-    return card.set.name;
+  const setId =
+    getSetId(card);
+
+  if (
+    setsMap[setId] &&
+    setsMap[setId].name
+  ) {
+
+    return setsMap[setId].name;
+
   }
 
-  const id = getSetId(card);
+  if (
+    card &&
+    card.set &&
+    card.set.name
+  ) {
 
-  if (setsMap[id]?.name) {
-    return setsMap[id].name;
+    return card.set.name;
+
   }
 
   return "Set sconosciuto";
@@ -366,28 +597,44 @@ function getSetName(card) {
 }
 
 
+/* =========================================================
+   LOAD SETS
+   Sempre in italiano.
+   Così il menu SET resta leggibile anche
+   quando selezioniamo EN o JP.
+========================================================= */
+
 async function loadSets() {
 
   try {
 
     const response =
       await fetch(
-        `${API}/${currentLang}/sets`
+        `${API}/it/sets`
       );
 
     if (!response.ok) {
-      throw new Error("Errore caricamento set");
+
+      throw new Error(
+        "Errore caricamento set"
+      );
+
     }
 
-    allSets = await response.json();
+    allSets =
+      await response.json();
 
-    setsMap = {};
+    setsMap =
+      {};
 
-    allSets.forEach(set => {
+    allSets.forEach(
+      set => {
 
-      setsMap[set.id] = set;
+        setsMap[set.id] =
+          set;
 
-    });
+      }
+    );
 
     populateSetSelect();
 
@@ -403,69 +650,86 @@ async function loadSets() {
 }
 
 
+/* =========================================================
+   SET DROPDOWN
+========================================================= */
+
 function populateSetSelect() {
 
   setSelect.innerHTML =
-    `<option value="">Tutti i set</option>`;
+    `
+      <option value="">
+        Tutti i set
+      </option>
+    `;
 
   const sortedSets =
-    [...allSets].sort((a, b) =>
-      String(a.name || "")
-        .localeCompare(
-          String(b.name || ""),
+    [...allSets].sort(
+      (a, b) =>
+        String(
+          a.name || ""
+        ).localeCompare(
+          String(
+            b.name || ""
+          ),
           "it"
         )
     );
 
-  sortedSets.forEach(set => {
+  sortedSets.forEach(
+    set => {
 
-    const option =
-      document.createElement("option");
+      const option =
+        document.createElement(
+          "option"
+        );
 
-    option.value = set.id;
+      option.value =
+        set.id;
 
-    option.textContent =
-      set.name || set.id;
+      option.textContent =
+        set.name ||
+        set.id;
 
-    setSelect.appendChild(option);
+      setSelect.appendChild(
+        option
+      );
 
-  });
+    }
+  );
 
 }
 
+
+/* =========================================================
+   FIND SET
+========================================================= */
 
 function findSetById(id) {
 
   if (!id) {
+
     return null;
+
   }
 
   return (
     allSets.find(
-      set => normalize(set.id) === normalize(id)
-    ) || null
+      set =>
+        normalize(
+          set.id
+        ) ===
+        normalize(id)
+    ) ||
+    null
   );
 
 }
 
 
-function findSetByExactName(name) {
-
-  if (!name) {
-    return null;
-  }
-
-  const wanted =
-    normalize(name);
-
-  return (
-    allSets.find(
-      set => normalize(set.name) === wanted
-    ) || null
-  );
-
-}
-
+/* =========================================================
+   RENDER CARD
+========================================================= */
 
 function renderCard(card) {
 
@@ -473,18 +737,22 @@ function renderCard(card) {
     cardImage(card);
 
   const name =
-    card.name || "Unknown";
+    card.name ||
+    "Unknown";
 
   const localId =
-    card.localId || "—";
+    card.localId ||
+    "—";
 
   const setName =
     getSetName(card);
 
   const cardId =
-    card.id || "";
+    card.id ||
+    "";
 
   return `
+
     <div
       class="catalog-card"
       data-card-id="${escapeHtml(cardId)}"
@@ -492,27 +760,46 @@ function renderCard(card) {
 
       ${
         image
-          ? `<img
-               src="${escapeHtml(image)}"
-               alt="${escapeHtml(name)}"
-               loading="lazy"
-             >`
-          : `<div class="fakecard">
-               NO IMAGE
-             </div>`
+
+          ? `
+
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(name)}"
+              loading="lazy"
+            >
+
+          `
+
+          : `
+
+            <div class="fakecard">
+              NO IMAGE
+            </div>
+
+          `
       }
+
 
       <div class="catalog-info">
 
         <div class="catalog-name">
+
           ${escapeHtml(name)}
+
         </div>
 
+
         <div class="catalog-meta">
+
           ${escapeHtml(setName)}
+
           <br>
+
           Nº ${escapeHtml(localId)}
+
         </div>
+
 
         <div class="catalog-actions">
 
@@ -523,6 +810,7 @@ function renderCard(card) {
           >
             VIEW
           </button>
+
 
           <button
             class="btn add-btn"
@@ -537,21 +825,31 @@ function renderCard(card) {
       </div>
 
     </div>
+
   `;
 
 }
 
 
+/* =========================================================
+   RENDER RESULTS
+========================================================= */
+
 function renderResults(cards) {
 
-  lastResults = cards || [];
+  lastResults =
+    cards || [];
 
-  if (!lastResults.length) {
+  if (
+    !lastResults.length
+  ) {
 
     results.innerHTML =
-      `<div class="empty-state">
-        Nessun risultato.
-      </div>`;
+      `
+        <div class="empty-state">
+          Nessun risultato.
+        </div>
+      `;
 
     return;
 
@@ -559,16 +857,148 @@ function renderResults(cards) {
 
   results.innerHTML =
     lastResults
-      .map(card => renderCard(card))
+      .map(
+        card =>
+          renderCard(card)
+      )
       .join("");
 
 }
 
 
-async function viewCard(cardId) {
+/* =========================================================
+   GET ITALIAN VERSION
+=========================================================
+
+   Gli ID sono gli stessi tra le lingue.
+   Quindi prendiamo la carta nella lingua scelta
+   e poi recuperiamo la versione italiana per
+   mostrare sempre il nome italiano.
+========================================================= */
+
+async function getItalianCard(cardId) {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/it/cards/${encodeURIComponent(cardId)}`
+      );
+
+    if (!response.ok) {
+
+      return null;
+
+    }
+
+    return await response.json();
+
+  } catch (error) {
+
+    console.error(error);
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================================
+   LOCALIZE RESULTS
+========================================================= */
+
+async function localizeResults(
+  cards
+) {
+
+  if (
+    !cards ||
+    !cards.length
+  ) {
+
+    return [];
+
+  }
+
+  /*
+    Se siamo già in italiano,
+    non servono altre chiamate.
+  */
+
+  if (
+    currentLang === "it"
+  ) {
+
+    return cards;
+
+  }
+
+
+  /*
+    Per EN / JP:
+    recuperiamo il nome italiano
+    usando lo stesso card ID.
+  */
+
+  const localized =
+    await Promise.all(
+
+      cards.map(
+        async card => {
+
+          const italianCard =
+            await getItalianCard(
+              card.id
+            );
+
+          if (
+            italianCard
+          ) {
+
+            return {
+              ...card,
+
+              name:
+                italianCard.name,
+
+              /*
+                Il set visualizzato
+                resta quello italiano.
+              */
+
+              set:
+                italianCard.set ||
+                card.set
+
+            };
+
+          }
+
+          return card;
+
+        }
+      )
+
+    );
+
+  return localized;
+
+}
+
+
+/* =========================================================
+   VIEW CARD
+========================================================= */
+
+async function viewCard(
+  cardId
+) {
 
   if (!cardId) {
+
     return;
+
   }
 
   try {
@@ -579,116 +1009,123 @@ async function viewCard(cardId) {
       );
 
     if (!response.ok) {
-      throw new Error("Card non trovata");
+
+      throw new Error(
+        "Card non trovata"
+      );
+
     }
 
     const card =
       await response.json();
 
+    const italianCard =
+      await getItalianCard(
+        cardId
+      );
+
+    const displayName =
+      italianCard?.name ||
+      card.name ||
+      "Card";
+
     const setName =
-      getSetName(card);
+      getSetName(
+        italianCard ||
+        card
+      );
 
     alert(
-      `${card.name || "Card"}\n\n` +
+
+      `${displayName}\n\n` +
+
       `Set: ${setName}\n` +
-      `Numero: ${card.localId || "—"}\n` +
-      `ID: ${card.id || cardId}`
+
+      `Numero: ${
+        card.localId ||
+        "—"
+      }\n` +
+
+      `Lingua: ${
+        currentLang === "it"
+          ? "Italiano"
+          : currentLang === "en"
+            ? "Inglese"
+            : "Giapponese"
+      }\n\n` +
+
+      `ID: ${
+        card.id ||
+        cardId
+      }`
+
     );
 
   } catch (error) {
 
     console.error(error);
 
-    alert("Impossibile aprire la carta.");
+    alert(
+      "Impossibile aprire la carta."
+    );
 
   }
 
 }
 
 
-function addToCollection(cardId) {
+/* =========================================================
+   ADD TO COLLECTION
+========================================================= */
+
+function addToCollection(
+  cardId
+) {
 
   if (!cardId) {
+
     return;
+
   }
 
   const url =
     `collection.html?add=${encodeURIComponent(cardId)}`;
 
-  window.location.href = url;
+  window.location.href =
+    url;
 
 }
 
 
-async function loadGeneralPage(
+/* =========================================================
+   SEARCH GENERAL BY NAME
+=========================================================
+
+   IMPORTANTE:
+   La ricerca del nome viene fatta
+   SEMPRE sull'API italiana.
+
+   Quindi:
+   Gengar + JP
+   funziona anche se il nome giapponese
+   è completamente diverso.
+========================================================= */
+
+async function searchByName(
   query,
   page,
   append = false
 ) {
 
-  const params =
-    new URLSearchParams();
-
-  params.set("name", `contains:${query}`);
-  params.set("pagination:page", page);
-  params.set(
-    "pagination:itemsPerPage",
-    PAGE_SIZE
-  );
-
-  const response =
-    await fetch(
-      `${API}/${currentLang}/cards?${params.toString()}`
-    );
-
-  if (!response.ok) {
-    throw new Error("Errore ricerca");
-  }
-
-  const data =
-    await response.json();
-
-  const cards =
-    data.cards || data || [];
-
-  if (append) {
-
-    lastResults =
-      lastResults.concat(cards);
-
-  } else {
-
-    lastResults =
-      cards;
-
-  }
-
-  renderResults(lastResults);
-
-  hasMore =
-    cards.length === PAGE_SIZE;
-
-  loadMoreWrap.style.display =
-    hasMore ? "block" : "none";
-
   status.textContent =
-    `${lastResults.length} risultati`;
-
-}
-
-
-async function loadNumberPage(
-  number,
-  page,
-  append = false
-) {
+    `Ricerca ${query}...`;
 
   const params =
     new URLSearchParams();
 
   params.set(
-    "localId",
-    `eq:${number}`
+    "name",
+    query
   );
 
   params.set(
@@ -703,44 +1140,253 @@ async function loadNumberPage(
 
   const response =
     await fetch(
-      `${API}/${currentLang}/cards?${params.toString()}`
+      `${API}/it/cards?${params.toString()}`
     );
 
   if (!response.ok) {
-    throw new Error("Errore ricerca numero");
+
+    throw new Error(
+      "Errore ricerca nome"
+    );
+
   }
 
   const data =
     await response.json();
 
   const cards =
-    data.cards || data || [];
+    data.cards ||
+    data ||
+    [];
+
+
+  /*
+    Ora recuperiamo la versione
+    nella lingua scelta.
+  */
+
+  const languageCards =
+    await Promise.all(
+
+      cards.map(
+        async card => {
+
+          if (
+            currentLang === "it"
+          ) {
+
+            return card;
+
+          }
+
+          try {
+
+            const response =
+              await fetch(
+                `${API}/${currentLang}/cards/${encodeURIComponent(card.id)}`
+              );
+
+            if (
+              response.ok
+            ) {
+
+              return await response.json();
+
+            }
+
+          } catch (
+            error
+          ) {
+
+            console.error(
+              error
+            );
+
+          }
+
+          return null;
+
+        }
+      )
+
+    );
+
+
+  const validCards =
+    languageCards.filter(
+      Boolean
+    );
+
+
+  /*
+    Aggiungiamo il nome italiano.
+  */
+
+  const finalCards =
+    await localizeResults(
+      validCards
+    );
+
 
   if (append) {
 
     lastResults =
-      lastResults.concat(cards);
+      lastResults.concat(
+        finalCards
+      );
 
   } else {
 
     lastResults =
-      cards;
+      finalCards;
 
   }
 
-  renderResults(lastResults);
+
+  renderResults(
+    lastResults
+  );
+
 
   hasMore =
-    cards.length === PAGE_SIZE;
+    cards.length ===
+    PAGE_SIZE;
 
   loadMoreWrap.style.display =
-    hasMore ? "block" : "none";
+    hasMore
+      ? "block"
+      : "none";
+
+
+  status.textContent =
+    `${lastResults.length} risultati`;
+
+}
+
+
+/* =========================================================
+   SEARCH BY NUMBER
+=========================================================
+
+   Esempio:
+   154
+
+   Prima cerchiamo il numero nella lingua
+   selezionata, poi recuperiamo il nome italiano.
+========================================================= */
+
+async function searchByNumber(
+  number,
+  page,
+  append = false
+) {
+
+  status.textContent =
+    `Ricerca carta numero ${number}...`;
+
+
+  const params =
+    new URLSearchParams();
+
+
+  /*
+    TCGdex:
+    localId=154
+  */
+
+  params.set(
+    "localId",
+    number
+  );
+
+
+  params.set(
+    "pagination:page",
+    page
+  );
+
+
+  params.set(
+    "pagination:itemsPerPage",
+    PAGE_SIZE
+  );
+
+
+  const response =
+    await fetch(
+      `${API}/${currentLang}/cards?${params.toString()}`
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Errore ricerca numero"
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  const cards =
+    data.cards ||
+    data ||
+    [];
+
+
+  /*
+    Recuperiamo i nomi italiani.
+  */
+
+  const finalCards =
+    await localizeResults(
+      cards
+    );
+
+
+  if (append) {
+
+    lastResults =
+      lastResults.concat(
+        finalCards
+      );
+
+  } else {
+
+    lastResults =
+      finalCards;
+
+  }
+
+
+  renderResults(
+    lastResults
+  );
+
+
+  hasMore =
+    cards.length ===
+    PAGE_SIZE;
+
+
+  loadMoreWrap.style.display =
+    hasMore
+      ? "block"
+      : "none";
+
 
   status.textContent =
     `${lastResults.length} carte numerate ${number}`;
 
 }
 
+
+/* =========================================================
+   SEARCH INSIDE SET
+========================================================= */
 
 async function searchInsideSet(
   query,
@@ -753,8 +1399,12 @@ async function searchInsideSet(
   loadMoreWrap.style.display =
     "none";
 
+
   const set =
-    findSetById(setId);
+    findSetById(
+      setId
+    );
+
 
   if (!set) {
 
@@ -767,56 +1417,162 @@ async function searchInsideSet(
 
   }
 
+
   try {
+
+    /*
+      Recuperiamo il set
+      nella lingua selezionata.
+    */
 
     const response =
       await fetch(
         `${API}/${currentLang}/sets/${encodeURIComponent(set.id)}`
       );
 
+
     if (!response.ok) {
-      throw new Error("Set non trovato");
+
+      throw new Error(
+        "Set non trovato"
+      );
+
     }
+
 
     const fullSet =
       await response.json();
 
+
     let cards =
-      fullSet.cards || [];
+      fullSet.cards ||
+      [];
+
 
     const wanted =
-      normalize(query);
+      normalize(
+        query
+      );
+
+
+    /*
+      Se abbiamo scritto qualcosa:
+      nome italiano oppure numero.
+    */
 
     if (wanted) {
 
-      cards =
-        cards.filter(card => {
+      /*
+        Se è un numero,
+        confronto esatto localId.
+      */
 
-          const name =
-            normalize(card.name);
+      if (
+        /^\d+$/.test(
+          wanted
+        )
+      ) {
 
-          const localId =
-            normalize(card.localId);
-
-          return (
-            name.includes(wanted) ||
-            localId === wanted
+        cards =
+          cards.filter(
+            card =>
+              String(
+                card.localId
+              ) ===
+              String(
+                wanted
+              )
           );
 
-        });
+      } else {
+
+        /*
+          Per il nome:
+          recuperiamo le informazioni
+          italiane per confrontare
+          il nome corretto.
+        */
+
+        const italianCards =
+          await Promise.all(
+
+            cards.map(
+              card =>
+                getItalianCard(
+                  card.id
+                )
+            )
+
+          );
+
+
+        const matchingIds =
+          new Set();
+
+
+        italianCards.forEach(
+          italianCard => {
+
+            if (
+              italianCard &&
+              normalize(
+                italianCard.name
+              ).includes(
+                wanted
+              )
+            ) {
+
+              matchingIds.add(
+                italianCard.id
+              );
+
+            }
+
+          }
+        );
+
+
+        cards =
+          cards.filter(
+            card =>
+              matchingIds.has(
+                card.id
+              )
+          );
+
+      }
 
     }
 
-    lastResults = cards;
 
-    renderResults(cards);
+    /*
+      Convertiamo i risultati
+      con nome/set italiani.
+    */
+
+    const finalCards =
+      await localizeResults(
+        cards
+      );
+
+
+    lastResults =
+      finalCards;
+
+
+    renderResults(
+      finalCards
+    );
+
 
     status.textContent =
-      `${cards.length} risultati in ${set.name}`;
+      `${finalCards.length} risultati in ${set.name}`;
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     renderResults([]);
 
@@ -828,82 +1584,151 @@ async function searchInsideSet(
 }
 
 
+/* =========================================================
+   EXACT CARD ID
+========================================================= */
+
 async function searchExactCard(
   query
 ) {
 
-  let cardId =
-    query;
+  /*
+    Esempio:
+    me55-154
+  */
 
   if (
-    !query.includes("-")
+    !query.includes("-") ||
+    query.includes(" ")
   ) {
+
     return false;
+
   }
 
-  const response =
-    await fetch(
-      `${API}/${currentLang}/cards/${encodeURIComponent(cardId)}`
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/${currentLang}/cards/${encodeURIComponent(query)}`
+      );
+
+
+    if (!response.ok) {
+
+      return false;
+
+    }
+
+
+    const card =
+      await response.json();
+
+
+    const finalCard =
+      (
+        await localizeResults(
+          [card]
+        )
+      )[0];
+
+
+    renderResults([
+      finalCard
+    ]);
+
+
+    status.textContent =
+      "1 risultato";
+
+
+    loadMoreWrap.style.display =
+      "none";
+
+
+    return true;
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      error
     );
 
-  if (!response.ok) {
     return false;
+
   }
-
-  const card =
-    await response.json();
-
-  renderResults([card]);
-
-  status.textContent =
-    "1 risultato";
-
-  loadMoreWrap.style.display =
-    "none";
-
-  return true;
 
 }
 
 
+/* =========================================================
+   MAIN SEARCH
+========================================================= */
+
 async function searchCards() {
 
   if (loading) {
+
     return;
+
   }
 
-  loading = true;
+
+  loading =
+    true;
+
 
   currentQuery =
     searchInput.value.trim();
 
+
   currentSetId =
     setSelect.value;
 
-  currentPage = 1;
 
-  lastResults = [];
+  currentLang =
+    languageSelect.value;
+
+
+  currentPage =
+    1;
+
+
+  lastResults =
+    [];
+
 
   loadMoreWrap.style.display =
     "none";
 
-  results.innerHTML = "";
+
+  results.innerHTML =
+    "";
+
 
   const query =
     currentQuery;
 
+
   const setId =
     currentSetId;
 
+
   try {
 
+
     /*
-      CASO 1
-      Nessuna ricerca + SET selezionato
-      -> mostra tutte le carte del set
+      NESSUN TESTO + SET
+      -> tutto il set
     */
 
-    if (!query && setId) {
+    if (
+      !query &&
+      setId
+    ) {
 
       await searchInsideSet(
         "",
@@ -916,11 +1741,13 @@ async function searchCards() {
 
 
     /*
-      CASO 2
-      Nessun testo e nessun set
+      NIENTE
     */
 
-    if (!query && !setId) {
+    if (
+      !query &&
+      !setId
+    ) {
 
       status.textContent =
         "Inserisci un nome o un numero.";
@@ -933,11 +1760,9 @@ async function searchCards() {
 
 
     /*
-      CASO 3
-      ID preciso tipo:
+      ID PRECISO
+      Esempio:
       me55-154
-      sv01-001
-      ecc.
     */
 
     if (
@@ -946,19 +1771,24 @@ async function searchCards() {
     ) {
 
       const found =
-        await searchExactCard(query);
+        await searchExactCard(
+          query
+        );
+
 
       if (found) {
+
         return;
+
       }
 
     }
 
 
     /*
-      CASO 4
-      SET selezionato
-      -> ricerca direttamente dentro il set
+      SET + NUMERO
+      oppure
+      SET + NOME
     */
 
     if (setId) {
@@ -974,17 +1804,18 @@ async function searchCards() {
 
 
     /*
-      CASO 5
-      Numero puro
-      Es. 154
-      -> tutte le carte numerate 154
+      NUMERO PURO
+      Esempio:
+      154
     */
 
     if (
-      /^\d+$/.test(query)
+      /^\d+$/.test(
+        query
+      )
     ) {
 
-      await loadNumberPage(
+      await searchByNumber(
         query,
         1,
         false
@@ -996,22 +1827,26 @@ async function searchCards() {
 
 
     /*
-      CASO 6
-      Ricerca per nome
-      Es. Gengar
+      NOME
+      Esempio:
+      Gengar
       Pikachu
       Charizard
     */
 
-    await loadGeneralPage(
+    await searchByName(
       query,
       1,
       false
     );
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     renderResults([]);
 
@@ -1020,12 +1855,17 @@ async function searchCards() {
 
   } finally {
 
-    loading = false;
+    loading =
+      false;
 
   }
 
 }
 
+
+/* =========================================================
+   LOAD MORE
+========================================================= */
 
 async function loadMore() {
 
@@ -1033,31 +1873,39 @@ async function loadMore() {
     loading ||
     !hasMore
   ) {
+
     return;
+
   }
 
-  loading = true;
+
+  loading =
+    true;
+
 
   try {
 
     currentPage++;
 
+
     const query =
       currentQuery;
+
 
     const setId =
       currentSetId;
 
-    if (
-      setId
-    ) {
 
-      await searchInsideSet(
-        query,
-        setId
-      );
+    /*
+      Se abbiamo un SET,
+      i risultati del set sono
+      già stati caricati tutti.
+    */
 
-      hasMore = false;
+    if (setId) {
+
+      hasMore =
+        false;
 
       loadMoreWrap.style.display =
         "none";
@@ -1067,11 +1915,17 @@ async function loadMore() {
     }
 
 
+    /*
+      NUMERO
+    */
+
     if (
-      /^\d+$/.test(query)
+      /^\d+$/.test(
+        query
+      )
     ) {
 
-      await loadNumberPage(
+      await searchByNumber(
         query,
         currentPage,
         true
@@ -1082,15 +1936,23 @@ async function loadMore() {
     }
 
 
-    await loadGeneralPage(
+    /*
+      NOME
+    */
+
+    await searchByName(
       query,
       currentPage,
       true
     );
 
-  } catch (error) {
+  } catch (
+    error
+  ) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
     currentPage--;
 
@@ -1099,12 +1961,17 @@ async function loadMore() {
 
   } finally {
 
-    loading = false;
+    loading =
+      false;
 
   }
 
 }
 
+
+/* =========================================================
+   EVENTS
+========================================================= */
 
 searchBtn.addEventListener(
   "click",
@@ -1117,7 +1984,8 @@ searchInput.addEventListener(
   event => {
 
     if (
-      event.key === "Enter"
+      event.key ===
+      "Enter"
     ) {
 
       searchCards();
@@ -1128,16 +1996,15 @@ searchInput.addEventListener(
 );
 
 
-setSelect.addEventListener(
+/*
+  Cambiando lingua:
+  se c'è già una ricerca,
+  la ripete automaticamente.
+*/
+
+languageSelect.addEventListener(
   "change",
   () => {
-
-    /*
-      Se cambio set mentre
-      ho già scritto qualcosa,
-      lancio automaticamente
-      la nuova ricerca.
-    */
 
     if (
       searchInput.value.trim() ||
@@ -1152,20 +2019,52 @@ setSelect.addEventListener(
 );
 
 
+/*
+  Cambiando set:
+  la ricerca viene aggiornata.
+*/
+
+setSelect.addEventListener(
+  "change",
+  () => {
+
+    if (
+      searchInput.value.trim() ||
+      setSelect.value
+    ) {
+
+      searchCards();
+
+    }
+
+  }
+);
+
+
+/*
+  LOAD MORE
+*/
+
 loadMoreBtn.addEventListener(
   "click",
   loadMore
 );
 
 
+/*
+  CLICK SULLE CARTE
+*/
+
 results.addEventListener(
   "click",
   event => {
+
 
     const viewButton =
       event.target.closest(
         ".view-btn"
       );
+
 
     if (viewButton) {
 
@@ -1185,6 +2084,7 @@ results.addEventListener(
         ".add-btn"
       );
 
+
     if (addButton) {
 
       event.stopPropagation();
@@ -1203,6 +2103,7 @@ results.addEventListener(
         ".catalog-card"
       );
 
+
     if (card) {
 
       viewCard(
@@ -1215,9 +2116,9 @@ results.addEventListener(
 );
 
 
-/*
-  INIT
-*/
+/* =========================================================
+   INIT
+========================================================= */
 
 (async function init() {
 
@@ -1226,14 +2127,22 @@ results.addEventListener(
 })();
 
 
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
 if (
   "serviceWorker" in navigator &&
   location.protocol !== "file:"
 ) {
 
   navigator.serviceWorker
-    .register("./sw.js?v=8")
-    .catch(() => {});
+    .register(
+      "./sw.js?v=9"
+    )
+    .catch(
+      () => {}
+    );
 
 }
 
