@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pokémon Collection Manager — CATALOG</title>
+
+<title>Pokémon Collection Manager — CATALOG V5</title>
+
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="./manifest.webmanifest">
+
 <meta name="theme-color" content="#0b1220">
 
 <style>
@@ -74,6 +77,24 @@
   flex:1;
 }
 
+.load-more-wrap{
+  text-align:center;
+  margin:25px 0 40px;
+}
+
+.load-more-btn{
+  background:#1d5fa7;
+  border:1px solid #2f78c5;
+  color:white;
+  padding:12px 25px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.load-more-btn:hover{
+  filter:brightness(1.15);
+}
+
 .catalog-empty{
   border:1px dashed #344154;
   padding:30px;
@@ -124,20 +145,6 @@
   border-color:#2f78c5;
 }
 
-.small-btn:hover{
-  filter:brightness(1.12);
-}
-
-.load-more-wrap{
-  display:flex;
-  justify-content:center;
-  margin:22px 0 30px;
-}
-
-.load-more-btn{
-  min-width:180px;
-}
-
 @media(max-width:700px){
 
   .catalog-toolbar{
@@ -169,19 +176,19 @@
 
 <aside class="side">
 
-  <div class="logo">
-    POKÉMON CM
-    <small>COLLECTION MANAGER · CATALOG V4</small>
-  </div>
+<div class="logo">
+POKÉMON CM
+<small>COLLECTION MANAGER · CATALOG V5</small>
+</div>
 
-  <nav class="nav">
-    <a href="index.html">▶ DASHBOARD</a>
-    <a href="collection.html">▣ COLLECTION</a>
-    <a href="catalog.html">▥ CATALOG</a>
-    <a href="masterset.html">▤ MASTERSET</a>
-    <a href="wishlist.html">♡ WISHLIST</a>
-    <a href="market.html">⌁ MARKET</a>
-  </nav>
+<nav class="nav">
+<a href="index.html">▶ DASHBOARD</a>
+<a href="collection.html">▣ COLLECTION</a>
+<a href="catalog.html">▥ CATALOG</a>
+<a href="masterset.html">▤ MASTERSET</a>
+<a href="wishlist.html">♡ WISHLIST</a>
+<a href="market.html">⌁ MARKET</a>
+</nav>
 
 </aside>
 
@@ -189,70 +196,68 @@
 
 <div class="top">
 
-  <div>
-    <div class="title">CATALOG</div>
-    <div class="tag">TCGDEX // LIVE CARD DATABASE · V4</div>
-  </div>
+<div>
+<div class="title">CATALOG</div>
+<div class="tag">TCGDEX // LIVE CARD DATABASE · V5</div>
+</div>
 
-  <a class="btn" href="collection.html#add">+ ADD CARD</a>
+<a class="btn" href="collection.html#add">+ ADD CARD</a>
 
 </div>
 
 <div class="notice">
-  Catalogo collegato al database TCGdex.
-  Cerca per nome oppure per numero carta.
-  I risultati vengono caricati a pagine da 40.
+Catalogo collegato al database TCGdex. Cerca per nome oppure per numero carta.
 </div>
 
 <div class="catalog-toolbar">
 
-  <div class="search-wrap">
-    <input
-      id="search"
-      class="input"
-      autocomplete="off"
-      placeholder="Es. Charizard, Pikachu, 199/165..."
-    >
-  </div>
+<div class="search-wrap">
+<input
+id="search"
+class="input"
+autocomplete="off"
+placeholder="Es. Charizard, Pikachu, 199/165..."
+>
+</div>
 
-  <select id="lang" class="input">
-    <option value="it">🇮🇹 ITALIANO</option>
-    <option value="en">🇬🇧 ENGLISH</option>
-    <option value="ja">🇯🇵 JAPANESE</option>
-  </select>
+<select id="lang" class="input">
+<option value="it">🇮🇹 ITALIANO</option>
+<option value="en">🇬🇧 ENGLISH</option>
+<option value="ja">🇯🇵 JAPANESE</option>
+</select>
 
-  <button id="searchBtn" class="btn" type="button">
-    SEARCH
-  </button>
+<button id="searchBtn" class="btn" type="button">
+SEARCH
+</button>
 
 </div>
 
 <div id="status" class="catalog-status">
-  Inserisci almeno 2 caratteri e premi SEARCH.
+Inserisci almeno 2 caratteri e premi SEARCH.
 </div>
 
 <div id="detail" class="catalog-detail"></div>
 
 <div id="results" class="catalog-grid"></div>
 
-<div id="loadMoreWrap" class="load-more-wrap" style="display:none;">
-  <button id="loadMoreBtn" class="btn load-more-btn" type="button">
-    LOAD MORE
-  </button>
+<div id="loadMoreWrap" class="load-more-wrap" style="display:none">
+
+<button id="loadMoreBtn" class="load-more-btn" type="button">
+LOAD MORE
+</button>
+
 </div>
 
 </main>
 </div>
 
 <nav class="mobile">
-
-  <a href="index.html">⌂<br>DASH</a>
-  <a href="collection.html">▣<br>COLL</a>
-  <a href="catalog.html">▥<br>CAT</a>
-  <a href="masterset.html">▤<br>SET</a>
-  <a href="wishlist.html">♡<br>WISH</a>
-  <a href="market.html">⌁<br>MARKET</a>
-
+<a href="index.html">⌂<br>DASH</a>
+<a href="collection.html">▣<br>COLL</a>
+<a href="catalog.html">▥<br>CAT</a>
+<a href="masterset.html">▤<br>SET</a>
+<a href="wishlist.html">♡<br>WISH</a>
+<a href="market.html">⌁<br>MARKET</a>
 </nav>
 
 <script>
@@ -265,6 +270,7 @@ const langEl=document.getElementById('lang');
 const resultsEl=document.getElementById('results');
 const statusEl=document.getElementById('status');
 const detailEl=document.getElementById('detail');
+
 const loadMoreWrap=document.getElementById('loadMoreWrap');
 const loadMoreBtn=document.getElementById('loadMoreBtn');
 
@@ -272,60 +278,67 @@ let lastResults=[];
 let currentPage=1;
 let currentQuery='';
 let currentLang='it';
-let searchMode='name';
-let hasMore=false;
 let loading=false;
 
+
+/* ESCAPE HTML */
+
 function esc(v){
-  return String(v??'').replace(/[&<>"']/g,m=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#039;'
-  }[m]));
+  return String(v??'').replace(
+    /[&<>"']/g,
+    m=>({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#039;'
+    }[m])
+  );
 }
+
+
+/* IMAGE */
 
 function imageUrl(url){
   return url ? url+'.png' : '';
 }
 
+
+/* SET */
+
 function setText(card){
   return card.set?.name || 'Set sconosciuto';
 }
 
+
+/* BUILD URL */
+
 function buildUrl(page){
 
-  let url;
+  let url=API+currentLang+'/cards?';
 
-  if(searchMode==='localId'){
+  if(/^\d+[A-Za-z]?\s*\/\s*\d+/.test(currentQuery)){
 
-    url=
-      API+
-      currentLang+
-      '/cards?localId='+
-      encodeURIComponent(currentQuery)+
-      '&pagination:page='+
-      page+
-      '&pagination:itemsPerPage='+
-      PAGE_SIZE;
+    const local=currentQuery
+      .split('/')[0]
+      .trim();
+
+    url+='localId='+encodeURIComponent(local);
 
   }else{
 
-    url=
-      API+
-      currentLang+
-      '/cards?name='+
-      encodeURIComponent(currentQuery)+
-      '&pagination:page='+
-      page+
-      '&pagination:itemsPerPage='+
-      PAGE_SIZE;
+    url+='name='+encodeURIComponent(currentQuery);
 
   }
 
+  url+='&pagination:page='+page;
+  url+='&pagination:itemsPerPage='+PAGE_SIZE;
+
   return url;
 }
+
+
+/* SEARCH */
 
 async function searchCards(){
 
@@ -342,29 +355,29 @@ async function searchCards(){
   currentQuery=q;
   currentLang=langEl.value;
   currentPage=1;
-
-  searchMode=
-    /^\d+[A-Za-z]?\s*\/\s*\d+/.test(q)
-      ? 'localId'
-      : 'name';
-
   lastResults=[];
-  hasMore=false;
 
   resultsEl.innerHTML='';
   detailEl.classList.remove('show');
-  loadMoreWrap.style.display='none';
 
-  statusEl.textContent='Ricerca in corso...';
+  loadMoreWrap.style.display='none';
 
   await loadPage(false);
 }
 
-async function loadPage(append=true){
+
+/* LOAD PAGE */
+
+async function loadPage(append){
 
   if(loading) return;
 
   loading=true;
+
+  statusEl.textContent=
+    append
+      ? 'Caricamento altre carte...'
+      : 'Ricerca in corso...';
 
   try{
 
@@ -384,9 +397,7 @@ async function loadPage(append=true){
     const data=await r.json();
 
     const pageResults=
-      Array.isArray(data)
-        ? data
-        : [];
+      Array.isArray(data) ? data : [];
 
     if(append){
 
@@ -399,54 +410,59 @@ async function loadPage(append=true){
 
     }
 
+    renderResults();
+
     /*
-      Se riceviamo una pagina completa da 40,
-      consideriamo possibile che esista una pagina successiva.
-      Se arriva una pagina più corta di 40,
-      sappiamo che è l'ultima.
+      Se arrivano esattamente 40 risultati,
+      significa che potrebbe esserci un'altra pagina.
     */
 
-    hasMore=pageResults.length===PAGE_SIZE;
+    if(pageResults.length===PAGE_SIZE){
 
-    renderResults();
+      loadMoreWrap.style.display='block';
+
+    }else{
+
+      loadMoreWrap.style.display='none';
+
+    }
 
   }catch(e){
 
     statusEl.textContent=
       'Errore nel caricamento. Controlla la connessione e riprova.';
 
-  }finally{
-
-    loading=false;
-
   }
+
+  loading=false;
 }
+
+
+/* LOAD MORE */
 
 async function loadMore(){
 
-  if(!hasMore || loading) return;
+  if(loading) return;
 
   currentPage++;
 
-  loadMoreBtn.disabled=true;
-  loadMoreBtn.textContent='LOADING...';
-
   await loadPage(true);
-
-  loadMoreBtn.disabled=false;
-  loadMoreBtn.textContent='LOAD MORE';
 }
+
+
+/* RENDER */
 
 function renderResults(){
 
   if(!lastResults.length){
 
-    statusEl.textContent='Nessuna carta trovata.';
+    statusEl.textContent=
+      'Nessuna carta trovata.';
 
     resultsEl.innerHTML=
-      '<div class="catalog-empty">Nessun risultato. Prova un altro nome o numero.</div>';
-
-    loadMoreWrap.style.display='none';
+      '<div class="catalog-empty">'+
+      'Nessun risultato. Prova un altro nome o numero.'+
+      '</div>';
 
     return;
   }
@@ -499,12 +515,10 @@ function renderResults(){
       </article>
 
     `).join('');
-
-  loadMoreWrap.style.display=
-    hasMore
-      ? 'flex'
-      : 'none';
 }
+
+
+/* DETAILS */
 
 async function showCard(i){
 
@@ -515,17 +529,14 @@ async function showCard(i){
 
   try{
 
-    const r=
-      await fetch(
-        API+
-        langEl.value+
-        '/cards/'+
-        encodeURIComponent(brief.id)
-      );
+    const r=await fetch(
+      API+
+      langEl.value+
+      '/cards/'+
+      encodeURIComponent(brief.id)
+    );
 
-    if(!r.ok){
-      throw new Error();
-    }
+    if(!r.ok) throw new Error();
 
     const c=await r.json();
 
@@ -591,7 +602,6 @@ async function showCard(i){
         </div>
 
       </div>
-
     `;
 
     detailEl.classList.add('show');
@@ -607,6 +617,9 @@ async function showCard(i){
   }
 }
 
+
+/* SAVE */
+
 function saveCard(i,target){
 
   const c=lastResults[i];
@@ -614,17 +627,11 @@ function saveCard(i,target){
   const item={
 
     id:c.id,
-
     name:c.name,
-
     localId:c.localId,
-
     image:c.image,
-
     set:c.set||null,
-
     language:langEl.value,
-
     savedAt:new Date().toISOString()
 
   };
@@ -671,6 +678,9 @@ function saveCard(i,target){
   );
 }
 
+
+/* EVENTS */
+
 searchEl.addEventListener(
   'keydown',
   e=>{
@@ -680,12 +690,12 @@ searchEl.addEventListener(
   }
 );
 
-document
-  .getElementById('searchBtn')
-  .addEventListener(
-    'click',
-    searchCards
-  );
+document.getElementById(
+  'searchBtn'
+).addEventListener(
+  'click',
+  searchCards
+);
 
 loadMoreBtn.addEventListener(
   'click',
@@ -703,21 +713,25 @@ langEl.addEventListener(
   }
 );
 
+
+/* SERVICE WORKER */
+
 if(
   'serviceWorker' in navigator &&
   location.protocol!=='file:'
 ){
 
-  navigator.serviceWorker
-    .register(
-      './sw.js?v=4',
-      {
-        updateViaCache:'none'
-      }
-    )
-    .catch(()=>{});
+  navigator.serviceWorker.register(
+    './sw.js?v=5',
+    {
+      updateViaCache:'none'
+    }
+  ).catch(()=>{});
 
 }
+
+
+/* INITIAL STATE */
 
 window.addEventListener(
   'pageshow',
@@ -726,9 +740,12 @@ window.addEventListener(
 
       resultsEl.innerHTML='';
 
-      detailEl.classList.remove('show');
+      detailEl.classList.remove(
+        'show'
+      );
 
-      loadMoreWrap.style.display='none';
+      loadMoreWrap.style.display=
+        'none';
 
       statusEl.textContent=
         'Inserisci almeno 2 caratteri e premi SEARCH.';
