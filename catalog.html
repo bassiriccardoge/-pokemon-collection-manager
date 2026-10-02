@@ -12,7 +12,6 @@
   <meta name="theme-color" content="#0b1220">
 
   <style>
-
     .search-box {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 150px minmax(220px, 320px) auto;
@@ -131,7 +130,6 @@
         grid-template-columns: 1fr;
       }
     }
-
   </style>
 </head>
 
@@ -147,14 +145,12 @@
     </div>
 
     <nav class="nav">
-
       <a href="index.html">▶ DASHBOARD</a>
       <a href="collection.html">▣ COLLECTION</a>
       <a href="catalog.html">▥ CATALOG</a>
       <a href="masterset.html">▤ MASTERSET</a>
       <a href="wishlist.html">♡ WISHLIST</a>
       <a href="market.html">⌁ MARKET</a>
-
     </nav>
 
   </aside>
@@ -165,21 +161,14 @@
     <div class="top">
 
       <div>
-
-        <div class="title">
-          CATALOG
-        </div>
+        <div class="title">CATALOG</div>
 
         <div class="tag">
           TCGDEX // CARD DATABASE
         </div>
-
       </div>
 
-      <a
-        class="btn"
-        href="collection.html#add"
-      >
+      <a class="btn" href="collection.html#add">
         + ADD CARD
       </a>
 
@@ -196,10 +185,7 @@
 
           <div class="search-field">
 
-            <label
-              class="search-label"
-              for="searchInput"
-            >
+            <label class="search-label" for="searchInput">
               NUMERO / NOME CARTA
             </label>
 
@@ -215,10 +201,7 @@
 
           <div class="search-field">
 
-            <label
-              class="search-label"
-              for="languageSelect"
-            >
+            <label class="search-label" for="languageSelect">
               LINGUA
             </label>
 
@@ -243,10 +226,7 @@
 
           <div class="search-field">
 
-            <label
-              class="search-label"
-              for="setSelect"
-            >
+            <label class="search-label" for="setSelect">
               SET
             </label>
 
@@ -279,10 +259,7 @@
         </div>
 
 
-        <div
-          id="status"
-          class="notice"
-        >
+        <div id="status" class="notice">
           Inserisci il nome o il numero della carta.
         </div>
 
@@ -295,11 +272,7 @@
 
       <h2>RESULTS</h2>
 
-      <div
-        id="results"
-        class="results-grid"
-      ></div>
-
+      <div id="results" class="results-grid"></div>
 
       <div
         id="loadMoreWrap"
@@ -354,10 +327,6 @@
 
 
 <script>
-
-/* =========================================================
-   CONFIG
-========================================================= */
 
 const API =
   "https://api.tcgdex.net/v2";
@@ -479,9 +448,7 @@ function cardImage(card) {
     !card ||
     !card.image
   ) {
-
     return "";
-
   }
 
   let image =
@@ -493,9 +460,7 @@ function cardImage(card) {
     image.endsWith(".jpeg") ||
     image.endsWith(".webp")
   ) {
-
     return image;
-
   }
 
   return image + "/high.webp";
@@ -510,20 +475,16 @@ function getSetId(card) {
     card.set &&
     card.set.id
   ) {
-
     return card.set.id;
-
   }
 
   if (
     card &&
     card.id
   ) {
-
     return String(
       card.id
     ).split("-")[0];
-
   }
 
   return "";
@@ -540,9 +501,7 @@ function getSetName(card) {
     setsMap[setId] &&
     setsMap[setId].name
   ) {
-
     return setsMap[setId].name;
-
   }
 
   if (
@@ -550,9 +509,7 @@ function getSetName(card) {
     card.set &&
     card.set.name
   ) {
-
     return card.set.name;
-
   }
 
   return "Set sconosciuto";
@@ -581,17 +538,24 @@ function languageName(lang) {
 
 /* =========================================================
    LOAD SETS
-   Il menu SET viene sempre caricato in italiano.
+   ORA I SET VENGONO CARICATI NELLA LINGUA SELEZIONATA
 ========================================================= */
 
-async function loadSets() {
+async function loadSets(
+  language = currentLang
+) {
 
   try {
 
+    status.textContent =
+      `Caricamento set ${languageName(language)}...`;
+
+
     const response =
       await fetch(
-        `${API}/it/sets`
+        `${API}/${language}/sets`
       );
+
 
     if (!response.ok) {
 
@@ -601,11 +565,14 @@ async function loadSets() {
 
     }
 
+
     allSets =
       await response.json();
 
+
     setsMap =
       {};
+
 
     allSets.forEach(
       set => {
@@ -616,14 +583,37 @@ async function loadSets() {
       }
     );
 
+
     populateSetSelect();
+
+
+    status.textContent =
+      "Inserisci il nome o il numero della carta.";
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Errore caricamento set:",
+      error
+    );
+
+    allSets =
+      [];
+
+    setsMap =
+      {};
+
+
+    setSelect.innerHTML =
+      `
+        <option value="">
+          Tutti i set
+        </option>
+      `;
+
 
     status.textContent =
-      "Impossibile caricare i set.";
+      `Impossibile caricare i set ${languageName(language)}.`;
 
   }
 
@@ -643,6 +633,7 @@ function populateSetSelect() {
       </option>
     `;
 
+
   const sortedSets =
     [...allSets].sort(
       (a, b) =>
@@ -652,9 +643,12 @@ function populateSetSelect() {
           String(
             b.name || ""
           ),
-          "it"
+          currentLang === "ja"
+            ? "ja"
+            : "it"
         )
     );
+
 
   sortedSets.forEach(
     set => {
@@ -664,12 +658,15 @@ function populateSetSelect() {
           "option"
         );
 
+
       option.value =
         set.id;
+
 
       option.textContent =
         set.name ||
         set.id;
+
 
       setSelect.appendChild(
         option
@@ -684,9 +681,7 @@ function populateSetSelect() {
 function findSetById(id) {
 
   if (!id) {
-
     return null;
-
   }
 
   return (
@@ -710,9 +705,7 @@ function findSetById(id) {
 async function getItalianCard(cardId) {
 
   if (!cardId) {
-
     return null;
-
   }
 
   try {
@@ -722,11 +715,11 @@ async function getItalianCard(cardId) {
         `${API}/it/cards/${encodeURIComponent(cardId)}`
       );
 
+
     if (!response.ok) {
-
       return null;
-
     }
+
 
     return await response.json();
 
@@ -754,9 +747,7 @@ async function getLanguageCard(
 ) {
 
   if (!cardId) {
-
     return null;
-
   }
 
   try {
@@ -766,11 +757,11 @@ async function getLanguageCard(
         `${API}/${language}/cards/${encodeURIComponent(cardId)}`
       );
 
+
     if (!response.ok) {
-
       return null;
-
     }
+
 
     return await response.json();
 
@@ -800,16 +791,9 @@ async function localizeOneCard(
 ) {
 
   if (!card) {
-
     return null;
-
   }
 
-
-  /*
-    IT:
-    non serve nessuna chiamata.
-  */
 
   if (
     language === "it"
@@ -822,14 +806,6 @@ async function localizeOneCard(
 
   }
 
-
-  /*
-    La carta arrivata dalla ricerca
-    appartiene già alla lingua selezionata.
-
-    Recuperiamo solamente il nome italiano
-    per la visualizzazione.
-  */
 
   const italianCard =
     await getItalianCard(
@@ -845,10 +821,6 @@ async function localizeOneCard(
       name:
         italianCard.name ||
         card.name,
-
-      set:
-        italianCard.set ||
-        card.set,
 
       displayLanguage:
         language
@@ -878,10 +850,9 @@ async function localizeResults(
     !cards ||
     !cards.length
   ) {
-
     return [];
-
   }
+
 
   const localized =
     await Promise.all(
@@ -893,6 +864,7 @@ async function localizeResults(
           )
       )
     );
+
 
   return localized.filter(
     Boolean
@@ -924,6 +896,7 @@ function renderCard(card) {
   const cardId =
     card.id ||
     "";
+
 
   return `
 
@@ -1011,6 +984,7 @@ function renderResults(cards) {
   lastResults =
     cards || [];
 
+
   if (
     !lastResults.length
   ) {
@@ -1026,6 +1000,7 @@ function renderResults(cards) {
 
   }
 
+
   results.innerHTML =
     lastResults
       .map(
@@ -1039,21 +1014,6 @@ function renderResults(cards) {
 
 /* =========================================================
    SEARCH BY NAME
-=========================================================
-
-   IMPORTANTE:
-
-   La ricerca del nome viene fatta
-   sul database italiano.
-
-   In questo modo possiamo scrivere:
-
-   Gengar
-
-   anche quando scegliamo JP.
-
-   Poi recuperiamo la versione
-   della stessa carta nella lingua scelta.
 ========================================================= */
 
 async function searchByName(
@@ -1069,15 +1029,18 @@ async function searchByName(
   const params =
     new URLSearchParams();
 
+
   params.set(
     "name",
     query
   );
 
+
   params.set(
     "pagination:page",
     page
   );
+
 
   params.set(
     "pagination:itemsPerPage",
@@ -1109,11 +1072,6 @@ async function searchByName(
     data ||
     [];
 
-
-  /*
-    IT:
-    usiamo direttamente i risultati italiani.
-  */
 
   if (
     currentLang === "it"
@@ -1167,14 +1125,6 @@ async function searchByName(
   }
 
 
-  /*
-    EN / JP
-
-    Per ogni risultato italiano
-    proviamo a recuperare la versione
-    nella lingua scelta.
-  */
-
   const languageCards =
     await Promise.all(
 
@@ -1188,11 +1138,6 @@ async function searchByName(
             );
 
 
-          /*
-            Se la versione nella lingua
-            scelta esiste, la usiamo.
-          */
-
           if (
             localizedCard
           ) {
@@ -1200,20 +1145,8 @@ async function searchByName(
             return {
               ...localizedCard,
 
-              /*
-                Nome italiano.
-              */
-
               name:
                 italianCard.name,
-
-              /*
-                Set italiano.
-              */
-
-              set:
-                italianCard.set ||
-                localizedCard.set,
 
               displayLanguage:
                 currentLang
@@ -1221,13 +1154,6 @@ async function searchByName(
 
           }
 
-
-          /*
-            NON mostriamo una carta italiana
-            fingendo che sia JP/EN.
-
-            La scartiamo correttamente.
-          */
 
           return null;
 
@@ -1309,26 +1235,24 @@ async function searchByNumber(
   const params =
     new URLSearchParams();
 
+
   params.set(
     "localId",
     number
   );
+
 
   params.set(
     "pagination:page",
     page
   );
 
+
   params.set(
     "pagination:itemsPerPage",
     PAGE_SIZE
   );
 
-
-  /*
-    La ricerca del numero viene fatta
-    direttamente nella lingua selezionata.
-  */
 
   const response =
     await fetch(
@@ -1410,6 +1334,7 @@ async function searchInsideSet(
   status.textContent =
     "Ricerca nel set...";
 
+
   loadMoreWrap.style.display =
     "none";
 
@@ -1433,11 +1358,6 @@ async function searchInsideSet(
 
 
   try {
-
-    /*
-      Recuperiamo il set
-      direttamente nella lingua selezionata.
-    */
 
     const response =
       await fetch(
@@ -1469,11 +1389,6 @@ async function searchInsideSet(
       );
 
 
-    /*
-      Se è stato inserito un numero:
-      confronto esatto.
-    */
-
     if (wanted) {
 
       if (
@@ -1494,16 +1409,6 @@ async function searchInsideSet(
           );
 
       } else {
-
-        /*
-          IMPORTANTE:
-
-          Non cerchiamo il nome
-          nella lingua selezionata.
-
-          Cerchiamo invece il nome italiano
-          usando gli ID delle carte del set.
-        */
 
         const italianCards =
           await Promise.all(
@@ -1593,7 +1498,9 @@ async function searchInsideSet(
       error
     );
 
+
     renderResults([]);
+
 
     status.textContent =
       "Errore nella ricerca del set.";
@@ -1690,9 +1597,7 @@ async function searchExactCard(
 async function searchCards() {
 
   if (loading) {
-
     return;
-
   }
 
 
@@ -1738,10 +1643,6 @@ async function searchCards() {
 
   try {
 
-    /*
-      NESSUN TESTO + SET
-    */
-
     if (
       !query &&
       setId
@@ -1756,10 +1657,6 @@ async function searchCards() {
 
     }
 
-
-    /*
-      NIENTE
-    */
 
     if (
       !query &&
@@ -1776,12 +1673,6 @@ async function searchCards() {
     }
 
 
-    /*
-      ID PRECISO
-      Esempio:
-      me55-154
-    */
-
     if (
       query.includes("-") &&
       !query.includes(" ")
@@ -1794,19 +1685,11 @@ async function searchCards() {
 
 
       if (found) {
-
         return;
-
       }
 
     }
 
-
-    /*
-      SET + NUMERO
-      oppure
-      SET + NOME
-    */
 
     if (setId) {
 
@@ -1819,10 +1702,6 @@ async function searchCards() {
 
     }
 
-
-    /*
-      NUMERO PURO
-    */
 
     if (
       /^\d+$/.test(
@@ -1841,10 +1720,6 @@ async function searchCards() {
     }
 
 
-    /*
-      NOME
-    */
-
     await searchByName(
       query,
       1,
@@ -1857,7 +1732,9 @@ async function searchCards() {
       error
     );
 
+
     renderResults([]);
+
 
     status.textContent =
       "Errore durante la ricerca.";
@@ -1882,9 +1759,7 @@ async function loadMore() {
     loading ||
     !hasMore
   ) {
-
     return;
-
   }
 
 
@@ -1905,11 +1780,6 @@ async function loadMore() {
       currentSetId;
 
 
-    /*
-      I set vengono caricati
-      completamente in una volta.
-    */
-
     if (setId) {
 
       hasMore =
@@ -1922,10 +1792,6 @@ async function loadMore() {
 
     }
 
-
-    /*
-      NUMERO
-    */
 
     if (
       /^\d+$/.test(
@@ -1944,10 +1810,6 @@ async function loadMore() {
     }
 
 
-    /*
-      NOME
-    */
-
     await searchByName(
       query,
       currentPage,
@@ -1960,7 +1822,9 @@ async function loadMore() {
       error
     );
 
+
     currentPage--;
+
 
     status.textContent =
       "Errore nel caricamento.";
@@ -2001,13 +1865,38 @@ searchInput.addEventListener(
 );
 
 
+/*
+  CAMBIO LINGUA:
+
+  1. aggiorniamo currentLang
+  2. cancelliamo il set precedente
+  3. carichiamo i set della nuova lingua
+  4. se c'era una ricerca, la rieseguiamo
+*/
+
 languageSelect.addEventListener(
   "change",
-  () => {
+  async () => {
+
+    currentLang =
+      languageSelect.value;
+
+
+    currentSetId =
+      "";
+
+
+    setSelect.value =
+      "";
+
+
+    await loadSets(
+      currentLang
+    );
+
 
     if (
-      searchInput.value.trim() ||
-      setSelect.value
+      searchInput.value.trim()
     ) {
 
       searchCards();
@@ -2059,9 +1948,11 @@ results.addEventListener(
 
       event.stopPropagation();
 
+
       viewCard(
         viewButton.dataset.cardId
       );
+
 
       return;
 
@@ -2078,9 +1969,11 @@ results.addEventListener(
 
       event.stopPropagation();
 
+
       addToCollection(
         addButton.dataset.cardId
       );
+
 
       return;
 
@@ -2114,10 +2007,9 @@ async function viewCard(
 ) {
 
   if (!cardId) {
-
     return;
-
   }
+
 
   try {
 
@@ -2154,7 +2046,6 @@ async function viewCard(
 
     const setName =
       getSetName(
-        italianCard ||
         card
       );
 
@@ -2189,6 +2080,7 @@ async function viewCard(
       error
     );
 
+
     alert(
       "Impossibile aprire la carta."
     );
@@ -2207,9 +2099,7 @@ function addToCollection(
 ) {
 
   if (!cardId) {
-
     return;
-
   }
 
 
@@ -2229,7 +2119,13 @@ function addToCollection(
 
 (async function init() {
 
-  await loadSets();
+  currentLang =
+    languageSelect.value;
+
+
+  await loadSets(
+    currentLang
+  );
 
 })();
 
@@ -2245,7 +2141,7 @@ if (
 
   navigator.serviceWorker
     .register(
-      "./sw.js?v=11"
+      "./sw.js?v=12"
     )
     .catch(
       () => {}
