@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="it">
+
 <head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -12,143 +14,218 @@
   <meta name="theme-color" content="#0b1220">
 
   <style>
+
     /* =========================================
-       MASTERSET — MINI PIXEL POKÉ BALL
+       MASTERSET — POKÉ BALL DECORATIONS
        ========================================= */
 
-    .master-panel {
+    .master-pokeball-box {
       position: relative;
     }
 
-    .pokeball {
+    .master-pokeball {
       position: absolute;
+
       width: 20px;
       height: 20px;
-      border: 2px solid #080d14;
-      background: #f1f3f5;
-      z-index: 5;
-      overflow: hidden;
 
-      /* forma leggermente pixel-art */
-      box-shadow:
-        2px 0 0 #080d14,
-        0 2px 0 #080d14,
-        2px 2px 0 #080d14;
+      border: 2px solid #080d14;
+      border-radius: 50%;
+
+      background: #f1f3f5;
+
+      z-index: 5;
+
+      overflow: hidden;
     }
 
-    .pokeball::before {
+    /* PARTE ROSSA SUPERIORE */
+
+    .master-pokeball::before {
       content: "";
+
       position: absolute;
+
       left: -2px;
       right: -2px;
       top: -2px;
+
       height: 10px;
+
       background: #d83b3b;
+
       border-bottom: 2px solid #080d14;
+
+      border-radius: 50% 50% 0 0;
     }
 
-    .pokeball::after {
+    /* PULSANTE CENTRALE */
+
+    .master-pokeball::after {
       content: "";
+
       position: absolute;
+
       width: 6px;
       height: 6px;
+
       left: 5px;
       top: 5px;
+
       background: #f1f3f5;
+
       border: 2px solid #080d14;
+
+      border-radius: 50%;
+
       z-index: 3;
     }
 
-    .pokeball.tl {
+    /* POSIZIONE DEI 4 ANGOLI */
+
+    .master-pokeball.tl {
       top: -10px;
       left: -10px;
     }
 
-    .pokeball.tr {
+    .master-pokeball.tr {
       top: -10px;
       right: -10px;
     }
 
-    .pokeball.bl {
+    .master-pokeball.bl {
       bottom: -10px;
       left: -10px;
     }
 
-    .pokeball.br {
+    .master-pokeball.br {
       bottom: -10px;
       right: -10px;
     }
+
+
+    /* =========================================
+       MOBILE
+       ========================================= */
 
     @media(max-width:800px) {
-      .pokeball {
+
+      .master-pokeball {
         width: 18px;
         height: 18px;
       }
 
-      .pokeball::before {
+      .master-pokeball::before {
         height: 9px;
       }
 
-      .pokeball::after {
+      .master-pokeball::after {
         width: 5px;
         height: 5px;
+
         left: 4px;
         top: 4px;
       }
 
-      .pokeball.tl,
-      .pokeball.tr {
+      .master-pokeball.tl {
         top: -9px;
-      }
-
-      .pokeball.bl,
-      .pokeball.br {
-        bottom: -9px;
-      }
-
-      .pokeball.tl,
-      .pokeball.bl {
         left: -9px;
       }
 
-      .pokeball.tr,
-      .pokeball.br {
+      .master-pokeball.tr {
+        top: -9px;
         right: -9px;
       }
+
+      .master-pokeball.bl {
+        bottom: -9px;
+        left: -9px;
+      }
+
+      .master-pokeball.br {
+        bottom: -9px;
+        right: -9px;
+      }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
+
+
+  <!-- SIDEBAR -->
 
   <aside class="side">
 
     <div class="logo">
+
       POKÉMON CM
-      <small>COLLECTION MANAGER · V1.3</small>
+
+      <small>
+        COLLECTION MANAGER · V1.3
+      </small>
+
     </div>
 
+
     <nav class="nav">
-      <a href="index.html">▶ DASHBOARD</a>
-      <a href="collection.html">▣ COLLECTION</a>
-      <a href="catalog.html">▥ CATALOG</a>
-      <a href="masterset.html">▤ MASTERSET</a>
-      <a href="wishlist.html">♡ WISHLIST</a>
-      <a href="market.html">⌁ MARKET</a>
+
+      <a href="index.html">
+        ▶ DASHBOARD
+      </a>
+
+      <a href="collection.html">
+        ▣ COLLECTION
+      </a>
+
+      <a href="catalog.html">
+        ▥ CATALOG
+      </a>
+
+      <a href="masterset.html">
+        ▤ MASTERSET
+      </a>
+
+      <a href="wishlist.html">
+        ♡ WISHLIST
+      </a>
+
+      <a href="market.html">
+        ⌁ MARKET
+      </a>
+
     </nav>
 
   </aside>
 
+
+
+  <!-- MAIN -->
+
   <main class="main">
+
 
     <div class="top">
 
       <div>
-        <div class="title">MASTERSET</div>
-        <div class="tag">SET PROGRESS // DEMO</div>
+
+        <div class="title">
+          MASTERSET
+        </div>
+
+        <div class="tag">
+          SET PROGRESS // DEMO
+        </div>
+
       </div>
+
 
       <a class="btn" href="collection.html#add">
         + ADD CARD
@@ -156,102 +233,143 @@
 
     </div>
 
+
+
+    <!-- MASTER SET GRID -->
+
     <div class="master">
 
-      <!-- SCARLET & VIOLET 151 -->
 
-      <div class="panel master-panel">
+      <!-- =====================================
+           SCARLET & VIOLET 151
+           ===================================== -->
 
-        <span class="pokeball tl"></span>
-        <span class="pokeball tr"></span>
-        <span class="pokeball bl"></span>
-        <span class="pokeball br"></span>
+      <div class="panel master-pokeball-box">
+
+
+        <!-- POKÉ BALLS -->
+
+        <span class="master-pokeball tl"></span>
+        <span class="master-pokeball tr"></span>
+        <span class="master-pokeball bl"></span>
+        <span class="master-pokeball br"></span>
+
 
         <div class="label">
           Scarlet & Violet 151
         </div>
 
+
         <div class="value">
           0 / 207
         </div>
+
 
         <div class="progress">
           <i style="width:0%"></i>
         </div>
 
+
         <p class="label">
           0% complete
         </p>
+
 
         <a class="btn" href="catalog.html">
           VIEW SET
         </a>
 
+
       </div>
 
 
-      <!-- BASE SET -->
 
-      <div class="panel master-panel">
+      <!-- =====================================
+           BASE SET
+           ===================================== -->
 
-        <span class="pokeball tl"></span>
-        <span class="pokeball tr"></span>
-        <span class="pokeball bl"></span>
-        <span class="pokeball br"></span>
+      <div class="panel master-pokeball-box">
+
+
+        <!-- POKÉ BALLS -->
+
+        <span class="master-pokeball tl"></span>
+        <span class="master-pokeball tr"></span>
+        <span class="master-pokeball bl"></span>
+        <span class="master-pokeball br"></span>
+
 
         <div class="label">
           Base Set
         </div>
 
+
         <div class="value">
           0 / 102
         </div>
+
 
         <div class="progress">
           <i style="width:0%"></i>
         </div>
 
+
         <p class="label">
           0% complete
         </p>
+
 
         <a class="btn" href="catalog.html">
           VIEW SET
         </a>
 
+
       </div>
 
 
-      <!-- DEMO SET -->
 
-      <div class="panel master-panel">
+      <!-- =====================================
+           DEMO SET
+           ===================================== -->
 
-        <span class="pokeball tl"></span>
-        <span class="pokeball tr"></span>
-        <span class="pokeball bl"></span>
-        <span class="pokeball br"></span>
+      <div class="panel master-pokeball-box">
+
+
+        <!-- POKÉ BALLS -->
+
+        <span class="master-pokeball tl"></span>
+        <span class="master-pokeball tr"></span>
+        <span class="master-pokeball bl"></span>
+        <span class="master-pokeball br"></span>
+
 
         <div class="label">
           Demo Set
         </div>
 
+
         <div class="value">
           0 / 50
         </div>
+
 
         <div class="progress">
           <i style="width:0%"></i>
         </div>
 
+
         <p class="label">
           0% complete
         </p>
+
 
         <a class="btn" href="catalog.html">
           VIEW SET
         </a>
 
+
       </div>
+
 
     </div>
 
@@ -260,42 +378,59 @@
 </div>
 
 
+
 <!-- MOBILE NAV -->
 
 <nav class="mobile">
+
 
   <a href="index.html">
     ⌂<br>DASH
   </a>
 
+
   <a href="collection.html">
     ▣<br>COLL
   </a>
+
 
   <a href="catalog.html">
     ▥<br>CAT
   </a>
 
+
   <a href="masterset.html">
     ▤<br>SET
   </a>
+
 
   <a href="wishlist.html">
     ♡<br>WISH
   </a>
 
+
   <a href="market.html">
     ⌁<br>MARKET
   </a>
 
+
 </nav>
 
 
+
 <script>
+
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+
+    navigator.serviceWorker
+      .register("./sw.js")
+      .catch(() => {});
+
   }
+
 </script>
 
+
 </body>
+
 </html>
