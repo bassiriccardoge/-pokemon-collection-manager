@@ -4,11 +4,85 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Pokémon Collection Manager — WISHLIST</title>
 
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="./manifest.webmanifest">
+
   <meta name="theme-color" content="#0b1220">
+
+  <style>
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .wishlist-card {
+      border: 1px solid #334155;
+      background: #111827;
+      padding: 10px;
+    }
+
+    .wishlist-card:hover {
+      border-color: #60a5fa;
+    }
+
+    .wishlist-card img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 0.716;
+      object-fit: contain;
+      background: #0b1220;
+    }
+
+    .wishlist-info {
+      padding-top: 10px;
+    }
+
+    .wishlist-name {
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .wishlist-meta {
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .wishlist-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .wishlist-actions button {
+      flex: 1;
+      min-width: 70px;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      border: 1px solid #334155;
+      padding: 30px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .fakecard {
+      width: 100%;
+      aspect-ratio: 0.716;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0b1220;
+      color: #64748b;
+      font-size: 12px;
+    }
+  </style>
 </head>
 
 <body>
@@ -16,6 +90,7 @@
 <div class="app">
 
   <aside class="side">
+
     <div class="logo">
       POKÉMON CM
       <small>COLLECTION MANAGER · V1.4</small>
@@ -29,133 +104,607 @@
       <a href="wishlist.html">♡ WISHLIST</a>
       <a href="market.html">⌁ MARKET</a>
     </nav>
+
   </aside>
+
 
   <main class="main">
 
     <div class="top">
+
       <div>
-        <div class="title">WISHLIST</div>
-        <div class="tag">WANTED CARDS // PRICE TARGETS</div>
+
+        <div class="title">
+          WISHLIST
+        </div>
+
+        <div class="tag">
+          WANTED CARDS // PRICE TARGETS
+        </div>
+
       </div>
 
-      <a class="btn" href="catalog.html">+ ADD CARD</a>
+      <a
+        class="btn"
+        href="catalog.html"
+      >
+        + ADD CARD
+      </a>
+
     </div>
+
 
     <div class="toolbar">
-      <a class="btn" href="catalog.html">+ ADD FROM CATALOG</a>
+
+      <a
+        class="btn"
+        href="catalog.html"
+      >
+        + ADD FROM CATALOG
+      </a>
+
     </div>
 
-    <div id="wishlistList" class="list"></div>
+
+    <div class="section">
+
+      <h2>WANTED CARDS</h2>
+
+      <div
+        id="wishlistList"
+        class="wishlist-grid"
+      ></div>
+
+    </div>
 
   </main>
 
 </div>
 
+
 <nav class="mobile">
-  <a href="index.html">⌂<br>DASH</a>
-  <a href="collection.html">▣<br>COLL</a>
-  <a href="catalog.html">▥<br>CAT</a>
-  <a href="masterset.html">▤<br>SET</a>
-  <a href="wishlist.html">♡<br>WISH</a>
-  <a href="market.html">⌁<br>MARKET</a>
+
+  <a href="index.html">
+    ⌂<br>DASH
+  </a>
+
+  <a href="collection.html">
+    ▣<br>COLL
+  </a>
+
+  <a href="catalog.html">
+    ▥<br>CAT
+  </a>
+
+  <a href="masterset.html">
+    ▤<br>SET
+  </a>
+
+  <a href="wishlist.html">
+    ♡<br>WISH
+  </a>
+
+  <a href="market.html">
+    ⌁<br>MARKET
+  </a>
+
 </nav>
+
 
 <script>
 
-const WISHLIST_KEY = "pcm_wishlist";
-const COLLECTION_KEY = "pcm_collection";
+const WISHLIST_KEY =
+  "pcm_wishlist";
+
+const COLLECTION_KEY =
+  "pcm_collection";
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function escapeHtml(value) {
+
   return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
+
 
 function getWishlist() {
+
   try {
-    return JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
+
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          WISHLIST_KEY
+        ) || "[]"
+      );
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
   } catch {
+
     return [];
+
   }
+
 }
+
 
 function saveWishlist(items) {
-  localStorage.setItem(WISHLIST_KEY, JSON.stringify(items));
+
+  localStorage.setItem(
+    WISHLIST_KEY,
+    JSON.stringify(items)
+  );
+
 }
+
 
 function getCollection() {
+
   try {
-    return JSON.parse(localStorage.getItem(COLLECTION_KEY) || "[]");
+
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          COLLECTION_KEY
+        ) || "[]"
+      );
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
   } catch {
+
     return [];
+
   }
+
 }
+
 
 function saveCollection(items) {
-  localStorage.setItem(COLLECTION_KEY, JSON.stringify(items));
+
+  localStorage.setItem(
+    COLLECTION_KEY,
+    JSON.stringify(items)
+  );
+
 }
 
-function cardImage(card) {
-  if (card.image) return card.image;
 
-  if (card.cardId) {
-    return `https://assets.tcgdex.net/en/${card.cardId.replace(/-/g, "/")}/high.webp`;
+function languageName(lang) {
+
+  if (lang === "it") {
+    return "Italiano";
   }
 
-  return "";
+  if (lang === "en") {
+    return "Inglese";
+  }
+
+  if (lang === "ja") {
+    return "Giapponese";
+  }
+
+  return lang || "—";
+
 }
+
+
+function cardImage(card) {
+
+  if (
+    card &&
+    card.image
+  ) {
+
+    if (
+      card.image.endsWith(".png") ||
+      card.image.endsWith(".jpg") ||
+      card.image.endsWith(".jpeg") ||
+      card.image.endsWith(".webp")
+    ) {
+
+      return card.image;
+
+    }
+
+    return card.image + "/high.webp";
+
+  }
+
+
+  if (
+    card &&
+    card.cardId
+  ) {
+
+    return (
+      `https://assets.tcgdex.net/en/` +
+      `${card.cardId.replace(/-/g, "/")}` +
+      `/high.webp`
+    );
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =========================================================
+   REMOVE FROM WISHLIST
+========================================================= */
 
 function removeFromWishlist(index) {
-  const wishlist = getWishlist();
 
-  if (!wishlist[index]) return;
+  const wishlist =
+    getWishlist();
 
-  wishlist.splice(index, 1);
-  saveWishlist(wishlist);
+
+  if (
+    !wishlist[index]
+  ) {
+
+    return;
+
+  }
+
+
+  wishlist.splice(
+    index,
+    1
+  );
+
+
+  saveWishlist(
+    wishlist
+  );
+
+
   renderWishlist();
+
 }
+
+
+/* =========================================================
+   MOVE TO COLLECTION
+========================================================= */
 
 function moveToCollection(index) {
-  const wishlist = getWishlist();
-  const card = wishlist[index];
 
-  if (!card) return;
+  const wishlist =
+    getWishlist();
 
-  const collection = getCollection();
+
+  const card =
+    wishlist[index];
+
+
+  if (!card) {
+
+    return;
+
+  }
+
+
+  const collection =
+    getCollection();
+
 
   const collectionCard = {
-    id: `${card.cardId || card.id}-${Date.now()}`,
-    cardId: card.cardId || card.id || "",
-    name: card.name || "",
-    localId: card.localId || "",
-    set: card.set || null,
-    setName: card.setName || "Set sconosciuto",
-    language: card.language || "it",
-    condition: card.condition || "NM",
-    quantity: 1,
-    grading: "Raw",
-    grade: "",
-    purchasePrice: "",
-    purchaseDate: "",
-    seller: "",
-    notes: "",
-    savedAt: new Date().toISOString()
+
+    id:
+      `${card.cardId || card.id}-${Date.now()}`,
+
+    cardId:
+      card.cardId ||
+      card.id ||
+      "",
+
+    name:
+      card.name ||
+      "",
+
+    localId:
+      card.localId ||
+      "",
+
+    set:
+      card.set ||
+      null,
+
+    setName:
+      card.setName ||
+      "Set sconosciuto",
+
+    language:
+      card.language ||
+      "it",
+
+    condition:
+      "NM",
+
+    quantity:
+      1,
+
+    grading:
+      "Raw",
+
+    grade:
+      "",
+
+    purchasePrice:
+      "",
+
+    purchaseDate:
+      "",
+
+    seller:
+      "",
+
+    notes:
+      "",
+
+    savedAt:
+      new Date().toISOString()
+
   };
 
-  collection.push(collectionCard);
-  saveCollection(collection);
 
-  wishlist.splice(index, 1);
-  saveWishlist(wishlist);
+  collection.push(
+    collectionCard
+  );
+
+
+  saveCollection(
+    collection
+  );
+
+
+  /*
+    Importante:
+    quando una carta viene spostata
+    nella Collection viene rimossa
+    automaticamente dalla Wishlist.
+  */
+
+  wishlist.splice(
+    index,
+    1
+  );
+
+
+  saveWishlist(
+    wishlist
+  );
+
 
   renderWishlist();
+
 }
+
+
+/* =========================================================
+   RENDER WISHLIST
+========================================================= */
 
 function renderWishlist() {
 
-  const container = document.getElementById("wishlistList")
+  const container =
+    document.getElementById(
+      "wishlistList"
+    );
+
+
+  if (!container) {
+
+    return;
+
+  }
+
+
+  const wishlist =
+    getWishlist();
+
+
+  if (
+    !wishlist.length
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty-state">
+
+        Wishlist vuota.
+
+        <br><br>
+
+        Vai nel Catalogo e premi
+        <strong>♡ WISH</strong>
+        su una carta per aggiungerla.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    wishlist
+      .map(
+        (card, index) => {
+
+          const image =
+            cardImage(card);
+
+
+          const name =
+            card.name ||
+            "Carta senza nome";
+
+
+          const localId =
+            card.localId ||
+            "—";
+
+
+          const setName =
+            card.setName ||
+            "Set sconosciuto";
+
+
+          const language =
+            languageName(
+              card.language
+            );
+
+
+          return `
+
+            <div
+              class="wishlist-card"
+            >
+
+              ${
+                image
+                  ? `
+
+                    <img
+                      src="${escapeHtml(image)}"
+                      alt="${escapeHtml(name)}"
+                      loading="lazy"
+                      onerror="this.style.display='none';"
+                    >
+
+                  `
+                  : `
+
+                    <div class="fakecard">
+                      NO IMAGE
+                    </div>
+
+                  `
+              }
+
+
+              <div class="wishlist-info">
+
+                <div class="wishlist-name">
+
+                  ${escapeHtml(name)}
+
+                </div>
+
+
+                <div class="wishlist-meta">
+
+                  ${escapeHtml(setName)}
+
+                  <br>
+
+                  Nº ${escapeHtml(localId)}
+
+                  <br>
+
+                  ${escapeHtml(language)}
+
+                </div>
+
+
+                <div class="wishlist-actions">
+
+                  <button
+                    class="btn secondary"
+                    type="button"
+                    onclick="moveToCollection(${index})"
+                  >
+                    + COLLECTION
+                  </button>
+
+
+                  <button
+                    class="btn"
+                    type="button"
+                    onclick="removeFromWishlist(${index})"
+                  >
+                    × REMOVE
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+renderWishlist();
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if (
+  "serviceWorker" in navigator &&
+  location.protocol !== "file:"
+) {
+
+  navigator.serviceWorker
+    .register(
+      "./sw.js?v=14"
+    )
+    .catch(
+      () => {}
+    );
+
+}
+
+</script>
+
+</body>
+</html>
 ```
