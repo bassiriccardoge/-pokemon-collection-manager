@@ -9,111 +9,125 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="./manifest.webmanifest">
+
   <meta name="theme-color" content="#0b1220">
 
   <style>
-    .catalog-toolbar {
+    .search-box {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) 180px 260px auto;
+      grid-template-columns: minmax(0, 1fr) 150px minmax(220px, 320px) auto;
       gap: 10px;
-      align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
-    .catalog-toolbar input,
-    .catalog-toolbar select {
+    .search-field {
+      min-width: 0;
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: #94a3b8;
+    }
+
+    .search-box input,
+    .search-box select {
       width: 100%;
       box-sizing: border-box;
+      padding: 12px 14px;
+      background: #0b1220;
+      color: #fff;
+      border: 1px solid #334155;
+      font: inherit;
+      border-radius: 0;
     }
 
-    .catalog-status {
-      margin: 10px 0 18px;
-      font-size: 13px;
-      opacity: .8;
+    .search-box input:focus,
+    .search-box select:focus {
+      outline: none;
+      border-color: #60a5fa;
     }
 
-    .catalog-grid {
+    .results-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
     }
 
     .catalog-card {
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.025);
+      border: 1px solid #334155;
+      background: #111827;
       padding: 10px;
+      cursor: pointer;
     }
 
-    .catalog-card-image {
+    .catalog-card:hover {
+      border-color: #60a5fa;
+    }
+
+    .catalog-card img {
       width: 100%;
-      aspect-ratio: 0.72;
-      object-fit: contain;
       display: block;
-      background: #080d16;
-      margin-bottom: 10px;
+      aspect-ratio: 0.716;
+      object-fit: contain;
+      background: #0b1220;
     }
 
-    .catalog-card-name {
+    .catalog-info {
+      padding-top: 10px;
+    }
+
+    .catalog-name {
       font-weight: 700;
-      font-size: 14px;
       margin-bottom: 5px;
     }
 
-    .catalog-card-meta {
+    .catalog-meta {
+      color: #94a3b8;
       font-size: 12px;
-      opacity: .75;
       line-height: 1.5;
-      min-height: 38px;
     }
 
     .catalog-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       gap: 6px;
+      flex-wrap: wrap;
       margin-top: 10px;
     }
 
-    .catalog-actions .btn {
-      width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-      padding: 7px 5px;
-      font-size: 11px;
+    .catalog-actions button {
+      flex: 1;
+      min-width: 70px;
+      cursor: pointer;
     }
 
-    .catalog-actions .view-btn {
+    .empty-state {
+      border: 1px solid #334155;
+      padding: 30px;
+      color: #94a3b8;
+      text-align: center;
       grid-column: 1 / -1;
     }
 
     .load-more-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 22px 0;
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 30px;
       text-align: center;
-      opacity: .7;
+      margin-top: 24px;
     }
 
-    @media (max-width: 1000px) {
-      .catalog-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+    .load-more-wrap .btn {
+      cursor: pointer;
+    }
 
-      .catalog-toolbar {
+    @media (max-width: 900px) {
+      .search-box {
         grid-template-columns: 1fr 1fr;
       }
     }
 
-    @media (max-width: 700px) {
-      .catalog-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .catalog-toolbar {
+    @media (max-width: 600px) {
+      .search-box {
         grid-template-columns: 1fr;
       }
     }
@@ -152,7 +166,10 @@
 
   <div>
     <div class="title">CATALOG</div>
-    <div class="tag">TCGDEX // CARD DATABASE</div>
+
+    <div class="tag">
+      TCGDEX // CARD DATABASE
+    </div>
   </div>
 
   <a class="btn" href="collection.html#add">
@@ -161,49 +178,122 @@
 
 </div>
 
-<div class="catalog-toolbar">
 
-  <input
-    id="searchInput"
-    type="text"
-    placeholder="Numero o nome carta..."
-    autocomplete="off"
-  >
+<div class="section">
 
-  <select id="languageSelect">
-    <option value="it">🇮🇹 Italiano</option>
-    <option value="en">🇬🇧 Inglese</option>
-    <option value="ja">🇯🇵 Giapponese</option>
-  </select>
+  <h2>SEARCH</h2>
 
-  <select id="setSelect">
-    <option value="">Tutti i set</option>
-  </select>
+  <div class="panel">
 
-  <button class="btn" id="searchBtn" type="button">
-    SEARCH
-  </button>
+    <div class="search-box">
+
+      <div class="search-field">
+
+        <label class="search-label" for="searchInput">
+          NUMERO / NOME CARTA
+        </label>
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Es. Gengar, Pikachu, 154..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <div class="search-field">
+
+        <label class="search-label" for="languageSelect">
+          LINGUA
+        </label>
+
+        <select id="languageSelect">
+
+          <option value="it">
+            🇮🇹 IT
+          </option>
+
+          <option value="en">
+            🇬🇧 EN
+          </option>
+
+          <option value="ja">
+            🇯🇵 JP
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="search-field">
+
+        <label class="search-label" for="setSelect">
+          SET
+        </label>
+
+        <select id="setSelect">
+
+          <option value="">
+            Tutti i set
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        class="search-field"
+        style="align-self:end;"
+      >
+
+        <button
+          id="searchBtn"
+          class="btn"
+          type="button"
+        >
+          SEARCH
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div id="status" class="notice">
+      Inserisci il nome o il numero della carta.
+    </div>
+
+  </div>
 
 </div>
 
-<div id="status" class="catalog-status">
-  Inserisci un numero o un nome per cercare.
-</div>
 
-<div id="results" class="catalog-grid"></div>
+<div class="section">
 
-<div
-  id="loadMoreWrap"
-  class="load-more-wrap"
-  style="display:none;"
->
-  <button
-    class="btn"
-    id="loadMoreBtn"
-    type="button"
+  <h2>RESULTS</h2>
+
+  <div id="results" class="results-grid"></div>
+
+  <div
+    id="loadMoreWrap"
+    class="load-more-wrap"
+    style="display:none;"
   >
-    LOAD MORE
-  </button>
+
+    <button
+      id="loadMoreBtn"
+      class="btn secondary"
+      type="button"
+    >
+      LOAD MORE
+    </button>
+
+  </div>
+
 </div>
 ```
 
@@ -212,45 +302,136 @@
 </div>
 
 <nav class="mobile">
-  <a href="index.html">⌂<br>DASH</a>
-  <a href="collection.html">▣<br>COLL</a>
-  <a href="catalog.html">▥<br>CAT</a>
-  <a href="masterset.html">▤<br>SET</a>
-  <a href="wishlist.html">♡<br>WISH</a>
-  <a href="market.html">⌁<br>MARKET</a>
+
+  <a href="index.html">
+    ⌂<br>DASH
+  </a>
+
+  <a href="collection.html">
+    ▣<br>COLL
+  </a>
+
+  <a href="catalog.html">
+    ▥<br>CAT
+  </a>
+
+  <a href="masterset.html">
+    ▤<br>SET
+  </a>
+
+  <a href="wishlist.html">
+    ♡<br>WISH
+  </a>
+
+  <a href="market.html">
+    ⌁<br>MARKET
+  </a>
+
 </nav>
 
 <script>
 
-const API = "https://api.tcgdex.net/v2";
+const API =
+  "https://api.tcgdex.net/v2";
 
-const PAGE_SIZE = 40;
+const PAGE_SIZE =
+  40;
 
-const WISHLIST_KEY = "pcm_wishlist";
-
-let currentLang = "it";
-let currentPage = 1;
-let currentQuery = "";
-let currentSetId = "";
-
-let allSets = [];
-let setsMap = {};
-
-let lastResults = [];
-let hasMore = false;
-let loading = false;
+const WISHLIST_KEY =
+  "pcm_wishlist";
 
 
-/* =========================
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentLang =
+  "it";
+
+let allSets =
+  [];
+
+let setsMap =
+  {};
+
+let currentPage =
+  1;
+
+let currentQuery =
+  "";
+
+let currentSetId =
+  "";
+
+let loading =
+  false;
+
+let hasMore =
+  false;
+
+let lastResults =
+  [];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const languageSelect =
+  document.getElementById(
+    "languageSelect"
+  );
+
+const setSelect =
+  document.getElementById(
+    "setSelect"
+  );
+
+const searchBtn =
+  document.getElementById(
+    "searchBtn"
+  );
+
+const results =
+  document.getElementById(
+    "results"
+  );
+
+const status =
+  document.getElementById(
+    "status"
+  );
+
+const loadMoreWrap =
+  document.getElementById(
+    "loadMoreWrap"
+  );
+
+const loadMoreBtn =
+  document.getElementById(
+    "loadMoreBtn"
+  );
+
+
+/* =========================================================
    HELPERS
-========================= */
+========================================================= */
 
 function normalize(value) {
 
   return String(value || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .trim();
 
 }
 
@@ -267,14 +448,49 @@ function escapeHtml(value) {
 }
 
 
+function cardImage(card) {
+
+  if (
+    !card ||
+    !card.image
+  ) {
+    return "";
+  }
+
+  let image =
+    card.image;
+
+  if (
+    image.endsWith(".png") ||
+    image.endsWith(".jpg") ||
+    image.endsWith(".jpeg") ||
+    image.endsWith(".webp")
+  ) {
+    return image;
+  }
+
+  return image + "/high.webp";
+
+}
+
+
 function getSetId(card) {
 
-  if (card && card.set && card.set.id) {
+  if (
+    card &&
+    card.set &&
+    card.set.id
+  ) {
     return card.set.id;
   }
 
-  if (card && card.id) {
-    return String(card.id).split("-")[0];
+  if (
+    card &&
+    card.id
+  ) {
+    return String(
+      card.id
+    ).split("-")[0];
   }
 
   return "";
@@ -284,14 +500,22 @@ function getSetId(card) {
 
 function getSetName(card) {
 
-  if (card && card.set && card.set.name) {
-    return card.set.name;
+  const setId =
+    getSetId(card);
+
+  if (
+    setsMap[setId] &&
+    setsMap[setId].name
+  ) {
+    return setsMap[setId].name;
   }
 
-  const id = getSetId(card);
-
-  if (id && setsMap[id]) {
-    return setsMap[id].name || "Set sconosciuto";
+  if (
+    card &&
+    card.set &&
+    card.set.name
+  ) {
+    return card.set.name;
   }
 
   return "Set sconosciuto";
@@ -299,53 +523,37 @@ function getSetName(card) {
 }
 
 
-function cardImage(card) {
-
-  if (card && card.image) {
-
-    if (card.image.endsWith(".webp")) {
-      return card.image;
-    }
-
-    return card.image + "/high.webp";
-  }
-
-  if (!card || !card.id) {
-    return "";
-  }
-
-  return (
-    "https://assets.tcgdex.net/" +
-    currentLang +
-    "/" +
-    card.id.replace(/-/g, "/") +
-    "/high.webp"
-  );
-
-}
-
-
 function languageName(lang) {
 
-  if (lang === "it") return "🇮🇹 Italiano";
-  if (lang === "en") return "🇬🇧 Inglese";
-  if (lang === "ja") return "🇯🇵 Giapponese";
+  if (lang === "it") {
+    return "Italiano";
+  }
+
+  if (lang === "en") {
+    return "Inglese";
+  }
+
+  if (lang === "ja") {
+    return "Giapponese";
+  }
 
   return lang;
 
 }
 
 
-/* =========================
+/* =========================================================
    WISHLIST
-========================= */
+========================================================= */
 
 function getWishlist() {
 
   try {
 
     return JSON.parse(
-      localStorage.getItem(WISHLIST_KEY) || "[]"
+      localStorage.getItem(
+        WISHLIST_KEY
+      ) || "[]"
     );
 
   } catch {
@@ -369,56 +577,76 @@ function saveWishlist(items) {
 
 function addToWishlist(card) {
 
-  if (!card || !card.id) {
+  if (
+    !card ||
+    !card.id
+  ) {
     return;
   }
 
-  const wishlist = getWishlist();
+
+  const wishlist =
+    getWishlist();
+
 
   const language =
-    card.displayLanguage || currentLang;
+    card.displayLanguage ||
+    currentLang;
 
-  const exists = wishlist.some(item =>
 
-    String(item.cardId || item.id) ===
-      String(card.id)
+  const exists =
+    wishlist.some(
+      item =>
 
-    &&
+        String(
+          item.cardId ||
+          item.id
+        ) ===
+        String(
+          card.id
+        )
 
-    String(item.language || "it") ===
-      String(language)
+        &&
 
-  );
+        String(
+          item.language ||
+          "it"
+        ) ===
+        String(
+          language
+        )
+    );
+
 
   if (exists) {
 
-    document.getElementById("status").textContent =
+    status.textContent =
       "Carta già presente nella Wishlist.";
 
     return;
+
   }
+
 
   const wishlistCard = {
 
     id:
-      card.id +
-      "-" +
-      language +
-      "-" +
-      Date.now(),
+      `${card.id}-${language}-${Date.now()}`,
 
-    cardId: card.id,
+    cardId:
+      card.id,
 
     name:
-      card.displayName ||
       card.name ||
       "Carta senza nome",
 
     localId:
-      card.localId || "",
+      card.localId ||
+      "",
 
     set:
-      card.set || null,
+      card.set ||
+      null,
 
     setName:
       getSetName(card),
@@ -434,131 +662,217 @@ function addToWishlist(card) {
 
   };
 
-  wishlist.push(wishlistCard);
 
-  saveWishlist(wishlist);
+  wishlist.push(
+    wishlistCard
+  );
 
-  document.getElementById("status").textContent =
-    wishlistCard.name +
-    " aggiunta alla Wishlist.";
+
+  saveWishlist(
+    wishlist
+  );
+
+
+  status.textContent =
+    `${wishlistCard.name} aggiunta alla Wishlist.`;
 
 }
 
 
-/* =========================
-   SETS
-========================= */
+/* =========================================================
+   LOAD SETS
+========================================================= */
 
-async function loadSets(language) {
+async function loadSets(
+  language = currentLang
+) {
 
   try {
 
+    status.textContent =
+      `Caricamento set ${languageName(language)}...`;
+
+
     const response =
       await fetch(
-        API + "/" + language + "/sets"
+        `${API}/${language}/sets`
       );
 
+
     if (!response.ok) {
-      throw new Error("Set error");
+
+      throw new Error(
+        "Errore caricamento set"
+      );
+
     }
 
-    const data =
-      await response.json();
 
     allSets =
-      Array.isArray(data)
-        ? data
-        : [];
+      await response.json();
 
-    setsMap = {};
 
-    allSets.forEach(set => {
+    setsMap =
+      {};
 
-      if (set && set.id) {
-        setsMap[set.id] = set;
+
+    allSets.forEach(
+      set => {
+
+        setsMap[set.id] =
+          set;
+
       }
+    );
 
-    });
 
     populateSetSelect();
+
+
+    status.textContent =
+      "Inserisci il nome o il numero della carta.";
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "Errore caricamento set:",
+      error
+    );
 
-    allSets = [];
-    setsMap = {};
 
-    populateSetSelect();
+    allSets =
+      [];
+
+
+    setsMap =
+      {};
+
+
+    setSelect.innerHTML =
+      `
+        <option value="">
+          Tutti i set
+        </option>
+      `;
+
+
+    status.textContent =
+      `Impossibile caricare i set ${languageName(language)}.`;
 
   }
 
 }
 
 
+/* =========================================================
+   SET DROPDOWN
+========================================================= */
+
 function populateSetSelect() {
 
-  const select =
-    document.getElementById("setSelect");
+  setSelect.innerHTML =
+    `
+      <option value="">
+        Tutti i set
+      </option>
+    `;
 
-  select.innerHTML =
-    '<option value="">Tutti i set</option>';
 
-  const sorted =
-    [...allSets].sort((a, b) =>
-
-      String(a.name || "").localeCompare(
-        String(b.name || ""),
-        currentLang === "ja" ? "ja" : "it"
-      )
-
+  const sortedSets =
+    [...allSets].sort(
+      (a, b) =>
+        String(
+          a.name || ""
+        ).localeCompare(
+          String(
+            b.name || ""
+          ),
+          currentLang === "ja"
+            ? "ja"
+            : "it"
+        )
     );
 
-  sorted.forEach(set => {
 
-    if (!set || !set.id) {
-      return;
+  sortedSets.forEach(
+    set => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        set.id;
+
+
+      option.textContent =
+        set.name ||
+        set.id;
+
+
+      setSelect.appendChild(
+        option
+      );
+
     }
-
-    const option =
-      document.createElement("option");
-
-    option.value = set.id;
-
-    option.textContent =
-      set.name || set.id;
-
-    select.appendChild(option);
-
-  });
+  );
 
 }
 
 
-/* =========================
-   CARD DATA
-========================= */
+function findSetById(id) {
 
-async function getCard(cardId, language) {
+  if (!id) {
+    return null;
+  }
+
+  return (
+    allSets.find(
+      set =>
+        normalize(
+          set.id
+        ) ===
+        normalize(id)
+    ) ||
+    null
+  );
+
+}
+
+
+/* =========================================================
+   GET ITALIAN CARD
+========================================================= */
+
+async function getItalianCard(cardId) {
+
+  if (!cardId) {
+    return null;
+  }
 
   try {
 
     const response =
       await fetch(
-        API +
-        "/" +
-        language +
-        "/cards/" +
-        encodeURIComponent(cardId)
+        `${API}/it/cards/${encodeURIComponent(cardId)}`
       );
+
 
     if (!response.ok) {
       return null;
     }
 
+
     return await response.json();
 
-  } catch {
+  } catch (error) {
+
+    console.error(
+      "Italian card error:",
+      error
+    );
 
     return null;
 
@@ -567,647 +881,1436 @@ async function getCard(cardId, language) {
 }
 
 
-async function getItalianCard(cardId) {
+/* =========================================================
+   GET CARD IN SELECTED LANGUAGE
+========================================================= */
 
-  return getCard(cardId, "it");
+async function getLanguageCard(
+  cardId,
+  language
+) {
+
+  if (!cardId) {
+    return null;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/${language}/cards/${encodeURIComponent(cardId)}`
+      );
+
+
+    if (!response.ok) {
+      return null;
+    }
+
+
+    return await response.json();
+
+  } catch (error) {
+
+    console.error(
+      "Language card error:",
+      language,
+      cardId,
+      error
+    );
+
+    return null;
+
+  }
 
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+/* =========================================================
+   LOCALIZE ONE CARD
+========================================================= */
 
-async function searchCards(reset = true) {
+async function localizeOneCard(
+  card,
+  language = currentLang
+) {
+
+  if (!card) {
+    return null;
+  }
+
+
+  if (
+    language === "it"
+  ) {
+
+    return {
+      ...card,
+      displayLanguage: "it"
+    };
+
+  }
+
+
+  const italianCard =
+    await getItalianCard(
+      card.id
+    );
+
+
+  if (italianCard) {
+
+    return {
+      ...card,
+
+      name:
+        italianCard.name ||
+        card.name,
+
+      displayLanguage:
+        language
+    };
+
+  }
+
+
+  return {
+    ...card,
+    displayLanguage:
+      language
+  };
+
+}
+
+
+/* =========================================================
+   LOCALIZE RESULTS
+========================================================= */
+
+async function localizeResults(
+  cards
+) {
+
+  if (
+    !cards ||
+    !cards.length
+  ) {
+    return [];
+  }
+
+
+  const localized =
+    await Promise.all(
+      cards.map(
+        card =>
+          localizeOneCard(
+            card,
+            currentLang
+          )
+      )
+    );
+
+
+  return localized.filter(
+    Boolean
+  );
+
+}
+
+
+/* =========================================================
+   RENDER CARD
+========================================================= */
+
+function renderCard(card) {
+
+  const image =
+    cardImage(card);
+
+  const name =
+    card.name ||
+    "Unknown";
+
+  const localId =
+    card.localId ||
+    "—";
+
+  const setName =
+    getSetName(card);
+
+  const cardId =
+    card.id ||
+    "";
+
+
+  return `
+
+    <div
+      class="catalog-card"
+      data-card-id="${escapeHtml(cardId)}"
+    >
+
+      ${
+        image
+          ? `
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(name)}"
+              loading="lazy"
+            >
+          `
+          : `
+            <div class="fakecard">
+              NO IMAGE
+            </div>
+          `
+      }
+
+      <div class="catalog-info">
+
+        <div class="catalog-name">
+          ${escapeHtml(name)}
+        </div>
+
+        <div class="catalog-meta">
+
+          ${escapeHtml(setName)}
+
+          <br>
+
+          Nº ${escapeHtml(localId)}
+
+          <br>
+
+          ${escapeHtml(
+            languageName(
+              card.displayLanguage ||
+              currentLang
+            )
+          )}
+
+        </div>
+
+        <div class="catalog-actions">
+
+          <button
+            class="btn secondary view-btn"
+            type="button"
+            data-card-id="${escapeHtml(cardId)}"
+          >
+            VIEW
+          </button>
+
+          <button
+            class="btn wish-btn"
+            type="button"
+            data-card-id="${escapeHtml(cardId)}"
+          >
+            ♡ WISH
+          </button>
+
+          <button
+            class="btn add-btn"
+            type="button"
+            data-card-id="${escapeHtml(cardId)}"
+          >
+            + COLL
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   RENDER RESULTS
+========================================================= */
+
+function renderResults(cards) {
+
+  lastResults =
+    cards || [];
+
+
+  if (
+    !lastResults.length
+  ) {
+
+    results.innerHTML =
+      `
+        <div class="empty-state">
+          Nessun risultato.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  results.innerHTML =
+    lastResults
+      .map(
+        card =>
+          renderCard(card)
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   SEARCH BY NAME
+========================================================= */
+
+async function searchByName(
+  query,
+  page,
+  append = false
+) {
+
+  status.textContent =
+    `Ricerca ${query}...`;
+
+
+  const params =
+    new URLSearchParams();
+
+
+  params.set(
+    "name",
+    query
+  );
+
+
+  params.set(
+    "pagination:page",
+    page
+  );
+
+
+  params.set(
+    "pagination:itemsPerPage",
+    PAGE_SIZE
+  );
+
+
+  const response =
+    await fetch(
+      `${API}/it/cards?${params.toString()}`
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Errore ricerca nome"
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  const italianCards =
+    data.cards ||
+    data ||
+    [];
+
+
+  if (
+    currentLang === "it"
+  ) {
+
+    const finalCards =
+      italianCards.map(
+        card => ({
+          ...card,
+          displayLanguage: "it"
+        })
+      );
+
+
+    if (append) {
+
+      lastResults =
+        lastResults.concat(
+          finalCards
+        );
+
+    } else {
+
+      lastResults =
+        finalCards;
+
+    }
+
+
+    renderResults(
+      lastResults
+    );
+
+
+    hasMore =
+      italianCards.length ===
+      PAGE_SIZE;
+
+
+    loadMoreWrap.style.display =
+      hasMore
+        ? "block"
+        : "none";
+
+
+    status.textContent =
+      `${lastResults.length} risultati`;
+
+    return;
+
+  }
+
+
+  const languageCards =
+    await Promise.all(
+
+      italianCards.map(
+        async italianCard => {
+
+          const localizedCard =
+            await getLanguageCard(
+              italianCard.id,
+              currentLang
+            );
+
+
+          if (
+            localizedCard
+          ) {
+
+            return {
+              ...localizedCard,
+
+              name:
+                italianCard.name,
+
+              displayLanguage:
+                currentLang
+            };
+
+          }
+
+
+          return null;
+
+        }
+      )
+
+    );
+
+
+  const validCards =
+    languageCards.filter(
+      Boolean
+    );
+
+
+  if (append) {
+
+    lastResults =
+      lastResults.concat(
+        validCards
+      );
+
+  } else {
+
+    lastResults =
+      validCards;
+
+  }
+
+
+  renderResults(
+    lastResults
+  );
+
+
+  hasMore =
+    italianCards.length ===
+    PAGE_SIZE;
+
+
+  loadMoreWrap.style.display =
+    hasMore
+      ? "block"
+      : "none";
+
+
+  if (
+    currentLang === "ja" &&
+    !validCards.length
+  ) {
+
+    status.textContent =
+      `Nessuna versione giapponese trovata per "${query}".`;
+
+  } else {
+
+    status.textContent =
+      `${lastResults.length} risultati`;
+
+  }
+
+}
+
+
+/* =========================================================
+   SEARCH BY NUMBER
+========================================================= */
+
+async function searchByNumber(
+  number,
+  page,
+  append = false
+) {
+
+  status.textContent =
+    `Ricerca carta numero ${number}...`;
+
+
+  const params =
+    new URLSearchParams();
+
+
+  params.set(
+    "localId",
+    number
+  );
+
+
+  params.set(
+    "pagination:page",
+    page
+  );
+
+
+  params.set(
+    "pagination:itemsPerPage",
+    PAGE_SIZE
+  );
+
+
+  const response =
+    await fetch(
+      `${API}/${currentLang}/cards?${params.toString()}`
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Errore ricerca numero"
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  const cards =
+    data.cards ||
+    data ||
+    [];
+
+
+  const finalCards =
+    await localizeResults(
+      cards
+    );
+
+
+  if (append) {
+
+    lastResults =
+      lastResults.concat(
+        finalCards
+      );
+
+  } else {
+
+    lastResults =
+      finalCards;
+
+  }
+
+
+  renderResults(
+    lastResults
+  );
+
+
+  hasMore =
+    cards.length ===
+    PAGE_SIZE;
+
+
+  loadMoreWrap.style.display =
+    hasMore
+      ? "block"
+      : "none";
+
+
+  status.textContent =
+    `${lastResults.length} carte numerate ${number}`;
+
+}
+
+
+/* =========================================================
+   SEARCH INSIDE SET
+========================================================= */
+
+async function searchInsideSet(
+  query,
+  setId
+) {
+
+  status.textContent =
+    "Ricerca nel set...";
+
+
+  loadMoreWrap.style.display =
+    "none";
+
+
+  const set =
+    findSetById(
+      setId
+    );
+
+
+  if (!set) {
+
+    renderResults([]);
+
+    status.textContent =
+      "Set non trovato.";
+
+    return;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/${currentLang}/sets/${encodeURIComponent(set.id)}`
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Set non trovato"
+      );
+
+    }
+
+
+    const fullSet =
+      await response.json();
+
+
+    let cards =
+      fullSet.cards ||
+      [];
+
+
+    const wanted =
+      normalize(
+        query
+      );
+
+
+    if (wanted) {
+
+      if (
+        /^\d+$/.test(
+          wanted
+        )
+      ) {
+
+        cards =
+          cards.filter(
+            card =>
+              String(
+                card.localId
+              ) ===
+              String(
+                wanted
+              )
+          );
+
+      } else {
+
+        const italianCards =
+          await Promise.all(
+
+            cards.map(
+              card =>
+                getItalianCard(
+                  card.id
+                )
+            )
+
+          );
+
+
+        const matchingIds =
+          new Set();
+
+
+        italianCards.forEach(
+          italianCard => {
+
+            if (
+              italianCard &&
+              normalize(
+                italianCard.name
+              ).includes(
+                wanted
+              )
+            ) {
+
+              matchingIds.add(
+                italianCard.id
+              );
+
+            }
+
+          }
+        );
+
+
+        cards =
+          cards.filter(
+            card =>
+              matchingIds.has(
+                card.id
+              )
+          );
+
+      }
+
+    }
+
+
+    const finalCards =
+      await localizeResults(
+        cards
+      );
+
+
+    lastResults =
+      finalCards;
+
+
+    renderResults(
+      finalCards
+    );
+
+
+    if (
+      currentLang === "ja" &&
+      !finalCards.length
+    ) {
+
+      status.textContent =
+        "Nessuna carta giapponese trovata nel set.";
+
+    } else {
+
+      status.textContent =
+        `${finalCards.length} risultati in ${set.name}`;
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    renderResults([]);
+
+
+    status.textContent =
+      "Errore nella ricerca del set.";
+
+  }
+
+}
+
+
+/* =========================================================
+   EXACT CARD ID
+========================================================= */
+
+async function searchExactCard(
+  query
+) {
+
+  if (
+    !query.includes("-") ||
+    query.includes(" ")
+  ) {
+
+    return false;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/${currentLang}/cards/${encodeURIComponent(query)}`
+      );
+
+
+    if (!response.ok) {
+
+      return false;
+
+    }
+
+
+    const card =
+      await response.json();
+
+
+    const finalCard =
+      (
+        await localizeResults(
+          [card]
+        )
+      )[0];
+
+
+    if (!finalCard) {
+
+      return false;
+
+    }
+
+
+    renderResults([
+      finalCard
+    ]);
+
+
+    status.textContent =
+      "1 risultato";
+
+
+    loadMoreWrap.style.display =
+      "none";
+
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================================
+   MAIN SEARCH
+========================================================= */
+
+async function searchCards() {
 
   if (loading) {
     return;
   }
 
-  const input =
-    document.getElementById("searchInput");
 
-  const status =
-    document.getElementById("status");
+  loading =
+    true;
+
+
+  currentQuery =
+    searchInput.value.trim();
+
+
+  currentSetId =
+    setSelect.value;
+
+
+  currentLang =
+    languageSelect.value;
+
+
+  currentPage =
+    1;
+
+
+  lastResults =
+    [];
+
+
+  loadMoreWrap.style.display =
+    "none";
+
+
+  results.innerHTML =
+    "";
+
 
   const query =
-    input.value.trim();
+    currentQuery;
 
-  if (reset) {
 
-    currentPage = 1;
-    currentQuery = query;
-
-    lastResults = [];
-
-    document.getElementById("results").innerHTML = "";
-
-    document.getElementById("loadMoreWrap").style.display =
-      "none";
-
-  }
-
-  if (!query && !currentSetId) {
-
-    status.textContent =
-      "Inserisci un numero o un nome per cercare.";
-
-    return;
-
-  }
-
-  loading = true;
-
-  status.textContent =
-    "Ricerca in corso...";
+  const setId =
+    currentSetId;
 
 
   try {
 
-    let results = [];
+    if (
+      !query &&
+      setId
+    ) {
+
+      await searchInsideSet(
+        "",
+        setId
+      );
+
+      return;
+
+    }
 
 
-    /* SET SELEZIONATO */
+    if (
+      !query &&
+      !setId
+    ) {
 
-    if (currentSetId) {
+      status.textContent =
+        "Inserisci un nome o un numero.";
 
-      const response =
-        await fetch(
-          API +
-          "/" +
-          currentLang +
-          "/sets/" +
-          encodeURIComponent(currentSetId)
+      renderResults([]);
+
+      return;
+
+    }
+
+
+    if (
+      query.includes("-") &&
+      !query.includes(" ")
+    ) {
+
+      const found =
+        await searchExactCard(
+          query
         );
 
-      if (response.ok) {
 
-        const set =
-          await response.json();
-
-        let cards =
-          Array.isArray(set.cards)
-            ? set.cards
-            : [];
-
-
-        if (query) {
-
-          const q =
-            normalize(query);
-
-          cards =
-            cards.filter(card => {
-
-              const name =
-                normalize(card.name);
-
-              const number =
-                normalize(card.localId);
-
-              return (
-                name.includes(q) ||
-                number.includes(q)
-              );
-
-            });
-
-        }
-
-
-        const start =
-          (currentPage - 1) * PAGE_SIZE;
-
-        const page =
-          cards.slice(
-            start,
-            start + PAGE_SIZE
-          );
-
-        for (const brief of page) {
-
-          const full =
-            await getCard(
-              brief.id,
-              currentLang
-            );
-
-          if (!full) {
-            continue;
-          }
-
-          if (currentLang !== "it") {
-
-            const italian =
-              await getItalianCard(full.id);
-
-            if (italian && italian.name) {
-              full.displayName =
-                italian.name;
-            }
-
-          } else {
-
-            full.displayName =
-              full.name;
-
-          }
-
-          full.displayLanguage =
-            currentLang;
-
-          results.push(full);
-
-        }
-
-        hasMore =
-          start + PAGE_SIZE < cards.length;
-
-      }
-
-    }
-
-    /* NUMERO */
-
-    else if (/^[0-9]+$/.test(query)) {
-
-      const response =
-        await fetch(
-          API +
-          "/" +
-          currentLang +
-          "/cards?localId=" +
-          encodeURIComponent(query) +
-          "&page=" +
-          currentPage
-        );
-
-      if (response.ok) {
-
-        const data =
-          await response.json();
-
-        results =
-          Array.isArray(data)
-            ? data
-            : [];
-
-      }
-
-    }
-
-    /* NOME */
-
-    else {
-
-      const response =
-        await fetch(
-          API +
-          "/" +
-          currentLang +
-          "/cards?name=" +
-          encodeURIComponent(query) +
-          "&page=" +
-          currentPage
-        );
-
-      if (response.ok) {
-
-        const data =
-          await response.json();
-
-        results =
-          Array.isArray(data)
-            ? data
-            : [];
-
+      if (found) {
+        return;
       }
 
     }
 
 
-    /* ITALIAN NAMES */
+    if (setId) {
 
-    for (const card of results) {
+      await searchInsideSet(
+        query,
+        setId
+      );
 
-      if (currentLang === "it") {
-
-        card.displayName =
-          card.name ||
-          "Carta senza nome";
-
-      } else {
-
-        const italian =
-          await getItalianCard(card.id);
-
-        card.displayName =
-          italian && italian.name
-            ? italian.name
-            : card.name ||
-              "Carta senza nome";
-
-      }
-
-      card.displayLanguage =
-        currentLang;
+      return;
 
     }
 
 
-    lastResults =
-      reset
-        ? results
-        : lastResults.concat(results);
+    if (
+      /^\d+$/.test(
+        query
+      )
+    ) {
 
+      await searchByNumber(
+        query,
+        1,
+        false
+      );
 
-    if (!currentSetId) {
-
-      hasMore =
-        results.length >= PAGE_SIZE;
+      return;
 
     }
 
 
-    renderResults();
-
-
-    status.textContent =
-      lastResults.length +
-      " carte trovate.";
-
+    await searchByName(
+      query,
+      1,
+      false
+    );
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
+
+
+    renderResults([]);
+
 
     status.textContent =
       "Errore durante la ricerca.";
 
+  } finally {
+
+    loading =
+      false;
+
   }
-
-
-  loading = false;
 
 }
 
 
-/* =========================
-   RENDER
-========================= */
-
-function renderResults() {
-
-  const container =
-    document.getElementById("results");
-
-  if (!lastResults.length) {
-
-    container.innerHTML =
-      '<div class="empty">NESSUNA CARTA TROVATA.</div>';
-
-    document.getElementById("loadMoreWrap").style.display =
-      "none";
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    lastResults.map((card, index) => {
-
-      const name =
-        card.displayName ||
-        card.name ||
-        "Carta senza nome";
-
-      const image =
-        cardImage(card);
-
-      return `
-
-        <article
-          class="catalog-card"
-          data-index="${index}"
-        >
-
-          <img
-            class="catalog-card-image"
-            src="${escapeHtml(image)}"
-            alt="${escapeHtml(name)}"
-            loading="lazy"
-          >
-
-          <div class="catalog-card-name">
-            ${escapeHtml(name)}
-          </div>
-
-          <div class="catalog-card-meta">
-
-            ${escapeHtml(getSetName(card))}
-
-            <br>
-
-            ${escapeHtml(card.localId || "")}
-            ·
-            ${escapeHtml(
-              languageName(
-                card.displayLanguage ||
-                currentLang
-              )
-            )}
-
-          </div>
-
-          <div class="catalog-actions">
-
-            <button
-              class="btn view-btn"
-              type="button"
-              data-card-id="${escapeHtml(card.id)}"
-            >
-              VIEW
-            </button>
-
-            <button
-              class="btn wish-btn"
-              type="button"
-              data-card-id="${escapeHtml(card.id)}"
-            >
-              ♡ WISH
-            </button>
-
-            <button
-              class="btn add-btn"
-              type="button"
-              data-card-id="${escapeHtml(card.id)}"
-            >
-              + COLL
-            </button>
-
-          </div>
-
-        </article>
-
-      `;
-
-    }).join("");
-
-
-  document.getElementById("loadMoreWrap").style.display =
-    hasMore
-      ? "flex"
-      : "none";
-
-}
-
-
-/* =========================
+/* =========================================================
    LOAD MORE
-========================= */
+========================================================= */
 
 async function loadMore() {
 
-  if (loading || !hasMore) {
+  if (
+    loading ||
+    !hasMore
+  ) {
     return;
   }
 
-  currentPage++;
 
-  await searchCards(false);
+  loading =
+    true;
+
+
+  try {
+
+    currentPage++;
+
+
+    const query =
+      currentQuery;
+
+
+    const setId =
+      currentSetId;
+
+
+    if (setId) {
+
+      hasMore =
+        false;
+
+      loadMoreWrap.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    if (
+      /^\d+$/.test(
+        query
+      )
+    ) {
+
+      await searchByNumber(
+        query,
+        currentPage,
+        true
+      );
+
+      return;
+
+    }
+
+
+    await searchByName(
+      query,
+      currentPage,
+      true
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    currentPage--;
+
+
+    status.textContent =
+      "Errore nel caricamento.";
+
+  } finally {
+
+    loading =
+      false;
+
+  }
 
 }
 
 
-/* =========================
-   VIEW
-========================= */
+/* =========================================================
+   EVENTS
+========================================================= */
 
-async function viewCard(cardId) {
+searchBtn.addEventListener(
+  "click",
+  searchCards
+);
 
-  const card =
-    await getCard(
-      cardId,
+
+searchInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      searchCards();
+
+    }
+
+  }
+);
+
+
+languageSelect.addEventListener(
+  "change",
+  async () => {
+
+    currentLang =
+      languageSelect.value;
+
+
+    currentSetId =
+      "";
+
+
+    setSelect.value =
+      "";
+
+
+    await loadSets(
       currentLang
     );
 
-  if (!card) {
 
-    alert("Carta non trovata.");
+    if (
+      searchInput.value.trim()
+    ) {
 
-    return;
+      searchCards();
 
-  }
-
-  let name =
-    card.name ||
-    "Carta senza nome";
-
-  if (currentLang !== "it") {
-
-    const italian =
-      await getItalianCard(cardId);
-
-    if (italian && italian.name) {
-      name = italian.name;
     }
 
   }
+);
 
-  alert(
 
-    name +
-    "\n\n" +
+setSelect.addEventListener(
+  "change",
+  () => {
 
-    "Numero: " +
-    (card.localId || "-") +
-    "\n" +
+    if (
+      searchInput.value.trim() ||
+      setSelect.value
+    ) {
 
-    "Set: " +
-    getSetName(card) +
-    "\n" +
+      searchCards();
 
-    "Lingua: " +
-    languageName(currentLang)
+    }
 
-  );
+  }
+);
+
+
+loadMoreBtn.addEventListener(
+  "click",
+  loadMore
+);
+
+
+/* =========================================================
+   CARD CLICK
+========================================================= */
+
+results.addEventListener(
+  "click",
+  event => {
+
+    const viewButton =
+      event.target.closest(
+        ".view-btn"
+      );
+
+
+    if (viewButton) {
+
+      event.stopPropagation();
+
+
+      viewCard(
+        viewButton.dataset.cardId
+      );
+
+
+      return;
+
+    }
+
+
+    const wishButton =
+      event.target.closest(
+        ".wish-btn"
+      );
+
+
+    if (wishButton) {
+
+      event.stopPropagation();
+
+
+      const card =
+        lastResults.find(
+          item =>
+            String(item.id) ===
+            String(
+              wishButton.dataset.cardId
+            )
+        );
+
+
+      if (card) {
+
+        addToWishlist(
+          card
+        );
+
+      }
+
+
+      return;
+
+    }
+
+
+    const addButton =
+      event.target.closest(
+        ".add-btn"
+      );
+
+
+    if (addButton) {
+
+      event.stopPropagation();
+
+
+      addToCollection(
+        addButton.dataset.cardId
+      );
+
+
+      return;
+
+    }
+
+
+    const card =
+      event.target.closest(
+        ".catalog-card"
+      );
+
+
+    if (card) {
+
+      viewCard(
+        card.dataset.cardId
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   VIEW CARD
+========================================================= */
+
+async function viewCard(
+  cardId
+) {
+
+  if (!cardId) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API}/${currentLang}/cards/${encodeURIComponent(cardId)}`
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Card non trovata"
+      );
+
+    }
+
+
+    const card =
+      await response.json();
+
+
+    const italianCard =
+      await getItalianCard(
+        cardId
+      );
+
+
+    const displayName =
+      italianCard?.name ||
+      card.name ||
+      "Card";
+
+
+    const setName =
+      getSetName(
+        card
+      );
+
+
+    alert(
+
+      `${displayName}\n\n` +
+
+      `Set: ${setName}\n` +
+
+      `Numero: ${
+        card.localId ||
+        "—"
+      }\n` +
+
+      `Lingua: ${
+        languageName(
+          currentLang
+        )
+      }\n\n` +
+
+      `ID: ${
+        card.id ||
+        cardId
+      }`
+
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Impossibile aprire la carta."
+    );
+
+  }
 
 }
 
 
-/* =========================
-   EVENTS
-========================= */
+/* =========================================================
+   ADD TO COLLECTION
+========================================================= */
 
-document
-  .getElementById("searchBtn")
-  .addEventListener(
-    "click",
-    () => searchCards(true)
-  );
+function addToCollection(
+  cardId
+) {
 
-
-document
-  .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if (event.key === "Enter") {
-        searchCards(true);
-      }
-
-    }
-  );
+  if (!cardId) {
+    return;
+  }
 
 
-document
-  .getElementById("loadMoreBtn")
-  .addEventListener(
-    "click",
-    loadMore
-  );
+  const url =
+    `collection.html?add=${encodeURIComponent(cardId)}&lang=${encodeURIComponent(currentLang)}`;
 
 
-document
-  .getElementById("languageSelect")
-  .addEventListener(
-    "change",
-    async event => {
+  window.location.href =
+    url;
 
-      currentLang =
-        event.target.value;
-
-      currentSetId = "";
-
-      currentPage = 1;
-
-      lastResults = [];
-
-      document.getElementById("results").innerHTML = "";
-
-      document.getElementById("loadMoreWrap").style.display =
-        "none";
-
-      await loadSets(currentLang);
-
-      document.getElementById("status").textContent =
-        "Lingua cambiata. Premi SEARCH.";
-
-    }
-  );
+}
 
 
-document
-  .getElementById("setSelect")
-  .addEventListener(
-    "change",
-    event => {
-
-      currentSetId =
-        event.target.value;
-
-      currentPage = 1;
-
-      lastResults = [];
-
-      document.getElementById("results").innerHTML = "";
-
-      document.getElementById("loadMoreWrap").style.display =
-        "none";
-
-      document.getElementById("status").textContent =
-        currentSetId
-          ? "Set selezionato. Premi SEARCH."
-          : "Inserisci un numero o un nome per cercare.";
-
-    }
-  );
-
-
-/* =========================
-   CARD BUTTONS
-========================= */
-
-document
-  .getElementById("results")
-  .addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest("button");
-
-      if (!button) {
-        return;
-      }
-
-      const cardId =
-        button.dataset.cardId;
-
-      if (!cardId) {
-        return;
-      }
-
-
-      if (
-        button.classList.contains("view-btn")
-      ) {
-
-        viewCard(cardId);
-
-        return;
-
-      }
-
-
-      if (
-        button.classList.contains("wish-btn")
-      ) {
-
-        const card =
-          lastResults.find(
-            item =>
-              String(item.id) ===
-              String(cardId)
-          );
-
-        if (card) {
-          addToWishlist(card);
-        }
-
-        return;
-
-      }
-
-
-      if (
-        button.classList.contains("add-btn")
-      ) {
-
-        window.location.href =
-          "collection.html?add=" +
-          encodeURIComponent(cardId) +
-          "&lang=" +
-          encodeURIComponent(currentLang);
-
-      }
-
-    }
-  );
-
-
-/* =========================
+/* =========================================================
    INIT
-========================= */
+========================================================= */
 
-loadSets("it");
+(async function init() {
+
+  currentLang =
+    languageSelect.value;
 
 
-/* =========================
+  await loadSets(
+    currentLang
+  );
+
+})();
+
+
+/* =========================================================
    SERVICE WORKER
-========================= */
+========================================================= */
 
 if (
   "serviceWorker" in navigator &&
@@ -1215,8 +2318,12 @@ if (
 ) {
 
   navigator.serviceWorker
-    .register("./sw.js?v=15")
-    .catch(() => {});
+    .register(
+      "./sw.js?v=13"
+    )
+    .catch(
+      () => {}
+    );
 
 }
 
